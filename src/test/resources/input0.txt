@@ -1,0 +1,5 @@
+acest fisier contine 3 numere de telefon 
+022334455
+022334456
+din care 2 coincid
+022334455

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+  xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd 
+		http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+  <!-- We still need it for loading the CXFServlet -->
+  <import resource="classpath:META-INF/cxf/cxf.xml" />
+
+  <context:property-placeholder
+    location="file:///etc/softicon/entityman/entityman.properties" />
+  <context:annotation-config />
+
+  <bean
+    class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer" />
+  <bean
+    class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer" />
+
+  <context:component-scan base-package="org.occrp.entityman" />
+
+  <bean id="entityServiceImpl" class="org.occrp.entityman.ws.EntityServiceImpl" />
+
+  <jaxrs:server id="services" address="/">
+    <jaxrs:serviceBeans>
+      <ref bean="entityServiceImpl" />
+    </jaxrs:serviceBeans>
+    <jaxrs:providers>
+      <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+    </jaxrs:providers>
+    <jaxrs:inInterceptors>
+      <ref bean="wsLoggingInInterceptor" />
+    </jaxrs:inInterceptors>
+    <jaxrs:outInterceptors>
+      <ref bean="wsLoggingOutInterceptor" />
+    </jaxrs:outInterceptors>
+  </jaxrs:server>
+
+  <bean id="wsLoggingInInterceptor" class="org.apache.cxf.interceptor.LoggingInInterceptor">
+    <property name="limit" value="2048" />
+
+  </bean>
+
+  <bean id="wsLoggingOutInterceptor" class="org.apache.cxf.interceptor.LoggingOutInterceptor">
+    <property name="limit" value="2048" />
+  </bean>
+
+<!-- defining expander, extractors, worker -->
+  <bean id="expanderTika" class="org.occrp.entityman.ingester.expanders.TikaExpander" >
+    <property name="name" value="TIKA" />
+  </bean>
+
+  <util:list id="expanders" value-type="org.occrp.entityman.ingester.expanders.Expander">
+    <ref bean="expanderTika"/>
+  </util:list>
+
+  <bean id="extractorPhoneNumbers" class="org.occrp.entityman.ingester.ets.RegexpExtractor" >
+    <property name="name" value="Phone number extractor" />
+    <property name="entityName" value="PhoneNumber" />
+    <property name="entityKey" value="phoneNumber" />
+    <property name="pattern" value="(0|)[1-9][0-9](\s|)[0-9]{6}" />
+  </bean>
+
+  <util:list id="extractors" value-type="org.occrp.entityman.ingester.ets.Extractors">
+    <ref bean="extractorPhoneNumbers"/>
+  </util:list>
+
+  <bean id="worker" class="org.occrp.entityman.ingester.Worker" >
+    <property name="expanders" ref="expanders" />
+    <property name="extractors" ref="extractors" />
+  </bean>
+
+
+  <!-- mongodb configuration -->
+  <mongo:db-factory id="mongoDbFactory" host="${mongo.host}"
+    port="${mongo.port}" dbname="${mongo.dbname}" username="" password="" />
+
+  <mongo:mongo>
+    <mongo:options connections-per-host="10"
+      threads-allowed-to-block-for-connection-multiplier="10"
+      connect-timeout="1000" max-wait-time="1500" auto-connect-retry="true"
+      socket-keep-alive="true" socket-timeout="1500" slave-ok="true"
+      write-number="1" write-timeout="0" write-fsync="true" />
+  </mongo:mongo>
+
+  <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+    <constructor-arg ref="mongoDbFactory" />
+    <constructor-arg name="mongoConverter" ref="mappingConverter" />
+    <property name="writeConcern">
+      <bean class="com.mongodb.WriteConcern" factory-method="valueOf"
+        lazy-init="false">
+        <constructor-arg value="SAFE" />
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="mappingConverter"
+    class="org.springframework.data.mongodb.core.convert.MappingMongoConverter">
+    <constructor-arg ref="mongoDbFactory" />
+    <constructor-arg ref="mappingContext" />
+    <property name="customConversions" ref="conversions" />
+    <property name="mapKeyDotReplacement" value="~" />
+  </bean>
+
+  <bean id="mappingContext"
+    class="org.springframework.data.mongodb.core.mapping.MongoMappingContext">
+    <property name="simpleTypeHolder">
+      <bean factory-bean="conversions" factory-method="getSimpleTypeHolder" />
+    </property>
+  </bean>
+
+  <bean id="conversions"
+    class="org.springframework.data.mongodb.core.convert.CustomConversions">
+    <constructor-arg>
+      <list>
+      </list>
+    </constructor-arg>
+  </bean>
+
+  <mongo:repositories base-package="org.occrp.entityman.dao"
+    mongo-template-ref="mongoTemplate"/>
+
+<!--   <mongo:repositories base-package="org.occrp.entityman.dao" -->
+<!--     mongo-template-ref="mongoTemplate" -->
+<!--     factory-class="org.occrp.entityman.dao.AMongoObjectRepositoryFactoryBean" /> -->
+
+  <import resource="ac-aop.xml" />
+
+</beans>

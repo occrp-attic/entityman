@@ -1,0 +1,29 @@
+todo : 
+
++ maven app 
++ spring
++ rest
+- apache tika / stanball
+- regexp handlers
+- Standford named entity recogniser
+- workspaces
+- users
++ mongo / spring data
+- 
+- ingester :
+  - scan folder for files : put in queue
+  - workers take the file from queue
+  - the file is passed across the entenders and extractors chain
+
+mongo objects :
+- aobject
+- amongoobject
+- file
+- enities :
+  - persons
+  - companies
+  - phone numbers
+  - other special numbers
+  - bank accounts
+
+
