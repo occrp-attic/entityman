@@ -12,11 +12,13 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.jws.WebService;
+import javax.measure.quantity.AmountOfSubstance;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
@@ -26,9 +28,12 @@ import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.apache.cxf.jaxrs.model.wadl.Description;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.occrp.entityman.dao.WorkspaceRepository;
 import org.occrp.entityman.ingester.Worker;
+import org.occrp.entityman.model.AMongoObject;
 import org.occrp.entityman.model.IngestedFile;
 import org.occrp.entityman.model.ServiceResult;
+import org.occrp.entityman.model.Workspace;
 import org.occrp.entityman.model.annotation.Entity;
 import org.occrp.entityman.model.entities.AEntity;
 import org.occrp.entityman.model.entities.Fact;
@@ -45,6 +50,9 @@ public class EntityServiceImpl implements EntityService {
 
 	@Autowired
 	private Worker worker;
+	
+	@Autowired
+	private WorkspaceRepository workspaceRepository;
 	
 	Set<String> entitySet = null;
 	
@@ -79,27 +87,38 @@ public class EntityServiceImpl implements EntityService {
 	public Set<String> getWorkspaces() {
 		Set<String> res = new HashSet<String>();
 		
-		res.add("default");
+		List<Workspace> ws = workspaceRepository.findAll();
+		
+		for (Workspace w : ws) {
+			res.add(w.getName());
+		}
 
 		return res;
 	}
 
 	@Override
-	public ServiceResult<List<List<Object>>> getAllEntities(String entityName) {
+	public ServiceResult<List<List<Object>>> getAllEntities(
+			String entityName, String workspace) {
 		ServiceResult<List<List<Object>>> sr = new ServiceResult<>();
 		
 		List<List<Object>> res = new ArrayList<>();
 		
-		List<AEntity> aes = entityManager.findAllEntities(
-				entityManager.getEntityClass(entityName));
+		Class entityClass =entityManager.getEntityClass(entityName); 
 		
-		for (AEntity ae : aes) {
-			List<Object> t = new ArrayList<>();
-			t.add(ae.getId());
-			res.add(t);
+		if (entityClass==null) {
+			sr.setC(ServiceResult.CODE_ERROR);
+			sr.setM("Entity Type Not found");
+		} else {
+			List<AEntity> aes = entityManager.findAllEntities(entityClass, workspace);
+			
+			for (AEntity ae : aes) {
+				List<Object> t = new ArrayList<>();
+				t.add(ae.getId());
+				t.add(ae.getLabel());
+				res.add(t);
+			}
+			sr.setO(res);
 		}
-		
-		sr.setO(res);
 		
 		return sr;
 	}
@@ -147,7 +166,7 @@ public class EntityServiceImpl implements EntityService {
 		ServiceResult<List<AEntity>> sr = new ServiceResult<>();
 		
 		List<IngestedFile> files = new ArrayList<IngestedFile>();
-		List<AEntity> aes = new ArrayList<AEntity>();
+		List<AEntity> aes = new ArrayList<>();
 		
 		try {
 			for (Attachment a : body.getAllAttachments()) {
@@ -165,16 +184,15 @@ public class EntityServiceImpl implements EntityService {
 				FileUtils.copyInputStreamToFile(is, of);
 				
 				IngestedFile file = new IngestedFile();
+				file.setWorkspace(workspace);
+				file.setOriginalFilename(filename);
 				file.setFile(of);
 				file.setFileUri(of.toString());
 				
 				aes.addAll(worker.call(file));
+				aes.add(file);
 			}
 
-			for (AEntity ae : aes) {
-				ae.setFact(null);
-			}
-			
 			sr.setO(aes);
 			sr.setC(ServiceResult.CODE_OK);
 		} catch (Exception e) {
@@ -209,7 +227,7 @@ public class EntityServiceImpl implements EntityService {
 		entityClasses.add(IngestedFile.class);
 		
 		for (Class c : entityClasses) {
-			List<AEntity> aes = entityManager.findAllEntities(c);
+			List<AEntity> aes = entityManager.findAllEntities(c,name);
 			map.put(c.getSimpleName(), aes);
 		}
 		
@@ -227,9 +245,10 @@ public class EntityServiceImpl implements EntityService {
 		
 		if (fi!=null) {
 			File file = new File(fi.getFileUri());
-			response = Response.ok((Object) file);
-			response.header("Content-Disposition",
-					"attachment; filename=new-android-book.pdf");
+			response = Response.ok((Object) file)
+				.header("Content-Disposition",
+					"attachment; filename="+fi.getOriginalFilename())
+				.type(MediaType.APPLICATION_OCTET_STREAM);
 		}
 		return response.build();		
 	}

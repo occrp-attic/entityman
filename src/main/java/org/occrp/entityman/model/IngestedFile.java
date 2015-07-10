@@ -6,19 +6,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.occrp.entityman.model.annotation.Entity;
+import org.occrp.entityman.model.entities.AEntity;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 
-public class IngestedFile extends AMongoObject {
+@Entity
+public class IngestedFile extends AEntity {
 
 	public final static int STATUS_UNKN = -1;
 	public final static int STATUS_NEW = 0;
 	public final static int STATUS_INPROGRESS = 1;
 	public final static int STATUS_COMPLETE = 2;
 	public final static int STATUS_ERROR = 3;
-	
-	@Indexed
-	private String workspace;
 	
 	@Indexed
 	private int status = STATUS_UNKN;
@@ -40,18 +40,13 @@ public class IngestedFile extends AMongoObject {
 	@Indexed
 	private String fileUri;
 	
+	@Indexed
+	private String originalFilename;
+
 	private List<String> fileType = new ArrayList<String>();
 	
 	@Transient
 	private File file;
-
-	public String getWorkspace() {
-		return workspace;
-	}
-
-	public void setWorkspace(String workspace) {
-		this.workspace = workspace;
-	}
 
 	public int getStatus() {
 		return status;
@@ -132,4 +127,24 @@ public class IngestedFile extends AMongoObject {
 	public void setExpandedData(Map<String, Object> expandedData) {
 		this.expandedData = expandedData;
 	}
+
+	public String getOriginalFilename() {
+		return originalFilename;
+	}
+
+	public void setOriginalFilename(String originalFilename) {
+		this.originalFilename = originalFilename;
+	}
+
+	@Override
+	public String getLabel() {
+		return originalFilename;
+	}
+
+	@Override
+	public void updateKey() {
+		setKey(fileUri);
+	}
+	
+	
 }

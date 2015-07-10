@@ -4,12 +4,12 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
-
-import org.occrp.entityman.model.AMongoObject;
+import org.occrp.entityman.model.annotation.Entity;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 
-public class Fact extends AMongoObject {
+@Entity
+public class Fact extends AEntity {
 
 	@Transient
 	public static final String KEY_EXCERPT = "excerpt";
@@ -67,4 +67,13 @@ public class Fact extends AMongoObject {
 		this.data = data;
 	}
 
+	@Override
+	public String getLabel() {
+		return entity+":"+position;
+	}
+
+	@Override
+	public void updateKey() {
+		setKey(getId().toString(16));
+	}
 }

@@ -71,11 +71,13 @@ public class RegexpExtractor extends AExtractor {
 				entityManager.entitySetField(ae, entityKey, m.group());
 				ae.getFileIds().add(file.getId());
 				ae.setExtractor(getName());
+				ae.setWorkspace(file.getWorkspace());
 				
 				Fact fact = new Fact();
 //				fact.setEntity(entityName);
 				fact.setFileId(file.getId());
 				fact.setPosition(m.start());
+				fact.setWorkspace(file.getWorkspace());
 				fact.getData().put(Fact.KEY_EXCERPT, 
 						findExcerpt(s, m.start(), m.end()));
 				

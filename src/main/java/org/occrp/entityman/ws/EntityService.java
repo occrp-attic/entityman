@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.apache.cxf.jaxrs.model.wadl.Description;
+import org.occrp.entityman.model.AMongoObject;
 import org.occrp.entityman.model.ServiceResult;
 import org.occrp.entityman.model.entities.AEntity;
 
@@ -44,19 +45,21 @@ public interface EntityService extends ARestService{
 	@Path("/workspace/{name}")
 	@Produces(defaultMimeType)
 	@Consumes(defaultMimeType)
-	@Description("Returns currently available workspaces")
+	@Description("Returns all entities in the workspace")
 	public ServiceResult<Map<String,Object>> getWorkspace(
 			@Description("Workspace name to retrieve") @PathParam("name")
 			@DefaultValue("default") String name);	
 
 	@GET
-	@Path("/all/{entityName}")
+	@Path("/all/{entityName}/{workspace}")
 	@Produces(defaultMimeType)
 	@Consumes(defaultMimeType)
 	@Description("Returns currently available workspaces")
 	public ServiceResult<List<List<Object>>> getAllEntities(
 			@Description("Entity type to retrieve") @PathParam("entityName")
-			@DefaultValue("IngestedFile") String entityName);	
+			@DefaultValue("IngestedFile") String entityName,
+			@Description("Workspace to retrieve") @PathParam("workspace")
+			@DefaultValue("default") String workspace);	
 
 	@GET
 	@Path("/byId/{entityName}/{id}")

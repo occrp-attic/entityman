@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.occrp.entityman.dao.FactRepository;
+import org.occrp.entityman.model.AMongoObject;
 import org.occrp.entityman.model.IngestedFile;
 import org.occrp.entityman.model.annotation.Entity;
 import org.occrp.entityman.model.entities.AEntity;
@@ -53,7 +54,41 @@ public class EntityManager {
 		
 		return res;
 	}
-	
+
+	Map<String,Class<AEntity>> amoMap = null;
+
+	public Map<String,Class<? extends AMongoObject>> getAMongoObjectMap(){
+		
+		Map<String,Class<? extends AMongoObject>> res = 
+				new ConcurrentHashMap<>();
+		
+		Reflections reflections = new Reflections(
+				"org.occrp.entityman.model");
+		
+		Set<Class<? extends AMongoObject>> classes = reflections.getSubTypesOf(AMongoObject.class);
+		for (Class c : classes) {
+			res.put(c.getSimpleName().toLowerCase(),c);
+		}
+		
+		return res;
+	}
+
+	public Class<AEntity> getAmoClass(String name) {
+		// TODO improve this
+		synchronized (this) {
+			if (amoMap==null) {
+				amoMap = getEntityMap();
+			}
+		}
+		
+		Class<AEntity> ae = amoMap.get(name.toLowerCase());
+
+		if (ae==null) {
+			log.warn("No Entity class found for : {}",name);
+		}
+		return ae;
+	}
+
 	public Class<AEntity> getEntityClass(String name) {
 		// TODO improve this
 		synchronized (this) {
@@ -174,8 +209,11 @@ public class EntityManager {
 		mongoOperations.dropCollection(Fact.class);
 	}
 	
-	public <T> List<T> findAllEntities(Class<T> clazz) {
-		return mongoOperations.findAll(clazz);
+	public <T> List<T> findAllEntities(Class<T> clazz, String workspace) {
+//		return mongoOperations.findAll(clazz);
+		return mongoOperations.find(
+				Query.query(Criteria.where("workspace").is(workspace)),clazz);
+
 	}
 	
 }

@@ -3,9 +3,12 @@ package org.occrp.entityman.model;
 import java.math.BigInteger;
 import java.util.Date;
 
+import org.codehaus.jackson.annotate.JsonTypeInfo;
+import org.codehaus.jackson.annotate.JsonTypeInfo.As;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 
+@JsonTypeInfo(use=org.codehaus.jackson.annotate.JsonTypeInfo.Id.CLASS, include=As.PROPERTY, property="class")
 public abstract class AMongoObject extends AObject {
 	
 	@Id
