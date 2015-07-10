@@ -186,6 +186,10 @@ public class EntityServiceImpl implements EntityService {
 				}
 				
 				String filename = a.getContentId();
+				if (a.getContentDisposition()!=null && 
+						a.getContentDisposition().getParameter("filename")!=null) {
+					filename = a.getContentDisposition().getParameter("filename"); 
+				}
 				
 				File of = createFilePath(workspace, filename);
 				log.debug("Storing file : {}",of);

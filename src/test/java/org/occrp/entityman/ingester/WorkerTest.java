@@ -154,7 +154,7 @@ public class WorkerTest {
 		File f = new File("src/test/resources/input0.txt");
 
 		List<Attachment> atts = new LinkedList<Attachment>();
-        atts.add(new Attachment("test.txt", "application/octet-stream",
+        atts.add(new Attachment("input0.txt", "application/octet-stream",
         		new FileInputStream(f)));
 	      
         ServiceResult<List<AEntity>> sr = apiClient.
@@ -298,7 +298,7 @@ public class WorkerTest {
 		File f = new File("src/test/resources/input0.txt");
 
 		List<Attachment> atts = new LinkedList<Attachment>();
-        atts.add(new Attachment("test.txt", "application/octet-stream",
+        atts.add(new Attachment("input0.txt", "application/octet-stream",
         		new FileInputStream(f)));
 	      
         ServiceResult<List<AEntity>> sr = apiClient.
@@ -318,6 +318,8 @@ public class WorkerTest {
 				entityManager.findAll(Workspace.class).size());
 		
 		String fileId = ((IngestedFile)sr.getO().get(6)).getId().toString();
+		Assert.assertEquals("Filename is good", "input0.txt", 
+				((IngestedFile)sr.getO().get(6)).getOriginalFilename());
 		
 		ServiceResult<List<AEntity>> sr1 = apiClient.getEntitiesByFileId("Fact", fileId);
 		
