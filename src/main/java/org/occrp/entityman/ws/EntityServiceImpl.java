@@ -165,6 +165,15 @@ public class EntityServiceImpl implements EntityService {
 
 		ServiceResult<List<AEntity>> sr = new ServiceResult<>();
 		
+		Workspace w = workspaceRepository.findBy(workspace);
+		if (w==null) {
+			w = new Workspace();
+			w.setName(workspace);
+		}
+
+		w.setIngestCount(w.getIngestCount()+1);
+		workspaceRepository.save(w);
+
 		List<IngestedFile> files = new ArrayList<IngestedFile>();
 		List<AEntity> aes = new ArrayList<>();
 		
@@ -221,6 +230,10 @@ public class EntityServiceImpl implements EntityService {
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		
+		Workspace w = workspaceRepository.findBy(name);
+		
+		if (w!=null) map.put("workspace", w);
+
 		Set<Class> entityClasses = new HashSet<Class>();
 		entityClasses.addAll(entityManager.getEntityMap().values());
 		entityClasses.add(Fact.class);

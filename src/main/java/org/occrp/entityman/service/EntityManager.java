@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.occrp.entityman.dao.FactRepository;
 import org.occrp.entityman.model.AMongoObject;
 import org.occrp.entityman.model.IngestedFile;
+import org.occrp.entityman.model.Workspace;
 import org.occrp.entityman.model.annotation.Entity;
 import org.occrp.entityman.model.entities.AEntity;
 import org.occrp.entityman.model.entities.Fact;
@@ -207,6 +208,7 @@ public class EntityManager {
 		
 		mongoOperations.dropCollection(IngestedFile.class);
 		mongoOperations.dropCollection(Fact.class);
+		mongoOperations.dropCollection(Workspace.class);
 	}
 	
 	public <T> List<T> findAllEntities(Class<T> clazz, String workspace) {
@@ -215,5 +217,9 @@ public class EntityManager {
 				Query.query(Criteria.where("workspace").is(workspace)),clazz);
 
 	}
-	
+
+	public <T> List<T> findAll(Class<T> clazz) {
+		return mongoOperations.findAll(clazz);
+	}
+
 }

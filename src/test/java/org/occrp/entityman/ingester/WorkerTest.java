@@ -23,6 +23,7 @@ import org.junit.runners.MethodSorters;
 import org.occrp.entityman.model.AMongoObject;
 import org.occrp.entityman.model.IngestedFile;
 import org.occrp.entityman.model.ServiceResult;
+import org.occrp.entityman.model.Workspace;
 import org.occrp.entityman.model.entities.AEntity;
 import org.occrp.entityman.model.entities.Email;
 import org.occrp.entityman.model.entities.Fact;
@@ -101,6 +102,9 @@ public class WorkerTest {
 				entityManager.findAllEntities(Person.class, "default").size());
 		Assert.assertEquals("Expected 6 facts", 6, 
 				entityManager.findAllEntities(Fact.class, "default").size());
+		Assert.assertEquals("Expected 0 workspace", 0, 
+				entityManager.findAll(Workspace.class).size());
+
 	}
 	
 	@Ignore
@@ -133,6 +137,8 @@ public class WorkerTest {
 				entityManager.findAllEntities(Email.class, "default").size());
 		Assert.assertEquals("Expected 1 location", 1, 
 				entityManager.findAllEntities(Location.class, "default").size());
+		Assert.assertEquals("Expected 1 workspace", 1, 
+				entityManager.findAll(Workspace.class).size());
 	}
 
 	@Autowired
@@ -164,6 +170,8 @@ public class WorkerTest {
 				entityManager.findAllEntities(Person.class, "default").size());
 		Assert.assertEquals("Expected 6 facts", 6, 
 				entityManager.findAllEntities(Fact.class, "default").size());
+		Assert.assertEquals("Expected 1 workspace", 1, 
+				entityManager.findAll(Workspace.class).size());
 	}
 
 	@Test
@@ -191,6 +199,8 @@ public class WorkerTest {
 				entityManager.findAllEntities(Person.class, "default").size());
 		Assert.assertEquals("Expected 6 facts", 6, 
 				entityManager.findAllEntities(Fact.class, "default").size());
+		Assert.assertEquals("Expected 1 workspace", 1, 
+				entityManager.findAll(Workspace.class).size());
 		
 		List<IngestedFile> ifs = entityManager.findAllEntities(IngestedFile.class, "default");
 		
@@ -225,6 +235,8 @@ public class WorkerTest {
 				entityManager.findAllEntities(Person.class, "default").size());
 		Assert.assertEquals("Expected 6 facts", 6, 
 				entityManager.findAllEntities(Fact.class, "default").size());
+		Assert.assertEquals("Expected 1 workspace", 1, 
+				entityManager.findAll(Workspace.class).size());
 		
 		ServiceResult<List<List<Object>>> sr1 = apiClient.getAllEntities("Fact","default");
 		
@@ -266,6 +278,8 @@ public class WorkerTest {
 		
 		Assert.assertEquals("Number of Facts 6", 6, sr1.getO().size());
 		Assert.assertEquals("2 items per item", 2, sr1.getO().get(0).size());
+		Assert.assertEquals("Expected 1 workspace", 1, 
+				entityManager.findAll(Workspace.class).size());
 		
 		ServiceResult<AEntity> sr2 = apiClient.getEntity("Fact", 
 				String.valueOf(sr1.getO().get(0).get(0)));
