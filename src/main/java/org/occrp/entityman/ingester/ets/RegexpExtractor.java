@@ -75,7 +75,8 @@ public class RegexpExtractor extends AExtractor {
 				
 				Fact fact = new Fact();
 //				fact.setEntity(entityName);
-				fact.setFileId(file.getId());
+//				fact.setFileId(file.getId());
+				fact.getFileIds().add(file.getId());
 				fact.setPosition(m.start());
 				fact.setWorkspace(file.getWorkspace());
 				fact.getData().put(Fact.KEY_EXCERPT, 

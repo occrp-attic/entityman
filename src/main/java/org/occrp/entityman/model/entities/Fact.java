@@ -20,8 +20,8 @@ public class Fact extends AEntity {
 	@Indexed
 	private BigInteger entityId;
 	
-	@Indexed
-	private BigInteger fileId;
+//	@Indexed
+//	private BigInteger fileId;
 	
 	private long position = -1;
 	
@@ -43,13 +43,13 @@ public class Fact extends AEntity {
 		this.entityId = entityId;
 	}
 
-	public BigInteger getFileId() {
-		return fileId;
-	}
-
-	public void setFileId(BigInteger fileId) {
-		this.fileId = fileId;
-	}
+//	public BigInteger getFileId() {
+//		return fileId;
+//	}
+//
+//	public void setFileId(BigInteger fileId) {
+//		this.fileId = fileId;
+//	}
 
 	public long getPosition() {
 		return position;

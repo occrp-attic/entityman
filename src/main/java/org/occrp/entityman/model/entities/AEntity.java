@@ -30,9 +30,13 @@ public abstract class AEntity extends AMongoObject{
 	
 	@Indexed
 	private String workspace;
+
+	@Transient
+	private String label;
 	
-	@JsonIgnore
 	public abstract String getLabel();
+	public void setLabel(){
+	}
 
 	@JsonIgnore
 	public abstract void updateKey();

@@ -86,7 +86,8 @@ public class StanfordExtractor extends AExtractor {
 		    		ae.setWorkspace(file.getWorkspace());
 		    		
 		    		Fact fact = new Fact();
-		    		fact.setFileId(file.getId());
+		    		fact.getFileIds().add(file.getId());
+//		    		fact.setFileId(file.getId());
 		    		fact.setWorkspace(file.getWorkspace());
 					fact.setPosition(entity.second);
 					fact.getData().put(Fact.KEY_EXCERPT, 

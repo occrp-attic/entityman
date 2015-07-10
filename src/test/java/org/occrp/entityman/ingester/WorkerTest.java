@@ -289,4 +289,46 @@ public class WorkerTest {
 				String.valueOf(sr2.getO().getId()));
 	}
 
+	@Test
+	public void test006GetEntitiesByFileId() throws Exception {
+		entityManager.dropAll();
+		Assert.assertEquals("Clean db", 0, 
+				entityManager.findAllEntities(PhoneNumber.class, "default").size());
+		
+		File f = new File("src/test/resources/input0.txt");
+
+		List<Attachment> atts = new LinkedList<Attachment>();
+        atts.add(new Attachment("test.txt", "application/octet-stream",
+        		new FileInputStream(f)));
+	      
+        ServiceResult<List<AEntity>> sr = apiClient.
+        		ingestSync(new MultipartBody(atts, true), null, "default");
+		
+		Assert.assertEquals("Total entities", 7, sr.getO().size());
+		
+		System.out.println(sr);
+		
+		Assert.assertEquals("Expected 2 phones", 2, 
+				entityManager.findAllEntities(PhoneNumber.class, "default").size());
+		Assert.assertEquals("Expected 3 persons", 3, 
+				entityManager.findAllEntities(Person.class, "default").size());
+		Assert.assertEquals("Expected 6 facts", 6, 
+				entityManager.findAllEntities(Fact.class, "default").size());
+		Assert.assertEquals("Expected 1 workspace", 1, 
+				entityManager.findAll(Workspace.class).size());
+		
+		String fileId = ((IngestedFile)sr.getO().get(6)).getId().toString();
+		
+		ServiceResult<List<AEntity>> sr1 = apiClient.getEntitiesByFileId("Fact", fileId);
+		
+		System.out.println(sr1);
+		
+		Assert.assertEquals("Expected 2 phones", 2, 
+				apiClient.getEntitiesByFileId("PhoneNumber", fileId).getO().size());
+		Assert.assertEquals("Expected 3 persons", 3, 
+				apiClient.getEntitiesByFileId("Person", fileId).getO().size());
+		Assert.assertEquals("Expected 6 facts", 6, 
+				apiClient.getEntitiesByFileId("Fact", fileId).getO().size());
+	}
+
 }

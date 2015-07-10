@@ -266,5 +266,21 @@ public class EntityServiceImpl implements EntityService {
 		return response.build();		
 	}
 
+	@Override
+	public ServiceResult<List<AEntity>> getEntitiesByFileId(String entityName, String fileId) {
+		ServiceResult<List<AEntity>> sr = new ServiceResult<>();
+		
+		Class<AEntity> clazz = entityManager.getEntityClass(entityName);
+		
+		if (clazz==null) {
+			sr.setC(ServiceResult.CODE_ERROR);
+			sr.setM("Entity Type not found");
+		} else {
+			List<AEntity> aes = entityManager.findAllEntitiesByFileId(clazz, new BigInteger(fileId));
+			sr.setO(aes);
+		}
+		
+		return sr;
+	}
 	
 }

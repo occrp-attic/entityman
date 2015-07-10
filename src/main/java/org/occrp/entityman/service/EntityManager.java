@@ -218,6 +218,12 @@ public class EntityManager {
 
 	}
 
+	public <T> List<T> findAllEntitiesByFileId(Class<T> clazz, BigInteger fileId) {
+		return mongoOperations.find(
+				Query.query(Criteria.where("fileIds").is(fileId)),clazz);
+
+	}
+
 	public <T> List<T> findAll(Class<T> clazz) {
 		return mongoOperations.findAll(clazz);
 	}
