@@ -26,7 +26,7 @@
     <mvn.spring.data.version>1.7.1.RELEASE</mvn.spring.data.version>
     <mvn.spring.boot.version></mvn.spring.boot.version>
 
-    <mvn.cxf.version>2.7.16</mvn.cxf.version>
+    <mvn.cxf.version>3.1.1</mvn.cxf.version>
         
     <mvn.jackson.version>1.9.13</mvn.jackson.version>
 
@@ -126,6 +126,16 @@
       <version>${mvn.cxf.version}</version>
     </dependency>
 
+<dependency>
+    <groupId>org.apache.cxf</groupId>
+    <artifactId>cxf-rt-rs-service-description</artifactId>
+      <version>${mvn.cxf.version}</version>
+</dependency>
+<dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-rs-client</artifactId>
+      <version>${mvn.cxf.version}</version>
+</dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-transports-http-jetty</artifactId>
@@ -233,6 +243,18 @@
   <version>1.9</version>
 </dependency>
 
+<!-- Stanford NER -->
+<dependency>
+    <groupId>edu.stanford.nlp</groupId>
+    <artifactId>stanford-corenlp</artifactId>
+    <version>3.5.2</version>
+</dependency>
+<dependency>
+    <groupId>edu.stanford.nlp</groupId>
+    <artifactId>stanford-corenlp</artifactId>
+    <version>3.5.2</version>
+    <classifier>models</classifier>
+</dependency>
 
   </dependencies>
 
@@ -244,8 +266,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>2.5.1</version>
         <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
+          <source>1.8</source>
+          <target>1.8</target>
           <encoding>${mvn.project.build.sourceEncoding}</encoding>
         </configuration>
       </plugin>

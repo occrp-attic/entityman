@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
-  xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+  xmlns:jaxrs-client="http://cxf.apache.org/jaxrs-client"
+  xmlns:jaxws="http://cxf.apache.org/jaxws" 
+  xmlns:util="http://www.springframework.org/schema/util"
   xmlns:mongo="http://www.springframework.org/schema/data/mongo"
   xmlns:context="http://www.springframework.org/schema/context"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
@@ -9,13 +12,14 @@
 		http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.3.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd 
 		http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+        http://cxf.apache.org/jaxrs-client http://cxf.apache.org/schemas/jaxrs-client.xsd
 		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
   <!-- We still need it for loading the CXFServlet -->
   <import resource="classpath:META-INF/cxf/cxf.xml" />
 
   <context:property-placeholder
-    location="file:///etc/softicon/entityman/entityman.properties" />
+    location="file:///etc/entityman/entityman.properties" />
   <context:annotation-config />
 
   <bean
@@ -27,12 +31,15 @@
 
   <bean id="entityServiceImpl" class="org.occrp.entityman.ws.EntityServiceImpl" />
 
+ <bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" >
+ </bean>
+
   <jaxrs:server id="services" address="/">
     <jaxrs:serviceBeans>
       <ref bean="entityServiceImpl" />
     </jaxrs:serviceBeans>
     <jaxrs:providers>
-      <bean class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+      <ref bean="jsonProvider" />
     </jaxrs:providers>
     <jaxrs:inInterceptors>
       <ref bean="wsLoggingInInterceptor" />
@@ -42,9 +49,22 @@
     </jaxrs:outInterceptors>
   </jaxrs:server>
 
+  <jaxrs-client:client id="apiClient" address="http://127.0.0.1:8080/entities"
+    serviceClass="org.occrp.entityman.ws.EntityService"
+    inheritHeaders="true">
+    <jaxrs-client:providers>
+      <ref bean="jsonProvider" />
+    </jaxrs-client:providers>
+    <jaxrs-client:inInterceptors>
+      <ref bean="wsLoggingInInterceptor" />
+    </jaxrs-client:inInterceptors>
+    <jaxrs-client:outInterceptors>
+      <ref bean="wsLoggingOutInterceptor" />
+    </jaxrs-client:outInterceptors>
+  </jaxrs-client:client>
+
   <bean id="wsLoggingInInterceptor" class="org.apache.cxf.interceptor.LoggingInInterceptor">
     <property name="limit" value="2048" />
-
   </bean>
 
   <bean id="wsLoggingOutInterceptor" class="org.apache.cxf.interceptor.LoggingOutInterceptor">
@@ -60,6 +80,13 @@
     <ref bean="expanderTika"/>
   </util:list>
 
+  <bean id="extractorEmails" class="org.occrp.entityman.ingester.ets.RegexpExtractor" >
+    <property name="name" value="Email extractor" />
+    <property name="entityName" value="Email" />
+    <property name="entityKey" value="email" />
+    <property name="pattern" value="\s[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}\s" />
+  </bean>
+
   <bean id="extractorPhoneNumbers" class="org.occrp.entityman.ingester.ets.RegexpExtractor" >
     <property name="name" value="Phone number extractor" />
     <property name="entityName" value="PhoneNumber" />
@@ -67,8 +94,14 @@
     <property name="pattern" value="(0|)[1-9][0-9](\s|)[0-9]{6}" />
   </bean>
 
+  <bean id="extractorStanford" class="org.occrp.entityman.ingester.ets.StanfordExtractor" >
+    <property name="name" value="Stanford extractor" />
+  </bean>
+
   <util:list id="extractors" value-type="org.occrp.entityman.ingester.ets.Extractors">
     <ref bean="extractorPhoneNumbers"/>
+    <ref bean="extractorEmails"/>
+    <ref bean="extractorStanford"/>
   </util:list>
 
   <bean id="worker" class="org.occrp.entityman.ingester.Worker" >

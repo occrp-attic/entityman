@@ -3,12 +3,20 @@ todo :
 + maven app 
 + spring
 + rest
-- apache tika / stanball
-- regexp handlers
-- Standford named entity recogniser
++ apache tika expander to plain text 
+- stanbol extractor
++ regexp extractor for phone numbers
++ regexp extractor for emails
+- regexp extractor for ip addresses
+- regexp extractor for terains
+- regexp extractor for company idno
+- extractor for terains from cadastru
++ Standford named entity recogniser extractor (java 8)
 - workspaces
 - users
 + mongo / spring data
++ FIX : aop model before save
+- ENHANCE : multithreading
 - 
 - ingester :
   - scan folder for files : put in queue
@@ -20,9 +28,9 @@ mongo objects :
 - amongoobject
 - file
 - enities :
-  - persons
-  - companies
-  - phone numbers
+  + persons
+  + companies
+  + phone numbers
   - other special numbers
   - bank accounts
 

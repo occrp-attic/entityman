@@ -3,3 +3,5 @@ acest fisier contine 3 numere de telefon
 022334456
 din care 2 coincid
 022334455
+3 persoane John Doe, Bob Marley, Vasilika Gheorghe
+si o companie SRL Bombonica

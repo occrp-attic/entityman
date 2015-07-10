@@ -19,5 +19,15 @@ public abstract class AExtractor implements Extractor {
  
 	Map<String,Class<AEntity>> entityMap = null;
 	
+	private int excerptRadius = 50;
+	
+	public String findExcerpt(String s, int start, int end) {
+		start = start - excerptRadius;
+		end = end + excerptRadius;
+		
+		return s.substring(start < 0 ? 0 : start, 
+				end > s.length() ? s.length() : end);
+	}
 	
 }
+

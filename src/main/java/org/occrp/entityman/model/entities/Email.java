@@ -3,25 +3,25 @@ package org.occrp.entityman.model.entities;
 import org.occrp.entityman.model.annotation.Entity;
 
 @Entity
-public class PhoneNumber extends AEntity {
+public class Email extends AEntity {
 	
-	private String phoneNumber;
+	private String email;
 
 	@Override
 	public void updateKey() {
-		setKey(phoneNumber.toLowerCase());
+		setKey(email);
 	}
 
 	public String getPhoneNumber() {
-		return phoneNumber;
+		return email;
 	}
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	public void setPhoneNumber(String email) {
+		this.email = email;
 	}
 	
 	@Override
 	public String getLabel() {
-		return phoneNumber;
+		return email;
 	}
 }

@@ -1,6 +1,8 @@
 package org.occrp.entityman.service;
 
 import java.lang.reflect.Field;
+import java.math.BigInteger;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -91,7 +93,20 @@ public class EntityManager {
 		ReflectionUtils.makeAccessible(f);
 		return f.get(ae);
 	}
-	
+
+	public List<AEntity> merge(List<AEntity> aes) {
+		List<AEntity> res = new LinkedList<AEntity>();
+		for (AEntity ae : aes) {
+			res.add(merge(ae));
+		}
+		return res;
+	}
+
+	public <T> T findEntityById(Class<T> clazz, BigInteger id) {
+		return mongoOperations.findOne(
+				Query.query(Criteria.where("id").is(id)), clazz);
+	}
+		
 	/**
 	 * Merges the entity into the collection
 	 *  
@@ -113,7 +128,16 @@ public class EntityManager {
 		// 3. update/store old entity
 		mongoOperations.save(ae);
 		
-		// 4. return old entity
+		// 4. Store the fact data
+		Fact fact = ae.getFact();
+		if (fact!=null) {
+			fact.setEntityId(ae.getId());
+			fact.setEntity(ae.getClass().getSimpleName().toLowerCase());
+
+			factRepository.save(fact);
+		}
+		
+		// 5. return old entity
 		return ae;
 	}
 	
@@ -121,6 +145,7 @@ public class EntityManager {
 		if (aeOld == null) return aeNew;
 
 		aeOld.getFileIds().addAll(aeNew.getFileIds());
+		aeOld.setFact(aeNew.getFact());
 		
 		// TODO field by field merging
 //		ReflectionUtils.doWithFields(aeOld.getClass(), new FieldCallback() {

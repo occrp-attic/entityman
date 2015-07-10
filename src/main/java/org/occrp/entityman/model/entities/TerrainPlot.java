@@ -19,5 +19,9 @@ public class TerrainPlot extends AEntity {
 	public void setPlotNumber(String plotNumber) {
 		this.plotNumber = plotNumber;
 	}
-	
+
+	@Override
+	public String getLabel() {
+		return plotNumber;
+	}
 }

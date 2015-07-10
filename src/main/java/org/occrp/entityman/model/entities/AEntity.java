@@ -6,6 +6,7 @@ import java.util.Set;
 
 
 import org.occrp.entityman.model.AMongoObject;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -20,6 +21,11 @@ public abstract class AEntity extends AMongoObject{
 	@Indexed
 	private String key;
 	
+	@Transient
+	private Fact fact;
+	
+	public abstract String getLabel();
+
 	public abstract void updateKey();
 
 	public String getKey() {
@@ -43,6 +49,14 @@ public abstract class AEntity extends AMongoObject{
 	}
 	public void setFileIds(Set<BigInteger> fileIds) {
 		this.fileIds = fileIds;
+	}
+
+	public Fact getFact() {
+		return fact;
+	}
+
+	public void setFact(Fact fact) {
+		this.fact = fact;
 	}
 
 }

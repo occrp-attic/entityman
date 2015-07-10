@@ -18,7 +18,7 @@ public class Company extends AEntity {
 
 	@Override
 	public void updateKey() {
-		setKey(name+idno);
+		setKey((name+" "+idno).toLowerCase());
 	}
 
 	public String getName() {
@@ -44,5 +44,9 @@ public class Company extends AEntity {
 	public void setIdno(String idno) {
 		this.idno = idno;
 	}
-	
+
+	@Override
+	public String getLabel() {
+		return name;
+	}
 }

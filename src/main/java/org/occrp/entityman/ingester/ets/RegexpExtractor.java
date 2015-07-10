@@ -33,12 +33,8 @@ public class RegexpExtractor extends AExtractor {
 	private String entityName;
 	private String entityKey;
 	
-	
 	@Autowired
 	EntityManager entityManager;
-	
-	@Autowired
-	FactRepository factRepository;
 	
 	protected Logger log = LogManager.getLogger(getClass().getName());
 
@@ -76,18 +72,14 @@ public class RegexpExtractor extends AExtractor {
 				ae.getFileIds().add(file.getId());
 				ae.setExtractor(getName());
 				
-				// TODO more fields
-				entityManager.merge(ae);
-				
 				Fact fact = new Fact();
+//				fact.setEntity(entityName);
 				fact.setFileId(file.getId());
-				fact.setEntity(entityName);
-				fact.setEntityId(ae.getId());
 				fact.setPosition(m.start());
 				fact.getData().put(Fact.KEY_EXCERPT, 
 						findExcerpt(s, m.start(), m.end()));
 				
-				factRepository.save(fact);
+				ae.setFact(fact);
 				
 				res.add(ae);
 			} catch (Exception e) {
@@ -97,16 +89,6 @@ public class RegexpExtractor extends AExtractor {
 		return res;
 	}
 	
-	private int excerptRadius = 50;
-	
-	public String findExcerpt(String s, int start, int end) {
-		start = start - excerptRadius;
-		end = end + excerptRadius;
-		
-		return s.substring(start < 0 ? 0 : start, 
-				end > s.length() ? s.length() : end);
-	}
-
 	public String getPattern() {
 		return pattern;
 	}
