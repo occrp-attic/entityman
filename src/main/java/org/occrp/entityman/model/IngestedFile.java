@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.occrp.entityman.model.annotation.Entity;
 import org.occrp.entityman.model.entities.AEntity;
 import org.springframework.data.annotation.Transient;
@@ -35,6 +36,7 @@ public class IngestedFile extends AEntity {
 	
 	private Map<String,?> entities = new HashMap<String, Object>();
 	
+	@JsonIgnore
 	private Map<String,Object> expandedData = new HashMap<String, Object>();
 
 	@Indexed

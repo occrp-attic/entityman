@@ -3,7 +3,10 @@ package org.occrp.entityman.ws;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.net.URI;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,6 +24,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
@@ -42,6 +46,8 @@ import org.occrp.entityman.service.EntityManager;
 import org.reflections.Reflections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+
+import com.sun.jndi.toolkit.url.Uri;
 
 @WebService
 @Path("/entities/")
@@ -266,11 +272,19 @@ public class EntityServiceImpl implements EntityService {
 		
 		if (fi!=null) {
 			File file = new File(fi.getFileUri());
-			response = Response.ok((Object) file)
+			
+			String fileName = fi.getOriginalFilename();
+			try {
+				fileName = URLEncoder.encode(fi.getOriginalFilename(),"UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				log.error(e);
+			} 
+			response = Response.ok((Object) file).encoding("UTF-8")
 				.header("Content-Disposition",
-					"attachment; filename="+fi.getOriginalFilename())
+					"attachment; filename="+ fileName)
 				.type(MediaType.APPLICATION_OCTET_STREAM);
 		}
+		
 		return response.build();		
 	}
 
@@ -323,7 +337,8 @@ public class EntityServiceImpl implements EntityService {
 			String entityId) {
 		ServiceResult<List<Fact>> sr = new ServiceResult<>();
 		
-		sr.setO(factRepository.findByEntity(entityType.toLowerCase(), new BigInteger(entityId)));
+		sr.setO(factRepository.findByEntity(entityType.toLowerCase(), 
+				new BigInteger(entityId)));
 		
 		return sr;
 	}
