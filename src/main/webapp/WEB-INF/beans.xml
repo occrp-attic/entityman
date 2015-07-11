@@ -109,7 +109,7 @@
     <property name="entityKey" value="phoneNumber" />
     <property name="patterns">
       <list>
-        <value>(0|)[1-9][0-9](\s|)[0-9]{6}</value>
+        <value>\b(0|)[1-9][0-9](\s|)[0-9]{6}\b</value>
         <value>^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$</value>
       </list>
      </property>
@@ -117,11 +117,22 @@
 
   <bean id="extractorPlotNumbers" class="org.occrp.entityman.ingester.ets.RegexpExtractor" >
     <property name="name" value="PlotNumber extractor" />
-    <property name="entityName" value="plotNumber" />
+    <property name="entityName" value="TerrainPlot" />
     <property name="entityKey" value="plotNumber" />
     <property name="patterns">
       <list>
-        <value>(\s|^)\d{7}\.\d{1,4}(\s|$)</value>
+        <value>(\s|^)\d{7}\.\d{3,4}(\s|$)</value>
+      </list>
+     </property>
+  </bean>
+
+  <bean id="extractorPersonIdno" class="org.occrp.entityman.ingester.ets.RegexpExtractor" >
+    <property name="name" value="PersonIdno extractor" />
+    <property name="entityName" value="PersonIdno" />
+    <property name="entityKey" value="idno" />
+    <property name="patterns">
+      <list>
+        <value>\b\d{13,14}\b</value>
       </list>
      </property>
   </bean>
@@ -134,6 +145,7 @@
     <ref bean="extractorPhoneNumbers"/>
     <ref bean="extractorEmails"/>
     <ref bean="extractorPlotNumbers"/>
+    <ref bean="extractorPersonIdno"/>
     <ref bean="extractorStanford"/>
   </util:list>
 

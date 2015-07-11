@@ -71,8 +71,10 @@ public class Worker {
 		}
 
 		res = entityManager.merge(res);
+		
+		ingestedFileRepository.save(file);
 
-		// and after completing the worker will move the file to complete/error folder
+		// TODO and after completing the worker will move the file to complete/error folder
 		
 		return res;
 	}

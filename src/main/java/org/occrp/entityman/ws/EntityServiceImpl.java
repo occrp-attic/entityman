@@ -28,6 +28,7 @@ import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.apache.cxf.jaxrs.model.wadl.Description;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.occrp.entityman.dao.FactRepository;
 import org.occrp.entityman.dao.WorkspaceRepository;
 import org.occrp.entityman.ingester.Worker;
 import org.occrp.entityman.model.AMongoObject;
@@ -53,6 +54,9 @@ public class EntityServiceImpl implements EntityService {
 	
 	@Autowired
 	private WorkspaceRepository workspaceRepository;
+	
+	@Autowired
+	private FactRepository factRepository;
 	
 	Set<String> entitySet = null;
 	
@@ -313,6 +317,15 @@ public class EntityServiceImpl implements EntityService {
 		
 		return sr;
 	}
-	
+
+	@Override
+	public ServiceResult<List<Fact>> getFactsForEntity(String entityType, 
+			String entityId) {
+		ServiceResult<List<Fact>> sr = new ServiceResult<>();
+		
+		sr.setO(factRepository.findByEntity(entityType.toLowerCase(), new BigInteger(entityId)));
+		
+		return sr;
+	}
 	
 }

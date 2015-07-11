@@ -22,6 +22,7 @@ import org.apache.cxf.jaxrs.model.wadl.Description;
 import org.occrp.entityman.model.AMongoObject;
 import org.occrp.entityman.model.ServiceResult;
 import org.occrp.entityman.model.entities.AEntity;
+import org.occrp.entityman.model.entities.Fact;
 
 @WebService
 @Description("Entity accessing services")
@@ -118,4 +119,15 @@ public interface EntityService extends ARestService{
 	public Response getFile(
 			@Description("Id of the file") @PathParam("id") 
 			String fileId);
+	
+	@GET
+	@Path("/getFacts/{entityType}/{id}")
+	@Produces(defaultMimeType)
+	@Description("Retrieve the facts by entity")
+	public ServiceResult<List<Fact>> getFactsForEntity(
+			@Description("Entity Type") @PathParam("entityType") 
+			String entityType,
+			@Description("Id of the entity") @PathParam("id") 
+			String entityId);
+	
 }

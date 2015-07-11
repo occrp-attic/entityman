@@ -380,4 +380,30 @@ public class WorkerTest {
 				sr1.getO().get("Fact").size());
 	}
 
+	@Test
+	public void test008GetFactsForEntity() throws Exception {
+		entityManager.dropAll();
+		Assert.assertEquals("Clean db", 0, 
+				entityManager.findAllEntities(PhoneNumber.class, "default").size());
+		
+		File f = new File("src/test/resources/input0.txt");
+
+		List<Attachment> atts = new LinkedList<Attachment>();
+        atts.add(new Attachment("input0.txt", "application/octet-stream",
+        		new FileInputStream(f)));
+	      
+        ServiceResult<List<AEntity>> sr = apiClient.
+        		ingestSync(new MultipartBody(atts, true), null, "default");
+		
+		Assert.assertEquals("Total entities", 7, sr.getO().size());
+		
+		ServiceResult<List<Fact>> sr1 = apiClient.getFactsForEntity(sr.getO().get(0).getClass().getSimpleName(), 
+				sr.getO().get(0).getId().toString());
+		
+		System.out.println(sr1);
+		
+		Assert.assertEquals("2 facts for this", 2, sr1.getO().size());
+		
+	}
+
 }
