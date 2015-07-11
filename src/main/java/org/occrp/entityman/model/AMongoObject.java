@@ -101,5 +101,4 @@ public abstract class AMongoObject extends AObject {
 		this.longId = longId;
 	}
 
-	
 }

@@ -334,6 +334,7 @@ public class WorkerTest {
 				apiClient.getEntitiesByFileId("Fact", fileId).getO().size());
 	}
 
+	//FIXME
 	@Test
 	@Ignore
 	public void test007GetAllEntitiesByFileId() throws Exception {

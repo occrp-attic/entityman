@@ -43,14 +43,6 @@ public class Fact extends AEntity {
 		this.entityId = entityId;
 	}
 
-//	public BigInteger getFileId() {
-//		return fileId;
-//	}
-//
-//	public void setFileId(BigInteger fileId) {
-//		this.fileId = fileId;
-//	}
-
 	public long getPosition() {
 		return position;
 	}

@@ -9,17 +9,17 @@ public class Email extends AEntity {
 
 	@Override
 	public void updateKey() {
-		setKey(email);
+		setKey(email.trim().toLowerCase());
 	}
 
-	public String getPhoneNumber() {
+	public String getEmail() {
 		return email;
 	}
 
-	public void setPhoneNumber(String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	@Override
 	public String getLabel() {
 		return email;

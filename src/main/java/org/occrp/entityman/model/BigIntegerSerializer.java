@@ -3,10 +3,12 @@ package org.occrp.entityman.model;
 import java.io.IOException;
 import java.math.BigInteger;
 
+import org.codehaus.jackson.JsonGenerator.Feature;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectMapper.DefaultTyping;
 import org.codehaus.jackson.map.SerializerProvider;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.codehaus.jackson.map.ser.CustomSerializerFactory;

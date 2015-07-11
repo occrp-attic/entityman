@@ -1,10 +1,12 @@
 package org.occrp.entityman.model.entities;
 
 import org.occrp.entityman.model.annotation.Entity;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 @Entity
 public class PhoneNumber extends AEntity {
 	
+	@Indexed
 	private String phoneNumber;
 
 	@Override

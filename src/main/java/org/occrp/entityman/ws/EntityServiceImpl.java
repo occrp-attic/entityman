@@ -41,12 +41,16 @@ import org.occrp.entityman.model.ServiceResult;
 import org.occrp.entityman.model.Workspace;
 import org.occrp.entityman.model.annotation.Entity;
 import org.occrp.entityman.model.entities.AEntity;
+import org.occrp.entityman.model.entities.Email;
 import org.occrp.entityman.model.entities.Fact;
+import org.occrp.entityman.model.entities.Person;
+import org.occrp.entityman.model.entities.PhoneNumber;
 import org.occrp.entityman.service.EntityManager;
 import org.reflections.Reflections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.google.protobuf.DescriptorProtos.SourceCodeInfo.Location;
 import com.sun.jndi.toolkit.url.Uri;
 
 @WebService
@@ -318,6 +322,10 @@ public class EntityServiceImpl implements EntityService {
 		Set<Class> entityClasses = new HashSet<Class>();
 		entityClasses.addAll(entityManager.getEntityMap().values());
 		entityClasses.add(Fact.class);
+//		entityClasses.add(Person.class);
+//		entityClasses.add(PhoneNumber.class);
+//		entityClasses.add(Location.class);
+//		entityClasses.add(Email.class);
 		entityClasses.add(IngestedFile.class);
 		
 		BigInteger id = new BigInteger(fileId);

@@ -35,7 +35,7 @@ public abstract class AEntity extends AMongoObject{
 	private String label;
 	
 	public abstract String getLabel();
-	public void setLabel(){
+	public void setLabel(String label){
 	}
 
 	@JsonIgnore
