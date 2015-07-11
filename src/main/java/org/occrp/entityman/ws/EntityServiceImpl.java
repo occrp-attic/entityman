@@ -286,5 +286,33 @@ public class EntityServiceImpl implements EntityService {
 		
 		return sr;
 	}
+
+	@Override
+	public ServiceResult<Map<String,List<AEntity>>> getEntitiesByFileId(String fileId) {
+		ServiceResult<Map<String, List<AEntity>>> sr = new ServiceResult<>();
+		
+		Map<String,List<AEntity>> map = new HashMap<>();
+		
+//		Workspace w = workspaceRepository.findBy(name);
+//		
+//		if (w!=null) map.put("workspace", w);
+
+		Set<Class> entityClasses = new HashSet<Class>();
+		entityClasses.addAll(entityManager.getEntityMap().values());
+		entityClasses.add(Fact.class);
+		entityClasses.add(IngestedFile.class);
+		
+		BigInteger id = new BigInteger(fileId);
+		
+		for (Class c : entityClasses) {
+			List<AEntity> aes = entityManager.findAllEntitiesByFileId(c, id);
+			map.put(c.getSimpleName(), aes);
+		}
+		
+		sr.setO(map);
+		
+		return sr;
+	}
+	
 	
 }

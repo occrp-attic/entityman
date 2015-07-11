@@ -83,6 +83,15 @@ public interface EntityService extends ARestService{
 			@Description("File id") @PathParam("fileId")
 			String fileId);	
 
+	@GET
+	@Path("/AllByFileId/{fileId}")
+	@Produces(defaultMimeType)
+	@Consumes(defaultMimeType)
+	@Description("Returns entities by file id")
+	public ServiceResult<Map<String,List<AEntity>>> getEntitiesByFileId(
+			@Description("File id") @PathParam("fileId")
+			String fileId);	
+
 	@POST
 	@Path("/ingest/{workspace}")
 	@Produces(defaultMimeType)

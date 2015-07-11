@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.core.Response;
 
@@ -331,6 +332,52 @@ public class WorkerTest {
 				apiClient.getEntitiesByFileId("Person", fileId).getO().size());
 		Assert.assertEquals("Expected 6 facts", 6, 
 				apiClient.getEntitiesByFileId("Fact", fileId).getO().size());
+	}
+
+	@Test
+	@Ignore
+	public void test007GetAllEntitiesByFileId() throws Exception {
+		entityManager.dropAll();
+		Assert.assertEquals("Clean db", 0, 
+				entityManager.findAllEntities(PhoneNumber.class, "default").size());
+		
+		File f = new File("src/test/resources/input0.txt");
+
+		List<Attachment> atts = new LinkedList<Attachment>();
+        atts.add(new Attachment("input0.txt", "application/octet-stream",
+        		new FileInputStream(f)));
+	      
+        ServiceResult<List<AEntity>> sr = apiClient.
+        		ingestSync(new MultipartBody(atts, true), null, "default");
+		
+		Assert.assertEquals("Total entities", 7, sr.getO().size());
+		
+		System.out.println(sr);
+		
+		Assert.assertEquals("Expected 2 phones", 2, 
+				entityManager.findAllEntities(PhoneNumber.class, "default").size());
+		Assert.assertEquals("Expected 3 persons", 3, 
+				entityManager.findAllEntities(Person.class, "default").size());
+		Assert.assertEquals("Expected 6 facts", 6, 
+				entityManager.findAllEntities(Fact.class, "default").size());
+		Assert.assertEquals("Expected 1 workspace", 1, 
+				entityManager.findAll(Workspace.class).size());
+		
+		String fileId = ((IngestedFile)sr.getO().get(6)).getId().toString();
+		Assert.assertEquals("Filename is good", "input0.txt", 
+				((IngestedFile)sr.getO().get(6)).getOriginalFilename());
+		
+		ServiceResult<Map<String,List<AEntity>>> sr1 = 
+				apiClient.getEntitiesByFileId(fileId);
+		
+		System.out.println(sr1);
+		
+		Assert.assertEquals("Expected 2 phones", 2, 
+				sr1.getO().get("PhoneNumber").size());
+		Assert.assertEquals("Expected 3 persons", 3, 
+				sr1.getO().get("Person").size());
+		Assert.assertEquals("Expected 6 facts", 6, 
+				sr1.getO().get("Fact").size());
 	}
 
 }
