@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>entityman</artifactId>
-  <groupId>org.occrp</groupId>
+  <groupId>org.occrp.entityman</groupId>
   <name>Entity manager</name>
   <description>Entity extraction and mapping</description>
   <version>0.0.1</version>
   <url>http://projects.spring.io/spring-boot/</url>
-  <packaging>war</packaging>
+  <packaging>pom</packaging>
 
   <organization>
     <name>OCCRP</name>
-    <url></url>
+    <url/>
   </organization>
-  
-  
   
     <properties>
     <mvn.entityman.version>0.0.1</mvn.entityman.version>
     <mvn.project.build.sourceEncoding>UTF-8</mvn.project.build.sourceEncoding>
 
     <mvn.spring.version>4.1.7.RELEASE</mvn.spring.version>
+    <mvn.spring-security.version>4.0.2.RELEASE</mvn.spring-security.version>
     <mvn.spring.data.version>1.7.1.RELEASE</mvn.spring.data.version>
-    <mvn.spring.boot.version></mvn.spring.boot.version>
+    <mvn.spring.boot.version/>
 
     <mvn.cxf.version>3.1.1</mvn.cxf.version>
         
@@ -36,10 +34,6 @@
     <!-- test related -->
     <mvn.junit.version>4.11</mvn.junit.version>
 
-    <!-- osgi related -->
-    <maven-bundle-plugin.version>2.4.0</maven-bundle-plugin.version>
-    <osgi.version>5.0.0</osgi.version>
-
   </properties>
 
   <dependencies>
@@ -50,45 +44,57 @@
 <!--   <version>1.9.2</version> -->
 <!-- </dependency> -->
 
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>3.0.1</version>
-      <scope>provided</scope>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>javax.servlet</groupId> -->
+<!--       <artifactId>javax.servlet-api</artifactId> -->
+<!--       <version>3.0.1</version> -->
+<!--       <scope>provided</scope> -->
+<!--     </dependency> -->
 
     <!-- Spring related -->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-webmvc</artifactId>
-      <version>${mvn.spring.version}</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.springframework</groupId> -->
+<!--       <artifactId>spring-webmvc</artifactId> -->
+<!--       <version>${mvn.spring.version}</version> -->
+<!--     </dependency> -->
 
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <version>${mvn.spring.version}</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.springframework</groupId> -->
+<!--       <artifactId>spring-context</artifactId> -->
+<!--       <version>${mvn.spring.version}</version> -->
+<!--     </dependency> -->
 
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
-      <version>${mvn.spring.version}</version>
-      <scope>test</scope>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.springframework</groupId> -->
+<!--       <artifactId>spring-test</artifactId> -->
+<!--       <version>${mvn.spring.version}</version> -->
+<!--       <scope>test</scope> -->
+<!--     </dependency> -->
 
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-aop</artifactId>
-      <version>${mvn.spring.version}</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.springframework</groupId> -->
+<!--       <artifactId>spring-aop</artifactId> -->
+<!--       <version>${mvn.spring.version}</version> -->
+<!--     </dependency> -->
 
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-aspects</artifactId>
-      <version>${mvn.spring.version}</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.springframework</groupId> -->
+<!--       <artifactId>spring-aspects</artifactId> -->
+<!--       <version>${mvn.spring.version}</version> -->
+<!--     </dependency> -->
                         
+<!--     <dependency> -->
+<!--       <groupId>org.springframework.security</groupId> -->
+<!--       <artifactId>spring-security-web</artifactId> -->
+<!--       <version>${mvn.spring-security.version}</version> -->
+<!--     </dependency> -->
+
+<!--     <dependency> -->
+<!--         <groupId>org.springframework.security.oauth</groupId> -->
+<!--         <artifactId>spring-security-oauth2</artifactId> -->
+<!--         <version>2.0.7.RELEASE</version> -->
+<!--     </dependency> -->
+    
 <!--     <dependency> -->
 <!--       <groupId>org.springframework</groupId> -->
 <!--       <artifactId>spring-oxm</artifactId> -->
@@ -101,101 +107,102 @@
 <!--       <version>1.3.3</version> -->
 <!--     </dependency> -->
 
-    <dependency>
-      <groupId>org.apache.xbean</groupId>
-      <artifactId>xbean-spring</artifactId>
-      <version>3.7</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.apache.xbean</groupId> -->
+<!--       <artifactId>xbean-spring</artifactId> -->
+<!--       <version>3.7</version> -->
+<!--     </dependency> -->
 
     <!-- CXF -->
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-transports-http</artifactId>
-      <version>${mvn.cxf.version}</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.apache.cxf</groupId> -->
+<!--       <artifactId>cxf-rt-transports-http</artifactId> -->
+<!--       <version>${mvn.cxf.version}</version> -->
+<!--     </dependency> -->
 
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-      <version>${mvn.cxf.version}</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.apache.cxf</groupId> -->
+<!--       <artifactId>cxf-rt-frontend-jaxrs</artifactId> -->
+<!--       <version>${mvn.cxf.version}</version> -->
+<!--     </dependency> -->
 
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-rs-extension-providers</artifactId>
-      <version>${mvn.cxf.version}</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.apache.cxf</groupId> -->
+<!--       <artifactId>cxf-rt-rs-extension-providers</artifactId> -->
+<!--       <version>${mvn.cxf.version}</version> -->
+<!--     </dependency> -->
 
-<dependency>
-    <groupId>org.apache.cxf</groupId>
-    <artifactId>cxf-rt-rs-service-description</artifactId>
-      <version>${mvn.cxf.version}</version>
-</dependency>
-<dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-rt-rs-client</artifactId>
-      <version>${mvn.cxf.version}</version>
-</dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-transports-http-jetty</artifactId>
-      <version>${mvn.cxf.version}</version>
-      <scope>test</scope>
-    </dependency>
+<!-- <dependency> -->
+<!--     <groupId>org.apache.cxf</groupId> -->
+<!--     <artifactId>cxf-rt-rs-service-description</artifactId> -->
+<!--       <version>${mvn.cxf.version}</version> -->
+<!-- </dependency> -->
+
+<!-- <dependency> -->
+<!--         <groupId>org.apache.cxf</groupId> -->
+<!--         <artifactId>cxf-rt-rs-client</artifactId> -->
+<!--       <version>${mvn.cxf.version}</version> -->
+<!-- </dependency> -->
+<!--     <dependency> -->
+<!--       <groupId>org.apache.cxf</groupId> -->
+<!--       <artifactId>cxf-rt-transports-http-jetty</artifactId> -->
+<!--       <version>${mvn.cxf.version}</version> -->
+<!--       <scope>test</scope> -->
+<!--     </dependency> -->
 
     <!-- json jackson related -->
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-mapper-asl</artifactId>
-      <version>${mvn.jackson.version}</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.codehaus.jackson</groupId> -->
+<!--       <artifactId>jackson-mapper-asl</artifactId> -->
+<!--       <version>${mvn.jackson.version}</version> -->
+<!--     </dependency> -->
 
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-jaxrs</artifactId>
-      <version>${mvn.jackson.version}</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.codehaus.jackson</groupId> -->
+<!--       <artifactId>jackson-jaxrs</artifactId> -->
+<!--       <version>${mvn.jackson.version}</version> -->
+<!--     </dependency> -->
 
     <!-- commons -->
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.0</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.4</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.apache.commons</groupId> -->
+<!--       <artifactId>commons-lang3</artifactId> -->
+<!--       <version>3.0</version> -->
+<!--     </dependency> -->
+<!--     <dependency> -->
+<!--       <groupId>commons-io</groupId> -->
+<!--       <artifactId>commons-io</artifactId> -->
+<!--       <version>2.4</version> -->
+<!--     </dependency> -->
 
     <!-- Logging -->
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>${mvn.log4j2.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>${mvn.log4j2.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>${mvn.log4j2.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-jcl</artifactId>
-      <version>${mvn.log4j2.version}</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.apache.logging.log4j</groupId> -->
+<!--       <artifactId>log4j-api</artifactId> -->
+<!--       <version>${mvn.log4j2.version}</version> -->
+<!--     </dependency> -->
+<!--     <dependency> -->
+<!--       <groupId>org.apache.logging.log4j</groupId> -->
+<!--       <artifactId>log4j-core</artifactId> -->
+<!--       <version>${mvn.log4j2.version}</version> -->
+<!--     </dependency> -->
+<!--     <dependency> -->
+<!--       <groupId>org.apache.logging.log4j</groupId> -->
+<!--       <artifactId>log4j-slf4j-impl</artifactId> -->
+<!--       <version>${mvn.log4j2.version}</version> -->
+<!--     </dependency> -->
+<!--     <dependency> -->
+<!--       <groupId>org.apache.logging.log4j</groupId> -->
+<!--       <artifactId>log4j-jcl</artifactId> -->
+<!--       <version>${mvn.log4j2.version}</version> -->
+<!--     </dependency> -->
 
     <!-- commons -->
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.0</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.apache.commons</groupId> -->
+<!--       <artifactId>commons-lang3</artifactId> -->
+<!--       <version>3.0</version> -->
+<!--     </dependency> -->
 
     <!-- Test -->
     <dependency>
@@ -218,43 +225,43 @@
 <!--       <scope>test</scope> -->
 <!--     </dependency> -->
 
-    <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-mongodb</artifactId>
-      <version>${mvn.spring.data.version}</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.springframework.data</groupId> -->
+<!--       <artifactId>spring-data-mongodb</artifactId> -->
+<!--       <version>${mvn.spring.data.version}</version> -->
+<!--     </dependency> -->
 
-<dependency>
-  <groupId>org.reflections</groupId>
-  <artifactId>reflections</artifactId>
-  <version>0.9.10</version>
-</dependency>
+<!-- <dependency> -->
+<!--   <groupId>org.reflections</groupId> -->
+<!--   <artifactId>reflections</artifactId> -->
+<!--   <version>0.9.10</version> -->
+<!-- </dependency> -->
 
 <!-- TIKA -->
 
-<dependency>
-  <groupId>org.apache.tika</groupId>
-  <artifactId>tika-core</artifactId>
-  <version>1.9</version>
-</dependency>
-<dependency>
-  <groupId>org.apache.tika</groupId>
-  <artifactId>tika-parsers</artifactId>
-  <version>1.9</version>
-</dependency>
+<!-- <dependency> -->
+<!--   <groupId>org.apache.tika</groupId> -->
+<!--   <artifactId>tika-core</artifactId> -->
+<!--   <version>1.9</version> -->
+<!-- </dependency> -->
+<!-- <dependency> -->
+<!--   <groupId>org.apache.tika</groupId> -->
+<!--   <artifactId>tika-parsers</artifactId> -->
+<!--   <version>1.9</version> -->
+<!-- </dependency> -->
 
 <!-- Stanford NER -->
-<dependency>
-    <groupId>edu.stanford.nlp</groupId>
-    <artifactId>stanford-corenlp</artifactId>
-    <version>3.5.2</version>
-</dependency>
-<dependency>
-    <groupId>edu.stanford.nlp</groupId>
-    <artifactId>stanford-corenlp</artifactId>
-    <version>3.5.2</version>
-    <classifier>models</classifier>
-</dependency>
+<!-- <dependency> -->
+<!--     <groupId>edu.stanford.nlp</groupId> -->
+<!--     <artifactId>stanford-corenlp</artifactId> -->
+<!--     <version>3.5.2</version> -->
+<!-- </dependency> -->
+<!-- <dependency> -->
+<!--     <groupId>edu.stanford.nlp</groupId> -->
+<!--     <artifactId>stanford-corenlp</artifactId> -->
+<!--     <version>3.5.2</version> -->
+<!--     <classifier>models</classifier> -->
+<!-- </dependency> -->
 
   </dependencies>
 
@@ -264,7 +271,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.5.1</version>
+<!--         <version>2.5.1</version> -->
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
@@ -272,23 +279,22 @@
         </configuration>
       </plugin>
 
-      <plugin>
-        <groupId>org.mortbay.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-      </plugin>
+<!--       <plugin> -->
+<!--         <groupId>org.mortbay.jetty</groupId> -->
+<!--         <artifactId>jetty-maven-plugin</artifactId> -->
+<!--       </plugin> -->
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.18.1</version>
-        <configuration>
-          <systemPropertyVariables>
-<!--             <basePath>http://localhost:${test.server.port}/api</basePath> -->
-            <basePath>http://localhost:18080/</basePath>
-          </systemPropertyVariables>
-          <showSuccess>true</showSuccess>
-        </configuration>
-      </plugin>
+<!--       <plugin> -->
+<!--         <groupId>org.apache.maven.plugins</groupId> -->
+<!--         <artifactId>maven-surefire-plugin</artifactId> -->
+<!--         <version>2.18.1</version> -->
+<!--         <configuration> -->
+<!--           <systemPropertyVariables> -->
+<!--             <basePath>http://localhost:18080/</basePath> -->
+<!--           </systemPropertyVariables> -->
+<!--           <showSuccess>true</showSuccess> -->
+<!--         </configuration> -->
+<!--       </plugin> -->
 
 <!--       <plugin> -->
 <!--         <groupId>org.springframework.boot</groupId> -->
@@ -357,4 +363,11 @@
     </plugins>
   </reporting>
   
+  <modules>
+    <module>authserver</module>
+    <module>ui</module>
+    <module>resource</module>
+    <module>schema</module>
+    <module>glutton</module>
+  </modules>
 </project>

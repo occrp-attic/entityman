@@ -1,37 +1,89 @@
 todo : 
 
+BackEnd:
 + maven app 
 + spring
 + rest
-+ apache tika expander to plain text 
-- stanbol extractor
-+ regexp extractor for phone numbers
-+ regexp extractor for emails
-- regexp extractor for ip addresses
-- regexp extractor for terains
-- regexp extractor for company idno
-- extractor for terains from cadastru
-+ Standford named entity recogniser extractor (java 8)
-- workspaces
-- users
++ apache TIKA expander to plain text 
+-  integrate Stanbol extractor (standalone) using REST calls
++ regexp extractor :
+	+ for phone numbers
+	+ regexp extractor for emails
+	- regexp extractor for ip addresses
+	+ regexp extractor for terains numbers
+	- regexp extractor for company idno
+- extractor from courts data
+- extractor for terains from cadastru file
++ Stanford named entity recogniser extractor (java 8)
+- Stanford NER multiple languages
++ workspaces
+- users :
+	- sharing of data 
 + mongo / spring data
 + FIX : aop model before save
-- ENHANCE : multithreading
 - 
 - ingester :
-  - scan folder for files : put in queue
-  - workers take the file from queue
-  - the file is passed across the entenders and extractors chain
+	 - scan folder for files : put in queue
+	 - workers take the file from queue
+	- ENHANCE : multithreading
+ 	- the file is passed across the entenders and extractors chain
+ 	- file is moved to completed/erros folder
+- ws : ingest Async
+- status of ingestion : files completed/inprogess/error
+- simple text normalization (remove special character from text)
+- compare/find related entities with string distance algorithm
+
+
+OCR ing:
+- do OCR with java tesseract
+- develop an OCR extender 
+- image processing before running ocr
+	- modify contrast
+	- turn to grayscale
+	- apply Level / border filtering
+- running OCR on an image
+- select best OCR result from diferrent applied filters
+- OCR webservice
+
+
+Special extractors :
+- special black list/white list filters for entities, which have to run after extractors
+- extractor with binary tree search in dictionary with some logic
+	- to be used to detect names (wikipedia has First Name/Last  Name lists for different languages)
+- line based extractor for connections : if on the same line a person and a company is listed then there is a connection (useful for excel files which contains line based entries)
+- distance based extractor for connections : if a company is in proxymity of a person then a connection is created
+(useful for paragraph based parsing)
+
+
+Other special objects :
+-  Connection object : it should relate/conect 2 objects/entities with some kind of relation
+
 
 mongo objects :
-- aobject
-- amongoobject
-- file
++ aobject
++ amongoobject
++ ingested file
 - enities :
   + persons
   + companies
   + phone numbers
   - other special numbers
   - bank accounts
+  - special number
 
 
+UI features :
++ simple list of entities (with hit count)
++ browse entities by file
+- filter by entity type
+- filter by  other fields
+- paging/sorting
+- workspaces
+- unify call names to entities/all
+- visualize connection between selectable entity types
+- view files in browser
+
+
+Code features :
+- unit testing 
+- some documentation in wiki
