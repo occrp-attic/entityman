@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://schema.occrp.org/generic/legal_person.json#",
+  "title": "Legal Person",
+  "description": "An individual or company",
+  "type": "object",
+  "extends" : {"$ref": "any.json" },  
+  "oneOf": [
+    {"$ref": "https://schema.occrp.org/generic/any.json#"}
+  ],
+  "properties": {
+    "jurisdiction_code": {
+      "title": "Jurisdiction",
+      "type": "string",
+      "description": "Code representing the jurisdiction/company register which is the canonical record of the company’s existence. Uses underscored ISO 3166-2 to represent it, e.g. es for Spain, us_de for Delaware",
+      "format": "country-code",
+      "minLength": 2,
+      "maxLength": 5
+    },
+    "assets": {
+      "type": "array",
+      "rdfReverse": "owners",
+      "items": {
+        "$ref": "https://schema.occrp.org/generic/asset.json#"
+      }
+    },
+    "memberships": {
+      "title": "Memberships",
+      "type": "array",
+      "description": "The person's memberships",
+      "rdfReverse": "person",
+      "items": {
+        "$ref": "https://schema.occrp.org/generic/membership.json#"
+      }
+    }
+  }
+}

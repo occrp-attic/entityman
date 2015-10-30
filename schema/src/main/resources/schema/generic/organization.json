@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://schema.occrp.org/generic/organization.json#",
+  "title": "Organization",
+  "description": "A group with a common purpose or reason for existence that goes beyond the set of people belonging to it",
+  "type": "object",
+  "extends" : {"$ref": "legal_person.json" },  
+  "oneOf": [
+      {"$ref": "https://schema.occrp.org/generic/legal_person.json#"}
+  ],
+  "properties": {
+    "classification": {
+      "description": "An organization category, e.g. committee",
+      "type": ["string", "null"]
+    },
+    "area_id": {
+      "description": "The ID of the geographic area to which this organization is related",
+      "type": ["string", "null"]
+    },
+    "abstract": {
+      "description": "A one-line description of an organization",
+      "type": ["string", "null"]
+    },
+    "description": {
+      "description": "An extended description of an organization",
+      "type": ["string", "null"]
+    },
+    "founding_date": {
+      "description": "A date of founding",
+      "type": ["string", "null"],
+      "pattern": "^[0-9]{4}(-[0-9]{2}){0,2}$"
+    },
+    "dissolution_date": {
+      "description": "A date of dissolution",
+      "type": ["string", "null"],
+      "pattern": "^[0-9]{4}(-[0-9]{2}){0,2}$"
+    },
+    "image": {
+      "description": "A URL of an image",
+      "type": ["string", "null"],
+      "format": "uri"
+    },
+    "contact_details": {
+      "description": "Means of contacting the organization",
+      "type": "array",
+      "items": {
+        "$ref": "https://schema.occrp.org/generic/contact_detail.json#"
+      }
+    },
+    "members": {
+      "title": "Members",
+      "description": "The memberships of the members of the organization and of the organization itself",
+      "type": "array",
+      "rdfReverse": "organization",
+      "items": {
+        "$ref": "https://schema.occrp.org/generic/membership.json#"
+      }
+    },
+    "parents": {
+      "description": "The organization that contains this organization",
+      "type": "array",
+      "rdfReverse": "children",
+      "items": {
+        "$ref": "https://schema.occrp.org/generic/organization.json#"
+      }
+    },
+    "children": {
+      "description": "The sub-organizations of the organization",
+      "type": "array",
+      "rdfReverse": "parents",
+      "items": {
+        "$ref": "https://schema.occrp.org/generic/organization.json#"
+      }
+    }
+  }
+}

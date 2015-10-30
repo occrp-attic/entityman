@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://schema.occrp.org/generic/land.json#",
+  "title": "Asset",
+  "description": "An asset owned by one or several owners",
+  "type": "object",
+  "extends" : {"$ref": "any.json" },  
+  "oneOf": [
+      {"$ref": "https://schema.occrp.org/generic/any.json#"}
+  ],
+  "properties": {
+    "register_name": {
+        "type": ["string", "null"]
+    },
+    "description": {
+        "type": ["string", "null"]
+    },
+    "valuation": {
+        "type": ["integer", "null"]
+    },
+    "valuation_currency": {
+        "type": ["string", "null"]
+    },
+    "valuation_date": {
+        "type": ["string", "null"],
+        "format": "date"
+    },
+    "owners": {
+        "type": "array",
+        "rdfReverse": "assets",
+        "items": {
+            "$ref": "https://schema.occrp.org/generic/legal_person.json#"
+        }
+    }
+  }
+}
