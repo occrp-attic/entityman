@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.occrp.entityman</groupId>
     <artifactId>entityman</artifactId>
-    <version>${mvn.entitytman.version}</version>
+    <version>0.0.1</version>
   </parent>
   <artifactId>authserver</artifactId>
   <name>authserver</name>
