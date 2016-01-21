@@ -5,7 +5,7 @@
   "description": "A real person, alive or dead",
   "type" : "object",
   "extends" : {"$ref": "legal_person.json" },  
-  "oneOf": [ {"$ref": "https://schema.occrp.org/generic/legal_person.json#"}],
+  "oneOf": [ {"$ref": "legal_person.json#"}],
   "properties": {
     "family_name": {
       "description": "One or more family names",
@@ -68,16 +68,16 @@
       "type": ["string", "null"]
     },
     "residential_address": {
-      "$ref": "https://schema.occrp.org/generic/address.json#"
+      "$ref": "address.json#"
     },
     "postal_address": {
-      "$ref": "https://schema.occrp.org/generic/address.json#"
+      "$ref": "address.json#"
     },
     "contact_details": {
       "description": "Means of contacting the person",
       "type": "array",
       "items": {
-        "$ref": "https://schema.occrp.org/generic/contact_detail.json#"
+        "$ref": "contact_detail.json#"
       }
     }
   },

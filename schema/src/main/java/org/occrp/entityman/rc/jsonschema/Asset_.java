@@ -18,43 +18,57 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 
 /**
- * Asset
+ * Ownership
  * <p>
- * An asset owned by one or several owners
+ * An ownership relation between a legal entity and an asset
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
-    "register_name",
-    "description",
+    "id",
+    "type",
+    "share",
     "valuation",
     "valuation_currency",
     "valuation_date",
-    "owners"
+    "owner",
+    "asset",
+    "start_date",
+    "end_date",
+    "links",
+    "sources"
 })
 public class Asset_ {
 
     /**
-     * Register name
+     * ID
      * <p>
-     * 
+     * The ownership's unique identifier
      * 
      */
-    @JsonProperty("register_name")
-    private String registerName;
+    @JsonProperty("id")
+    private String id;
     /**
-     * Description
+     * Type
      * <p>
-     * 
+     * The type of ownership, e.g. beneficial or legal
      * 
      */
-    @JsonProperty("description")
-    private String description;
+    @JsonProperty("type")
+    private String type;
+    /**
+     * Share
+     * <p>
+     * The share of the ownership, e.g. percentage or share count
+     * 
+     */
+    @JsonProperty("share")
+    private String share;
     /**
      * Valuation
      * <p>
-     * 
+     * The estimated value of the share
      * 
      */
     @JsonProperty("valuation")
@@ -68,80 +82,142 @@ public class Asset_ {
     @JsonProperty("valuation_currency")
     private String valuationCurrency;
     /**
-     * Date of valuation
+     * Valuation date
      * <p>
-     * 
+     * When the valuation was made
      * 
      */
     @JsonProperty("valuation_date")
     private String valuationDate;
     /**
-     * Owners
+     * Legal Person
      * <p>
-     * 
+     * An individual or company
      * 
      */
-    @JsonProperty("owners")
-    private List<Owner> owners = new ArrayList<Owner>();
+    @JsonProperty("owner")
+    private Owner owner;
+    /**
+     * Asset
+     * <p>
+     * An asset owned by one or several owners
+     * 
+     */
+    @JsonProperty("asset")
+    private Asset__ asset;
+    /**
+     * Start date
+     * <p>
+     * The date on which the relationship began
+     * 
+     */
+    @JsonProperty("start_date")
+    private String startDate;
+    /**
+     * End date
+     * <p>
+     * The date on which the relationship ended
+     * 
+     */
+    @JsonProperty("end_date")
+    private String endDate;
+    /**
+     * URLs to documents about the ownership
+     * 
+     */
+    @JsonProperty("links")
+    private List<Link> links = new ArrayList<Link>();
+    /**
+     * URLs to documents from which the resource is derived
+     * 
+     */
+    @JsonProperty("sources")
+    private List<Link> sources = new ArrayList<Link>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
-     * Register name
+     * ID
      * <p>
-     * 
+     * The ownership's unique identifier
      * 
      * @return
-     *     The registerName
+     *     The id
      */
-    @JsonProperty("register_name")
-    public String getRegisterName() {
-        return registerName;
+    @JsonProperty("id")
+    public String getId() {
+        return id;
     }
 
     /**
-     * Register name
+     * ID
      * <p>
+     * The ownership's unique identifier
      * 
-     * 
-     * @param registerName
-     *     The register_name
+     * @param id
+     *     The id
      */
-    @JsonProperty("register_name")
-    public void setRegisterName(String registerName) {
-        this.registerName = registerName;
+    @JsonProperty("id")
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
-     * Description
+     * Type
      * <p>
-     * 
+     * The type of ownership, e.g. beneficial or legal
      * 
      * @return
-     *     The description
+     *     The type
      */
-    @JsonProperty("description")
-    public String getDescription() {
-        return description;
+    @JsonProperty("type")
+    public String getType() {
+        return type;
     }
 
     /**
-     * Description
+     * Type
      * <p>
+     * The type of ownership, e.g. beneficial or legal
      * 
-     * 
-     * @param description
-     *     The description
+     * @param type
+     *     The type
      */
-    @JsonProperty("description")
-    public void setDescription(String description) {
-        this.description = description;
+    @JsonProperty("type")
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /**
+     * Share
+     * <p>
+     * The share of the ownership, e.g. percentage or share count
+     * 
+     * @return
+     *     The share
+     */
+    @JsonProperty("share")
+    public String getShare() {
+        return share;
+    }
+
+    /**
+     * Share
+     * <p>
+     * The share of the ownership, e.g. percentage or share count
+     * 
+     * @param share
+     *     The share
+     */
+    @JsonProperty("share")
+    public void setShare(String share) {
+        this.share = share;
     }
 
     /**
      * Valuation
      * <p>
-     * 
+     * The estimated value of the share
      * 
      * @return
      *     The valuation
@@ -154,7 +230,7 @@ public class Asset_ {
     /**
      * Valuation
      * <p>
-     * 
+     * The estimated value of the share
      * 
      * @param valuation
      *     The valuation
@@ -191,9 +267,9 @@ public class Asset_ {
     }
 
     /**
-     * Date of valuation
+     * Valuation date
      * <p>
-     * 
+     * When the valuation was made
      * 
      * @return
      *     The valuationDate
@@ -204,9 +280,9 @@ public class Asset_ {
     }
 
     /**
-     * Date of valuation
+     * Valuation date
      * <p>
-     * 
+     * When the valuation was made
      * 
      * @param valuationDate
      *     The valuation_date
@@ -217,29 +293,151 @@ public class Asset_ {
     }
 
     /**
-     * Owners
+     * Legal Person
      * <p>
-     * 
+     * An individual or company
      * 
      * @return
-     *     The owners
+     *     The owner
      */
-    @JsonProperty("owners")
-    public List<Owner> getOwners() {
-        return owners;
+    @JsonProperty("owner")
+    public Owner getOwner() {
+        return owner;
     }
 
     /**
-     * Owners
+     * Legal Person
      * <p>
+     * An individual or company
      * 
-     * 
-     * @param owners
-     *     The owners
+     * @param owner
+     *     The owner
      */
-    @JsonProperty("owners")
-    public void setOwners(List<Owner> owners) {
-        this.owners = owners;
+    @JsonProperty("owner")
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+    }
+
+    /**
+     * Asset
+     * <p>
+     * An asset owned by one or several owners
+     * 
+     * @return
+     *     The asset
+     */
+    @JsonProperty("asset")
+    public Asset__ getAsset() {
+        return asset;
+    }
+
+    /**
+     * Asset
+     * <p>
+     * An asset owned by one or several owners
+     * 
+     * @param asset
+     *     The asset
+     */
+    @JsonProperty("asset")
+    public void setAsset(Asset__ asset) {
+        this.asset = asset;
+    }
+
+    /**
+     * Start date
+     * <p>
+     * The date on which the relationship began
+     * 
+     * @return
+     *     The startDate
+     */
+    @JsonProperty("start_date")
+    public String getStartDate() {
+        return startDate;
+    }
+
+    /**
+     * Start date
+     * <p>
+     * The date on which the relationship began
+     * 
+     * @param startDate
+     *     The start_date
+     */
+    @JsonProperty("start_date")
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    /**
+     * End date
+     * <p>
+     * The date on which the relationship ended
+     * 
+     * @return
+     *     The endDate
+     */
+    @JsonProperty("end_date")
+    public String getEndDate() {
+        return endDate;
+    }
+
+    /**
+     * End date
+     * <p>
+     * The date on which the relationship ended
+     * 
+     * @param endDate
+     *     The end_date
+     */
+    @JsonProperty("end_date")
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    /**
+     * URLs to documents about the ownership
+     * 
+     * @return
+     *     The links
+     */
+    @JsonProperty("links")
+    public List<Link> getLinks() {
+        return links;
+    }
+
+    /**
+     * URLs to documents about the ownership
+     * 
+     * @param links
+     *     The links
+     */
+    @JsonProperty("links")
+    public void setLinks(List<Link> links) {
+        this.links = links;
+    }
+
+    /**
+     * URLs to documents from which the resource is derived
+     * 
+     * @return
+     *     The sources
+     */
+    @JsonProperty("sources")
+    public List<Link> getSources() {
+        return sources;
+    }
+
+    /**
+     * URLs to documents from which the resource is derived
+     * 
+     * @param sources
+     *     The sources
+     */
+    @JsonProperty("sources")
+    public void setSources(List<Link> sources) {
+        this.sources = sources;
     }
 
     @Override
@@ -259,7 +457,7 @@ public class Asset_ {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(registerName).append(description).append(valuation).append(valuationCurrency).append(valuationDate).append(owners).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().append(id).append(type).append(share).append(valuation).append(valuationCurrency).append(valuationDate).append(owner).append(asset).append(startDate).append(endDate).append(links).append(sources).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -271,7 +469,7 @@ public class Asset_ {
             return false;
         }
         Asset_ rhs = ((Asset_) other);
-        return new EqualsBuilder().append(registerName, rhs.registerName).append(description, rhs.description).append(valuation, rhs.valuation).append(valuationCurrency, rhs.valuationCurrency).append(valuationDate, rhs.valuationDate).append(owners, rhs.owners).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().append(id, rhs.id).append(type, rhs.type).append(share, rhs.share).append(valuation, rhs.valuation).append(valuationCurrency, rhs.valuationCurrency).append(valuationDate, rhs.valuationDate).append(owner, rhs.owner).append(asset, rhs.asset).append(startDate, rhs.startDate).append(endDate, rhs.endDate).append(links, rhs.links).append(sources, rhs.sources).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }

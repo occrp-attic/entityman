@@ -37,7 +37,7 @@ public class Building
      * 
      */
     @JsonProperty("address")
-    private Address_ address;
+    private Address address;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -50,7 +50,7 @@ public class Building
      *     The address
      */
     @JsonProperty("address")
-    public Address_ getAddress() {
+    public Address getAddress() {
         return address;
     }
 
@@ -63,7 +63,7 @@ public class Building
      *     The address
      */
     @JsonProperty("address")
-    public void setAddress(Address_ address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 

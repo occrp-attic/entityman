@@ -3,6 +3,7 @@ package org.occrp.entityman.glutton.ets;
 import java.util.Map;
 
 import org.occrp.entityman.model.entities.AEntity;
+import org.occrp.entityman.utils.EntitymanUtils;
 
 
 public abstract class AExtractor implements Extractor {
@@ -22,12 +23,8 @@ public abstract class AExtractor implements Extractor {
 	private int excerptRadius = 50;
 	
 	public String findExcerpt(String s, int start, int end) {
-		start = start - excerptRadius;
-		end = end + excerptRadius;
-		
-		return s.substring(start < 0 ? 0 : start, 
-				end > s.length() ? s.length() : end);
+		return EntitymanUtils.findExcerpt(s, start, end, excerptRadius);
 	}
-	
+
 }
 

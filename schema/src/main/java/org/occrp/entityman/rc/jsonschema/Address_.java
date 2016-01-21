@@ -33,14 +33,44 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 })
 public class Address_ {
 
+    /**
+     * Text
+     * <p>
+     * 
+     * 
+     */
     @JsonProperty("text")
     private Object text;
+    /**
+     * Street address
+     * <p>
+     * 
+     * 
+     */
     @JsonProperty("street_address")
     private String streetAddress;
+    /**
+     * City/Town
+     * <p>
+     * 
+     * 
+     */
     @JsonProperty("locality")
     private String locality;
+    /**
+     * Region
+     * <p>
+     * 
+     * 
+     */
     @JsonProperty("region")
     private String region;
+    /**
+     * Postal code
+     * <p>
+     * 
+     * 
+     */
     @JsonProperty("postal_code")
     private String postalCode;
     @JsonProperty("country")
@@ -49,6 +79,9 @@ public class Address_ {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
+     * Text
+     * <p>
+     * 
      * 
      * @return
      *     The text
@@ -59,6 +92,9 @@ public class Address_ {
     }
 
     /**
+     * Text
+     * <p>
+     * 
      * 
      * @param text
      *     The text
@@ -69,6 +105,9 @@ public class Address_ {
     }
 
     /**
+     * Street address
+     * <p>
+     * 
      * 
      * @return
      *     The streetAddress
@@ -79,6 +118,9 @@ public class Address_ {
     }
 
     /**
+     * Street address
+     * <p>
+     * 
      * 
      * @param streetAddress
      *     The street_address
@@ -89,6 +131,9 @@ public class Address_ {
     }
 
     /**
+     * City/Town
+     * <p>
+     * 
      * 
      * @return
      *     The locality
@@ -99,6 +144,9 @@ public class Address_ {
     }
 
     /**
+     * City/Town
+     * <p>
+     * 
      * 
      * @param locality
      *     The locality
@@ -109,6 +157,9 @@ public class Address_ {
     }
 
     /**
+     * Region
+     * <p>
+     * 
      * 
      * @return
      *     The region
@@ -119,6 +170,9 @@ public class Address_ {
     }
 
     /**
+     * Region
+     * <p>
+     * 
      * 
      * @param region
      *     The region
@@ -129,6 +183,9 @@ public class Address_ {
     }
 
     /**
+     * Postal code
+     * <p>
+     * 
      * 
      * @return
      *     The postalCode
@@ -139,6 +196,9 @@ public class Address_ {
     }
 
     /**
+     * Postal code
+     * <p>
+     * 
      * 
      * @param postalCode
      *     The postal_code

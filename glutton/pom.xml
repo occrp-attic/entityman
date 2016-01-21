@@ -6,11 +6,20 @@
     <artifactId>entityman</artifactId>
     <version>0.0.1</version>
   </parent>
+  
   <artifactId>glutton</artifactId>
   <name>glutton</name>
   <description>The file eater, extracts and expands files then extracts entities</description>
+  <packaging>jar</packaging>
 
   <dependencies>
+
+    <dependency>
+      <groupId>org.occrp.entityman</groupId>
+      <artifactId>entitycore</artifactId>
+      <version>${mvn.entityman.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>org.occrp.entityman</groupId>
       <artifactId>schema</artifactId>
@@ -28,27 +37,27 @@
   <artifactId>httpmime</artifactId>
   <version>4.3.4</version>
 </dependency>
-    <!-- Logging -->
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>${mvn.log4j2.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>${mvn.log4j2.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>${mvn.log4j2.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-jcl</artifactId>
-      <version>${mvn.log4j2.version}</version>
-    </dependency>
+<!--     Logging -->
+<!--     <dependency> -->
+<!--       <groupId>org.apache.logging.log4j</groupId> -->
+<!--       <artifactId>log4j-api</artifactId> -->
+<!--       <version>${mvn.log4j2.version}</version> -->
+<!--     </dependency> -->
+<!--     <dependency> -->
+<!--       <groupId>org.apache.logging.log4j</groupId> -->
+<!--       <artifactId>log4j-core</artifactId> -->
+<!--       <version>${mvn.log4j2.version}</version> -->
+<!--     </dependency> -->
+<!--     <dependency> -->
+<!--       <groupId>org.apache.logging.log4j</groupId> -->
+<!--       <artifactId>log4j-slf4j-impl</artifactId> -->
+<!--       <version>${mvn.log4j2.version}</version> -->
+<!--     </dependency> -->
+<!--     <dependency> -->
+<!--       <groupId>org.apache.logging.log4j</groupId> -->
+<!--       <artifactId>log4j-jcl</artifactId> -->
+<!--       <version>${mvn.log4j2.version}</version> -->
+<!--     </dependency> -->
 
     <!-- commons -->
     <dependency>
@@ -84,12 +93,12 @@
       <artifactId>stanford-corenlp</artifactId>
       <version>3.5.2</version>
     </dependency>
-    <dependency>
-      <groupId>edu.stanford.nlp</groupId>
-      <artifactId>stanford-corenlp</artifactId>
-      <version>3.5.2</version>
-      <classifier>models</classifier>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>edu.stanford.nlp</groupId> -->
+<!--       <artifactId>stanford-corenlp</artifactId> -->
+<!--       <version>3.5.2</version> -->
+<!--       <classifier>models</classifier> -->
+<!--     </dependency> -->
 
     <!-- Spring related -->
     <!-- <dependency> -->
@@ -119,21 +128,27 @@
 
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-aspects</artifactId>
+      <artifactId>spring-web</artifactId>
       <version>${mvn.spring.version}</version>
     </dependency>
 
     <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-web</artifactId>
-      <version>${mvn.spring-security.version}</version>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-aspects</artifactId>
+      <version>${mvn.spring.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>org.springframework.security.oauth</groupId>
-      <artifactId>spring-security-oauth2</artifactId>
-      <version>2.0.7.RELEASE</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.springframework.security</groupId> -->
+<!--       <artifactId>spring-security-web</artifactId> -->
+<!--       <version>${mvn.spring-security.version}</version> -->
+<!--     </dependency> -->
+
+<!--     <dependency> -->
+<!--       <groupId>org.springframework.security.oauth</groupId> -->
+<!--       <artifactId>spring-security-oauth2</artifactId> -->
+<!--       <version>2.0.7.RELEASE</version> -->
+<!--     </dependency> -->
 
     <dependency>
       <groupId>org.apache.xbean</groupId>
@@ -164,7 +179,29 @@
   </dependencies>
   
   <build>
+    <finalName>glutton</finalName>
   <plugins>
+  
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.18.1</version>
+        <configuration>
+          <argline>-Djava.library.path=/usr/local/lib/</argline>
+          <argline>-DTESSDATA_PREFIX=/usr/share/tesseract-ocr</argline>
+          <systemPropertyVariables>
+            <!-- <basePath>http://localhost:${test.server.port}/api</basePath> -->
+            <basePath>http://localhost:18080/</basePath>
+            <TESSDATA_PREFIX>/usr/share/tesseract-ocr</TESSDATA_PREFIX>
+          </systemPropertyVariables>
+          <showSuccess>true</showSuccess>
+          <environmentVariables>
+            <TESSDATA_PREFIX>/usr/share/tesseract-ocr</TESSDATA_PREFIX>
+          </environmentVariables>
+        </configuration>
+      </plugin>
+  
+    
 <!--             <plugin> -->
 <!--                 <groupId>org.apache.maven.plugins</groupId> -->
 <!--                 <artifactId>maven-dependency-plugin</artifactId> -->

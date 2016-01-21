@@ -43,7 +43,7 @@ public class CompanyParentParent
     @JsonProperty("jurisdiction_code")
     private String jurisdictionCode;
     @JsonProperty("assets")
-    private List<Asset_> assets = new ArrayList<Asset_>();
+    private List<Asset__> assets = new ArrayList<Asset__>();
     /**
      * Memberships
      * <p>
@@ -87,7 +87,7 @@ public class CompanyParentParent
      *     The assets
      */
     @JsonProperty("assets")
-    public List<Asset_> getAssets() {
+    public List<Asset__> getAssets() {
         return assets;
     }
 
@@ -97,7 +97,7 @@ public class CompanyParentParent
      *     The assets
      */
     @JsonProperty("assets")
-    public void setAssets(List<Asset_> assets) {
+    public void setAssets(List<Asset__> assets) {
         this.assets = assets;
     }
 

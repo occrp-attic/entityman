@@ -39,7 +39,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
     "industry_codes"
 })
 public class Company
-    extends CompanyParent
+    extends Organization
 {
 
     /**
@@ -73,7 +73,7 @@ public class Company
      * 
      */
     @JsonProperty("registered_address")
-    private Address_ registeredAddress;
+    private Address registeredAddress;
     /**
      * Address
      * <p>
@@ -81,7 +81,7 @@ public class Company
      * 
      */
     @JsonProperty("headquarters_address")
-    private Address_ headquartersAddress;
+    private Address headquartersAddress;
     /**
      * Address
      * <p>
@@ -89,7 +89,7 @@ public class Company
      * 
      */
     @JsonProperty("mailing_address")
-    private Address_ mailingAddress;
+    private Address mailingAddress;
     @JsonProperty("filings")
     private List<Filing> filings = new ArrayList<Filing>();
     @JsonProperty("industry_codes")
@@ -290,7 +290,7 @@ public class Company
      *     The registeredAddress
      */
     @JsonProperty("registered_address")
-    public Address_ getRegisteredAddress() {
+    public Address getRegisteredAddress() {
         return registeredAddress;
     }
 
@@ -303,7 +303,7 @@ public class Company
      *     The registered_address
      */
     @JsonProperty("registered_address")
-    public void setRegisteredAddress(Address_ registeredAddress) {
+    public void setRegisteredAddress(Address registeredAddress) {
         this.registeredAddress = registeredAddress;
     }
 
@@ -316,7 +316,7 @@ public class Company
      *     The headquartersAddress
      */
     @JsonProperty("headquarters_address")
-    public Address_ getHeadquartersAddress() {
+    public Address getHeadquartersAddress() {
         return headquartersAddress;
     }
 
@@ -329,7 +329,7 @@ public class Company
      *     The headquarters_address
      */
     @JsonProperty("headquarters_address")
-    public void setHeadquartersAddress(Address_ headquartersAddress) {
+    public void setHeadquartersAddress(Address headquartersAddress) {
         this.headquartersAddress = headquartersAddress;
     }
 
@@ -342,7 +342,7 @@ public class Company
      *     The mailingAddress
      */
     @JsonProperty("mailing_address")
-    public Address_ getMailingAddress() {
+    public Address getMailingAddress() {
         return mailingAddress;
     }
 
@@ -355,7 +355,7 @@ public class Company
      *     The mailing_address
      */
     @JsonProperty("mailing_address")
-    public void setMailingAddress(Address_ mailingAddress) {
+    public void setMailingAddress(Address mailingAddress) {
         this.mailingAddress = mailingAddress;
     }
 

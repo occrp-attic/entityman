@@ -6,11 +6,11 @@
   "type": "object",
   "extends" : {"$ref": "asset.json" },  
   "oneOf": [
-      {"$ref": "https://schema.occrp.org/generic/asset.json#"}
+      {"$ref": "asset.json#"}
   ],
   "properties": {
     "address": {
-      "$ref": "https://schema.occrp.org/generic/address.json#"
+      "$ref": "address.json#"
     }
   }
 }

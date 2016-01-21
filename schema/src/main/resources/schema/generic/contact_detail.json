@@ -47,7 +47,7 @@
       "description": "URLs to documents from which the resource is derived",
       "type": "array",
       "items": {
-        "$ref": "https://schema.occrp.org/generic/link.json#"
+        "$ref": "link.json#"
       }
     }
   }

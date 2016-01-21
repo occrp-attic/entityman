@@ -6,7 +6,7 @@
   "type": "object",
   "extends" : {"$ref": "any.json" },  
   "oneOf": [
-    {"$ref": "https://schema.occrp.org/generic/any.json#"}
+    {"$ref": "any.json#"}
   ],
   "properties": {
     "jurisdiction_code": {
@@ -21,7 +21,7 @@
       "type": "array",
       "rdfReverse": "owners",
       "items": {
-        "$ref": "https://schema.occrp.org/generic/asset.json#"
+        "$ref": "asset.json#"
       }
     },
     "memberships": {
@@ -30,7 +30,7 @@
       "description": "The person's memberships",
       "rdfReverse": "person",
       "items": {
-        "$ref": "https://schema.occrp.org/generic/membership.json#"
+        "$ref": "membership.json#"
       }
     }
   }

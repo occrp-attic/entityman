@@ -6,7 +6,7 @@
   "type": "object",
   "extends" : {"$ref": "any.json" },  
   "oneOf": [
-      {"$ref": "https://schema.occrp.org/generic/any.json#"}
+      {"$ref": "any.json#"}
   ],
   "properties": {
     "register_name": {
@@ -29,7 +29,7 @@
         "type": "array",
         "rdfReverse": "assets",
         "items": {
-            "$ref": "https://schema.occrp.org/generic/legal_person.json#"
+            "$ref": "legal_person.json#"
         }
     }
   }

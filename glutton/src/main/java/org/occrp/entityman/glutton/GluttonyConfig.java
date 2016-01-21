@@ -5,10 +5,13 @@ import java.util.List;
 
 import org.occrp.entityman.glutton.ets.Extractor;
 import org.occrp.entityman.glutton.ets.RegexpExtractor;
+import org.occrp.entityman.glutton.ets.RestStanfordExtractor;
 import org.occrp.entityman.glutton.ets.StanfordExtractor;
 import org.occrp.entityman.glutton.expanders.Expander;
 import org.occrp.entityman.glutton.expanders.OpenocrExpander;
 import org.occrp.entityman.glutton.expanders.TikaExpander;
+import org.occrp.entityman.glutton.filters.DictionaryFilter;
+import org.occrp.entityman.glutton.filters.Filter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -81,10 +84,18 @@ public class GluttonyConfig {
 		return regexpExtractor;
 	}
 
+//	@Bean
+//	public StanfordExtractor extractorStanford() {
+//		StanfordExtractor stanfordExtractor = new StanfordExtractor();
+//		stanfordExtractor.setName("Stanford extractor");
+//		return stanfordExtractor;
+//	}
+
 	@Bean
-	public StanfordExtractor extractorStanford() {
-		StanfordExtractor stanfordExtractor = new StanfordExtractor();
+	public RestStanfordExtractor extractorStanford() {
+		RestStanfordExtractor stanfordExtractor = new RestStanfordExtractor();
 		stanfordExtractor.setName("Stanford extractor");
+		stanfordExtractor.setNerWrapperUrl("http://127.0.0.1:8080/nerwrapper/app/extractjson");
 		return stanfordExtractor;
 	}
 
@@ -98,6 +109,26 @@ public class GluttonyConfig {
 		extractors.add(extractorStanford());
 		
 		return extractors;
+	}
+
+	@Bean
+	public DictionaryFilter filterPersonName() {
+		DictionaryFilter filter = new DictionaryFilter();
+		filter.setFilterName("Person Entity Name Filter");
+		filter.setEntityType("person");
+		filter.setFieldName("name");
+//		filter.setWhitelistResource("dic_firstnames_ro_small.txt");
+//		filter.setWhitelistResource("dic_firstnames_ro.txt");
+		filter.setBlacklistResource("blacklist_person_name.txt");
+		return filter;
+	}
+	
+	@Bean
+	public List<Filter> filters() {
+		List<Filter> filters = new ArrayList<>();
+		filters.add(filterPersonName());
+		
+		return filters;
 	}
 	
 }

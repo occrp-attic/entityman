@@ -39,11 +39,11 @@ import org.apache.commons.lang.builder.ToStringBuilder;
     "parents",
     "children"
 })
-public class Organization {
+public class Organization
+    extends Owner
+{
 
     /**
-     * Classification
-     * <p>
      * An organization category, e.g. committee
      * 
      */
@@ -56,32 +56,24 @@ public class Organization {
     @JsonProperty("area_id")
     private String areaId;
     /**
-     * Abstract
-     * <p>
      * A one-line description of an organization
      * 
      */
     @JsonProperty("abstract")
     private String _abstract;
     /**
-     * Description
-     * <p>
      * An extended description of an organization
      * 
      */
     @JsonProperty("description")
     private String description;
     /**
-     * Founding date
-     * <p>
      * A date of founding
      * 
      */
     @JsonProperty("founding_date")
     private String foundingDate;
     /**
-     * Dissolution date
-     * <p>
      * A date of dissolution
      * 
      */
@@ -94,8 +86,6 @@ public class Organization {
     @JsonProperty("image")
     private URI image;
     /**
-     * Contact details
-     * <p>
      * Means of contacting the organization
      * 
      */
@@ -125,8 +115,6 @@ public class Organization {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
-     * Classification
-     * <p>
      * An organization category, e.g. committee
      * 
      * @return
@@ -138,8 +126,6 @@ public class Organization {
     }
 
     /**
-     * Classification
-     * <p>
      * An organization category, e.g. committee
      * 
      * @param classification
@@ -173,8 +159,6 @@ public class Organization {
     }
 
     /**
-     * Abstract
-     * <p>
      * A one-line description of an organization
      * 
      * @return
@@ -186,8 +170,6 @@ public class Organization {
     }
 
     /**
-     * Abstract
-     * <p>
      * A one-line description of an organization
      * 
      * @param _abstract
@@ -199,8 +181,6 @@ public class Organization {
     }
 
     /**
-     * Description
-     * <p>
      * An extended description of an organization
      * 
      * @return
@@ -212,8 +192,6 @@ public class Organization {
     }
 
     /**
-     * Description
-     * <p>
      * An extended description of an organization
      * 
      * @param description
@@ -225,8 +203,6 @@ public class Organization {
     }
 
     /**
-     * Founding date
-     * <p>
      * A date of founding
      * 
      * @return
@@ -238,8 +214,6 @@ public class Organization {
     }
 
     /**
-     * Founding date
-     * <p>
      * A date of founding
      * 
      * @param foundingDate
@@ -251,8 +225,6 @@ public class Organization {
     }
 
     /**
-     * Dissolution date
-     * <p>
      * A date of dissolution
      * 
      * @return
@@ -264,8 +236,6 @@ public class Organization {
     }
 
     /**
-     * Dissolution date
-     * <p>
      * A date of dissolution
      * 
      * @param dissolutionDate
@@ -299,8 +269,6 @@ public class Organization {
     }
 
     /**
-     * Contact details
-     * <p>
      * Means of contacting the organization
      * 
      * @return
@@ -312,8 +280,6 @@ public class Organization {
     }
 
     /**
-     * Contact details
-     * <p>
      * Means of contacting the organization
      * 
      * @param contactDetails
@@ -411,7 +377,7 @@ public class Organization {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(classification).append(areaId).append(_abstract).append(description).append(foundingDate).append(dissolutionDate).append(image).append(contactDetails).append(members).append(parents).append(children).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().appendSuper(super.hashCode()).append(classification).append(areaId).append(_abstract).append(description).append(foundingDate).append(dissolutionDate).append(image).append(contactDetails).append(members).append(parents).append(children).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -423,7 +389,7 @@ public class Organization {
             return false;
         }
         Organization rhs = ((Organization) other);
-        return new EqualsBuilder().append(classification, rhs.classification).append(areaId, rhs.areaId).append(_abstract, rhs._abstract).append(description, rhs.description).append(foundingDate, rhs.foundingDate).append(dissolutionDate, rhs.dissolutionDate).append(image, rhs.image).append(contactDetails, rhs.contactDetails).append(members, rhs.members).append(parents, rhs.parents).append(children, rhs.children).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().appendSuper(super.equals(other)).append(classification, rhs.classification).append(areaId, rhs.areaId).append(_abstract, rhs._abstract).append(description, rhs.description).append(foundingDate, rhs.foundingDate).append(dissolutionDate, rhs.dissolutionDate).append(image, rhs.image).append(contactDetails, rhs.contactDetails).append(members, rhs.members).append(parents, rhs.parents).append(children, rhs.children).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }

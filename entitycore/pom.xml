@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.occrp.entityman</groupId>
+    <artifactId>entityman</artifactId>
+    <version>0.0.1</version>
+  </parent>
+  <artifactId>entitycore</artifactId>
+  <name>Entity Core</name>
+  <description>Core library for Entity Man projects</description>
+  
+  <dependencies>
+<!--     json jackson related -->
+    <dependency>
+      <groupId>org.codehaus.jackson</groupId>
+      <artifactId>jackson-mapper-asl</artifactId>
+      <version>${mvn.jackson.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-mongodb</artifactId>
+      <version>${mvn.spring.data.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.2.0</version>
+    </dependency>
+    
+  </dependencies>
+</project>

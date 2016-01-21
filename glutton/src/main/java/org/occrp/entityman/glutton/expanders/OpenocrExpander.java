@@ -1,6 +1,12 @@
 package org.occrp.entityman.glutton.expanders;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageFilter;
+import java.awt.image.ImageProducer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,9 +22,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.GrayFilter;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -270,21 +278,80 @@ public class OpenocrExpander extends AExpander {
 
 	}
 
+	/**
+	 * Rating method for ocr text
+	 * count the word rating based on word length and dictionary.
+	 * TODO Dictionary words
+	 * @param text
+	 * @return
+	 */
+	public long rateOcr(String text) {
+		long res = 0;
+		
+		if (text==null || text.length()==0) return res;
+		
+		String words[] = StringUtils.split(text, " .,!?");
+		
+		for (String word : words) {
+			// TODO Dictionary rating
+			int l = word.length();
+			if (l>1 && l<=15) {
+				res+=l;
+			}
+			
+		}
+		
+		return res;
+	}
+	
+	public Image toGrayScale(Image src, int midpoint) {
+		ImageFilter filter = new GrayFilter(true, 50);  
+		ImageProducer producer = new FilteredImageSource(src.getSource(), filter);  
+		Image image = Toolkit.getDefaultToolkit().createImage(producer);  
+		return image;
+//		return src;
+	}
+	
+	/** TODO
+	 * More OCR improve :
+	 * http://stackoverflow.com/questions/9480013/image-processing-to-improve-tesseract-ocr-accuracy
+	 * http://stackoverflow.com/questions/4756268/how-to-resize-the-buffered-image-n-graphics-2d-in-java/4756906#4756906
+	 * 
+	 */
+	
+	
+	private List<Integer> grayMidpoints = Arrays.asList(50);
+	
 	private String callTess4j(InputStream is) {
 
 		String result = null;
+		long resultRating = 0;
 		try {
 			Tesseract instance = Tesseract.getInstance(); // JNA
 			// Interface Mapping
 			// Tesseract1 instance = new Tesseract1(); // JNA Direct Mapping
 			
 			instance.setTessVariable("tessedit_char_whitelist", 
-					"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.!/?\\-_+=");
+					" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.!/?\\-_+=:;'\"|()<>"
+					+ "țȚșȘăĂîÎ");
 			
 			instance.setDatapath("/usr/local/share");
 //			instance.setConfigs(Arrays.asList("letters"));
 			
-			result = instance.doOCR(ImageIO.read(is));
+			BufferedImage bi = ImageIO.read(is);
+			
+			for (int midpoint : grayMidpoints) {
+				String tres = instance.doOCR(toBufferedImage(
+						toGrayScale(bi, midpoint)));
+		
+				long trating = rateOcr(tres);
+				
+				if (trating>resultRating) {
+					result = tres;
+					resultRating = trating;
+				}
+				
+			}
 
 			log.info("OCR Result : {}", result);
 
@@ -294,4 +361,31 @@ public class OpenocrExpander extends AExpander {
 		return result;
 	}
 
+	public static BufferedImage toBufferedImage(Image img)
+	{
+	    if (img instanceof BufferedImage)
+	    {
+	        return (BufferedImage) img;
+	    }
+
+	    // Create a buffered image with transparency
+	    BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+	    // Draw the image on to the buffered image
+	    Graphics2D bGr = bimage.createGraphics();
+	    bGr.drawImage(img, 0, 0, null);
+	    bGr.dispose();
+
+	    // Return the buffered image
+	    return bimage;
+	}
+
+	public List<Integer> getGrayMidpoints() {
+		return grayMidpoints;
+	}
+
+	public void setGrayMidpoints(List<Integer> grayMidpoints) {
+		this.grayMidpoints = grayMidpoints;
+	}
+	
 }

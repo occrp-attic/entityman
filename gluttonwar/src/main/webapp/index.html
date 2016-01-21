@@ -1,0 +1,21 @@
+<html>
+<body>
+
+
+  <div>
+    Simple consume: <br>
+    <form method="POST" enctype="multipart/form-data" action="app/consume">
+      File to upload: <input type="file" name="file"><br /> 
+      <input type="submit" value="Upload File"> Upload the file!
+    </form>
+  </div>
+
+  <div>
+    Multiple consume: <br>
+    <form method="POST" enctype="multipart/form-data" action="app/consumeMultiple">
+      Files to upload: <input type="file" name="file" multiple="multiple"><br /> <input
+        type="submit" value="Upload Files"> Upload the files!
+    </form>
+  </div>
+</body>
+</html>

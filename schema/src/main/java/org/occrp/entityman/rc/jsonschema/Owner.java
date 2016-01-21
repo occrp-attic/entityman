@@ -26,13 +26,24 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
+    "jurisdiction_code",
     "assets",
     "memberships"
 })
-public class Owner {
+public class Owner
+    extends Any
+{
 
+    /**
+     * Jurisdiction
+     * <p>
+     * Code representing the jurisdiction/company register which is the canonical record of the company’s existence. Uses underscored ISO 3166-2 to represent it, e.g. es for Spain, us_de for Delaware
+     * 
+     */
+    @JsonProperty("jurisdiction_code")
+    private String jurisdictionCode;
     @JsonProperty("assets")
-    private List<Asset_> assets = new ArrayList<Asset_>();
+    private List<Asset> assets = new ArrayList<Asset>();
     /**
      * Memberships
      * <p>
@@ -45,12 +56,38 @@ public class Owner {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
+     * Jurisdiction
+     * <p>
+     * Code representing the jurisdiction/company register which is the canonical record of the company’s existence. Uses underscored ISO 3166-2 to represent it, e.g. es for Spain, us_de for Delaware
+     * 
+     * @return
+     *     The jurisdictionCode
+     */
+    @JsonProperty("jurisdiction_code")
+    public String getJurisdictionCode() {
+        return jurisdictionCode;
+    }
+
+    /**
+     * Jurisdiction
+     * <p>
+     * Code representing the jurisdiction/company register which is the canonical record of the company’s existence. Uses underscored ISO 3166-2 to represent it, e.g. es for Spain, us_de for Delaware
+     * 
+     * @param jurisdictionCode
+     *     The jurisdiction_code
+     */
+    @JsonProperty("jurisdiction_code")
+    public void setJurisdictionCode(String jurisdictionCode) {
+        this.jurisdictionCode = jurisdictionCode;
+    }
+
+    /**
      * 
      * @return
      *     The assets
      */
     @JsonProperty("assets")
-    public List<Asset_> getAssets() {
+    public List<Asset> getAssets() {
         return assets;
     }
 
@@ -60,7 +97,7 @@ public class Owner {
      *     The assets
      */
     @JsonProperty("assets")
-    public void setAssets(List<Asset_> assets) {
+    public void setAssets(List<Asset> assets) {
         this.assets = assets;
     }
 
@@ -107,7 +144,7 @@ public class Owner {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(assets).append(memberships).append(additionalProperties).toHashCode();
+        return new HashCodeBuilder().appendSuper(super.hashCode()).append(jurisdictionCode).append(assets).append(memberships).append(additionalProperties).toHashCode();
     }
 
     @Override
@@ -119,7 +156,7 @@ public class Owner {
             return false;
         }
         Owner rhs = ((Owner) other);
-        return new EqualsBuilder().append(assets, rhs.assets).append(memberships, rhs.memberships).append(additionalProperties, rhs.additionalProperties).isEquals();
+        return new EqualsBuilder().appendSuper(super.equals(other)).append(jurisdictionCode, rhs.jurisdictionCode).append(assets, rhs.assets).append(memberships, rhs.memberships).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
 }

@@ -6,7 +6,7 @@
   "type": "object",
   "extends" : {"$ref": "organization.json" },  
   "oneOf": [
-      {"$ref": "https://schema.occrp.org/generic/organization.json#"}
+      {"$ref": "organization.json#"}
   ],
   "properties": {
     "company_number": {
@@ -46,24 +46,24 @@
       "minLength": 4
     },
     "registered_address": {
-      "$ref": "https://schema.occrp.org/generic/address.json"
+      "$ref": "address.json"
     },
     "headquarters_address": {
-      "$ref": "https://schema.occrp.org/generic/address.json"
+      "$ref": "address.json"
     },
     "mailing_address": {
-      "$ref": "https://schema.occrp.org/generic/address.json"
+      "$ref": "address.json"
     },
     "filings": {
       "type": "array",
       "items": {
-        "$ref": "https://schema.occrp.org/generic/filing.json"
+        "$ref": "filing.json"
       }
     },
     "industry_codes": {
       "type": "array",
       "items": {
-        "$ref": "https://schema.occrp.org/generic/industry_code.json#"
+        "$ref": "industry_code.json#"
       }
     }
   },

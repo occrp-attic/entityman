@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.occrp.entityman.glutton.ets.Extractor;
 import org.occrp.entityman.glutton.expanders.Expander;
+import org.occrp.entityman.glutton.filters.Filter;
 import org.occrp.entityman.model.IngestedFile;
 import org.occrp.entityman.model.entities.AEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class Gluttony {
 	
 	@Autowired
 	private List<Extractor> extractors;
+
+	@Autowired
+	private List<Filter> filters;
 
 	public List<AEntity> call(IngestedFile file) throws Exception {
 		
@@ -48,6 +52,18 @@ public class Gluttony {
 			} catch (Exception ex) {
 				log.error("Failed expander : {}",e.getName(),ex);
 			}
+		}
+
+		if (filters!=null) {
+			for (Filter f : filters) {
+				try {
+					log.debug("{} filtering entities : {}",f.getFilterName(),res.size());
+					res = f.filter(res);
+				} catch (Exception ex) {
+					log.error("Failed filter : {}",f.getFilterName(),ex);
+				}
+			}
+			
 		}
 
 		//res = entityManager.merge(res);

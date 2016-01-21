@@ -263,6 +263,28 @@
 <!--     <classifier>models</classifier> -->
 <!-- </dependency> -->
 
+    <!-- Logging -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>${mvn.log4j2.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${mvn.log4j2.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>${mvn.log4j2.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-jcl</artifactId>
+      <version>${mvn.log4j2.version}</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -369,5 +391,8 @@
     <module>resource</module>
     <module>schema</module>
     <module>glutton</module>
+    <module>gluttonwar</module>
+    <module>nerwrapper</module>
+    <module>entitycore</module>
   </modules>
 </project>

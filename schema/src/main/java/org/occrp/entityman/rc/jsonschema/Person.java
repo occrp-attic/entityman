@@ -41,7 +41,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
     "contact_details"
 })
 public class Person
-    extends CompanyParentParent
+    extends Owner
 {
 
     /**
@@ -135,7 +135,7 @@ public class Person
      * 
      */
     @JsonProperty("residential_address")
-    private Address_ residentialAddress;
+    private Address residentialAddress;
     /**
      * Address
      * <p>
@@ -143,7 +143,7 @@ public class Person
      * 
      */
     @JsonProperty("postal_address")
-    private Address_ postalAddress;
+    private Address postalAddress;
     /**
      * Means of contacting the person
      * 
@@ -468,7 +468,7 @@ public class Person
      *     The residentialAddress
      */
     @JsonProperty("residential_address")
-    public Address_ getResidentialAddress() {
+    public Address getResidentialAddress() {
         return residentialAddress;
     }
 
@@ -481,7 +481,7 @@ public class Person
      *     The residential_address
      */
     @JsonProperty("residential_address")
-    public void setResidentialAddress(Address_ residentialAddress) {
+    public void setResidentialAddress(Address residentialAddress) {
         this.residentialAddress = residentialAddress;
     }
 
@@ -494,7 +494,7 @@ public class Person
      *     The postalAddress
      */
     @JsonProperty("postal_address")
-    public Address_ getPostalAddress() {
+    public Address getPostalAddress() {
         return postalAddress;
     }
 
@@ -507,7 +507,7 @@ public class Person
      *     The postal_address
      */
     @JsonProperty("postal_address")
-    public void setPostalAddress(Address_ postalAddress) {
+    public void setPostalAddress(Address postalAddress) {
         this.postalAddress = postalAddress;
     }
 
