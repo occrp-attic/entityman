@@ -12,12 +12,20 @@ import org.occrp.entityman.glutton.expanders.OpenocrExpander;
 import org.occrp.entityman.glutton.expanders.TikaExpander;
 import org.occrp.entityman.glutton.filters.DictionaryFilter;
 import org.occrp.entityman.glutton.filters.Filter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 
 @Configuration
+@PropertySource("classpath:application.properties")
 public class GluttonyConfig {
 
+	@Autowired
+	private Environment env;
+	
 	@Bean
 	public TikaExpander expanderTika(){
 		TikaExpander tikaExpander = new TikaExpander();
@@ -95,7 +103,8 @@ public class GluttonyConfig {
 	public RestStanfordExtractor extractorStanford() {
 		RestStanfordExtractor stanfordExtractor = new RestStanfordExtractor();
 		stanfordExtractor.setName("Stanford extractor");
-		stanfordExtractor.setNerWrapperUrl("http://127.0.0.1:8080/nerwrapper/app/extractjson");
+		String urlNerwrapper = env.getProperty("nerwrapper.url");
+		stanfordExtractor.setNerWrapperUrl(urlNerwrapper);
 		return stanfordExtractor;
 	}
 
@@ -119,7 +128,11 @@ public class GluttonyConfig {
 		filter.setFieldName("name");
 //		filter.setWhitelistResource("dic_firstnames_ro_small.txt");
 //		filter.setWhitelistResource("dic_firstnames_ro.txt");
-		filter.setBlacklistResource("blacklist_person_name.txt");
+//		filter.setBlacklistResource("blacklist_person_name.txt");
+		String resourceWhitelist = env.getProperty("filter.person.name.whitelist");
+		String resourceBlacklist = env.getProperty("filter.person.name.blacklist");
+		filter.setWhitelistResource(resourceWhitelist);
+		filter.setBlacklistResource(resourceBlacklist);
 		return filter;
 	}
 	

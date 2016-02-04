@@ -2,6 +2,7 @@ package org.occrp.entityman.glutton.filters;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
@@ -41,7 +42,10 @@ public class DictionaryFilter extends AFilter{
 	}
 
 	private void fillListFromResource(List<String> list, String resource) {
-		try (InputStream is = getClass().getResourceAsStream(resource)) {
+		if (resource==null || resource.trim().length()==0) return;
+		
+//		try (InputStream is = getClass().getResourceAsStream(resource)) {
+		try (InputStream is = new FileInputStream(resource)) {
 			List<String> lines = new BufferedReader(new InputStreamReader(is,
 					StandardCharsets.UTF_8)).lines().collect(Collectors.toList());
 			for (String line : lines) {

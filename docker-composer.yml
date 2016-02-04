@@ -1,0 +1,14 @@
+nerwrapper:
+  build: nerwrapper/.
+  ports:
+    - "28080:8080"
+  volumes: []
+  links: []
+gluttonwar:
+  build: gluttonwar/.
+  ports:
+    - "18080:8080"
+  volumes:
+    - /etc/entityman:/etc/entityman
+  links: 
+    - nerwrapper

@@ -1,4 +1,13 @@
-todo : 
+Project modules :
+- entitycore : core classes for entityman project
+- glutton : main entity extraction flow, here is the main configuration for entity extraction logic 
+- gluttonwar : REST api call to glutton functionality
+- nerwrapper : REST wrapper for Stanford NER (it is possible to have multiple instances configured in the glutton config, with dictionaries for multiple languages)
+- schema : occrp object schema
+- authserver : simple oauth2 server (to be used in multiuser environment)
+- resource : the resource REST API for oauth2 to provide model to the UI
+- ui : user interface for resource model 
+
 
 BackEnd:
 + maven app 
@@ -9,25 +18,25 @@ BackEnd:
 + regexp extractor :
 	+ for phone numbers
 	+ regexp extractor for emails
-	- regexp extractor for ip addresses
+	+ regexp extractor for ip addresses
 	+ regexp extractor for terains numbers
-	- regexp extractor for company idno
+	+ regexp extractor for company idno
 - extractor from courts data
 - extractor for terains from cadastru file
 + Stanford named entity recogniser extractor (java 8)
-- Stanford NER multiple languages
++ Stanford NER multiple languages (done via nerwrapper, each additional language, created a new nerwrapper module)
++ Whitelist/Blacklist filters based on entity types 
 + workspaces
 - users :
 	- sharing of data 
 + mongo / spring data
-+ FIX : aop model before save
-- 
+- full text search in entities from UI
+
 - ingester :
-	 - scan folder for files : put in queue
-	 - workers take the file from queue
+	- scan folder for files : put in queue
 	- ENHANCE : multithreading
  	- the file is passed across the entenders and extractors chain
- 	- file is moved to completed/erros folder
+ 	- file is moved to completed/errors folder
 - ws : ingest Async
 - status of ingestion : files completed/inprogess/error
 - simple text normalization (remove special character from text)
@@ -35,19 +44,19 @@ BackEnd:
 
 
 OCR ing:
-- do OCR with java tesseract
-- develop an OCR extender 
++ do OCR with java tesseract
++ develop an OCR extender 
 - image processing before running ocr
 	- modify contrast
-	- turn to grayscale
+	+ turn to grayscale
 	- apply Level / border filtering
-- running OCR on an image
-- select best OCR result from diferrent applied filters
++ running OCR on an image
++ select best OCR result from diferrent applied filters (currently from grayscalefilter)
 - OCR webservice
 
 
 Special extractors :
-- special black list/white list filters for entities, which have to run after extractors
++ special black list/white list filters for entities, which have to run after extractors
 - extractor with binary tree search in dictionary with some logic
 	- to be used to detect names (wikipedia has First Name/Last  Name lists for different languages)
 - line based extractor for connections : if on the same line a person and a company is listed then there is a connection (useful for excel files which contains line based entries)

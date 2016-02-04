@@ -22,10 +22,8 @@
     location="file:///etc/entityman/entityman.properties" />
   <context:annotation-config />
 
-  <bean
-    class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer" />
-  <bean
-    class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer" />
+  <bean class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer" />
+  <bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer" />
 
   <context:component-scan base-package="org.occrp.entityman" />
 
