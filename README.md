@@ -11,6 +11,10 @@ Project modules :
 - ui : user interface for resource model 
 
 
+Build requirements:
+- Oracle JDK 8
+- Maven 3
+
 Building:
 mvn clean install -Dmaven.test.skip=true
 

@@ -20,6 +20,7 @@ import org.occrp.entityman.model.entities.Fact;
 import org.occrp.entityman.model.entities.Person;
 import org.occrp.entityman.model.entities.PhoneNumber;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
@@ -27,7 +28,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
-@ContextConfiguration(classes={Gluttony.class})
+@ContextConfiguration(classes={Gluttony.class,TestConfig.class})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GluttonyTest {
 
