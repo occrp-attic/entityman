@@ -32,6 +32,11 @@ public class GluttonyConfig {
 //	}
 	
 	@Bean
+	public static PropertySourcesPlaceholderConfigurer  propertySourcesPlaceholderConfigurer() {
+		return new PropertySourcesPlaceholderConfigurer();
+	}
+	
+	@Bean
 	public TikaExpander expanderTika(){
 		TikaExpander tikaExpander = new TikaExpander();
 		tikaExpander.setName("tika");
