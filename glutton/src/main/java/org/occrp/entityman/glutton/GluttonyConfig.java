@@ -23,13 +23,9 @@ import org.springframework.core.env.Environment;
 @Configuration
 public class GluttonyConfig {
 
-	@Autowired
-	private Environment env;
+//	@Autowired
+//	private Environment env;
 	
-//	@Bean
-//	public static PropertySourcesPlaceholderConfigurer  propertySourcesPlaceholderConfigurer() {
-//		return new PropertySourcesPlaceholderConfigurer();
-//	}
 	
 	@Bean
 	public TikaExpander expanderTika(){
@@ -104,11 +100,14 @@ public class GluttonyConfig {
 //		return stanfordExtractor;
 //	}
 
+
+	@Value("${nerwrapper.url}")
+	String urlNerwrapper;
+
 	@Bean
 	public RestStanfordExtractor extractorStanford() {
 		RestStanfordExtractor stanfordExtractor = new RestStanfordExtractor();
 		stanfordExtractor.setName("Stanford extractor");
-		String urlNerwrapper = env.getProperty("nerwrapper.url");
 		stanfordExtractor.setNerWrapperUrl(urlNerwrapper);
 		return stanfordExtractor;
 	}
@@ -125,6 +124,11 @@ public class GluttonyConfig {
 		return extractors;
 	}
 
+	@Value("${filter.person.name.whitelist}")
+	String resourceWhitelist;
+	@Value("${filter.person.name.blacklist}")
+	String resourceBlacklist;
+	
 	@Bean
 	public DictionaryFilter filterPersonName() {
 		DictionaryFilter filter = new DictionaryFilter();
@@ -134,8 +138,6 @@ public class GluttonyConfig {
 //		filter.setWhitelistResource("dic_firstnames_ro_small.txt");
 //		filter.setWhitelistResource("dic_firstnames_ro.txt");
 //		filter.setBlacklistResource("blacklist_person_name.txt");
-		String resourceWhitelist = env.getProperty("filter.person.name.whitelist");
-		String resourceBlacklist = env.getProperty("filter.person.name.blacklist");
 		filter.setWhitelistResource(resourceWhitelist);
 		filter.setBlacklistResource(resourceBlacklist);
 		return filter;

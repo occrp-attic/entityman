@@ -25,7 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = ClassMode.AFTER_CLASS)
-@ContextConfiguration(classes={Gluttony.class, TestConfig.class})
+@ContextConfiguration(classes={TestConfig.class})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class FilterTest {
 

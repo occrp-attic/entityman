@@ -18,6 +18,8 @@
 
   <context:property-placeholder
     location="file:///etc/entityman/gluttonwar.properties" />
+    
+    
   <context:annotation-config />
 
   <context:annotation-config/>
