@@ -17,6 +17,7 @@ import org.occrp.entityman.model.entities.AEntity;
 import org.occrp.entityman.model.entities.Company;
 import org.occrp.entityman.model.entities.Person;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
