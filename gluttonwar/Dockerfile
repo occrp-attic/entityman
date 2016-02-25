@@ -33,10 +33,18 @@ RUN set -x \
 	&& rm bin/*.bat \
 	&& rm tomcat.tar.gz*
 
+RUN apt-get -qy update
+
+# install tesseract libs
+RUN apt-get -qy install libtesseract3=3.03* libtesseract-dev tesseract-ocr tesseract-ocr-eng tesseract-ocr-rus tesseract-ocr-ron
+
+RUN ln -s /usr/share/tesseract-ocr/tessdata /usr/local/share/tessdata
+RUN ldconfig
+
 # deploy
 COPY ./target/gluttonwar.war $CATALINA_HOME/webapps/
 
-ENV JAVA_OPTS "$JAVA_OPTS -Xmx4G -XX:MaxPermSize=1024m -Djava.security.egd=file:/dev/./urandom"
+ENV JAVA_OPTS "$JAVA_OPTS -Xmx4G -XX:MaxPermSize=1024m -Djava.security.egd=file:/dev/./urandom -DTESSDATA_PREFIX=/usr/share/tesseract-ocr"
 
 EXPOSE 8080
 
