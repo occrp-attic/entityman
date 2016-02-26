@@ -2,7 +2,8 @@ nerwrapper:
   build: nerwrapper/.
   ports:
     - "28080:8080"
-  volumes: []
+  volumes: 
+    - ~/.m2:/root/.m2
   links: []
 gluttonwar:
   build: gluttonwar/.
@@ -10,5 +11,13 @@ gluttonwar:
     - "18080:8080"
   volumes:
     - /etc/entityman:/etc/entityman
+    - ~/.m2:/root/.m2
   links: 
     - nerwrapper
+#buildmachine:
+#  build: ./Dockerfile_build
+#  ports: []
+#  volumnes:
+#    - ./:/root/entityman
+#  links: []
+
