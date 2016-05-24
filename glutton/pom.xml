@@ -6,7 +6,7 @@
     <artifactId>entityman</artifactId>
     <version>0.0.1</version>
   </parent>
-  
+
   <artifactId>glutton</artifactId>
   <name>glutton</name>
   <description>The file eater, extracts and expands files then extracts entities</description>
@@ -26,52 +26,23 @@
       <version>${mvn.entityman.version}</version>
     </dependency>
 
-<dependency>
-  <groupId>org.apache.httpcomponents</groupId>
-  <artifactId>httpclient</artifactId>
-  <version>4.3.4</version>
-</dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.3.4</version>
+    </dependency>
 
-<dependency>
-  <groupId>org.apache.httpcomponents</groupId>
-  <artifactId>httpmime</artifactId>
-  <version>4.3.4</version>
-</dependency>
-<!--     Logging -->
-<!--     <dependency> -->
-<!--       <groupId>org.apache.logging.log4j</groupId> -->
-<!--       <artifactId>log4j-api</artifactId> -->
-<!--       <version>${mvn.log4j2.version}</version> -->
-<!--     </dependency> -->
-<!--     <dependency> -->
-<!--       <groupId>org.apache.logging.log4j</groupId> -->
-<!--       <artifactId>log4j-core</artifactId> -->
-<!--       <version>${mvn.log4j2.version}</version> -->
-<!--     </dependency> -->
-<!--     <dependency> -->
-<!--       <groupId>org.apache.logging.log4j</groupId> -->
-<!--       <artifactId>log4j-slf4j-impl</artifactId> -->
-<!--       <version>${mvn.log4j2.version}</version> -->
-<!--     </dependency> -->
-<!--     <dependency> -->
-<!--       <groupId>org.apache.logging.log4j</groupId> -->
-<!--       <artifactId>log4j-jcl</artifactId> -->
-<!--       <version>${mvn.log4j2.version}</version> -->
-<!--     </dependency> -->
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpmime</artifactId>
+      <version>4.3.4</version>
+    </dependency>
 
     <!-- commons -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
       <version>3.0</version>
-    </dependency>
-
-    <!-- Test -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${mvn.junit.version}</version>
-      <scope>test</scope>
     </dependency>
 
     <!-- TIKA -->
@@ -93,19 +64,6 @@
       <artifactId>stanford-corenlp</artifactId>
       <version>3.5.2</version>
     </dependency>
-<!--     <dependency> -->
-<!--       <groupId>edu.stanford.nlp</groupId> -->
-<!--       <artifactId>stanford-corenlp</artifactId> -->
-<!--       <version>3.5.2</version> -->
-<!--       <classifier>models</classifier> -->
-<!--     </dependency> -->
-
-    <!-- Spring related -->
-    <!-- <dependency> -->
-    <!-- <groupId>org.springframework</groupId> -->
-    <!-- <artifactId>spring-webmvc</artifactId> -->
-    <!-- <version>${mvn.spring.version}</version> -->
-    <!-- </dependency> -->
 
     <dependency>
       <groupId>org.springframework</groupId>
@@ -138,18 +96,6 @@
       <version>${mvn.spring.version}</version>
     </dependency>
 
-<!--     <dependency> -->
-<!--       <groupId>org.springframework.security</groupId> -->
-<!--       <artifactId>spring-security-web</artifactId> -->
-<!--       <version>${mvn.spring-security.version}</version> -->
-<!--     </dependency> -->
-
-<!--     <dependency> -->
-<!--       <groupId>org.springframework.security.oauth</groupId> -->
-<!--       <artifactId>spring-security-oauth2</artifactId> -->
-<!--       <version>2.0.7.RELEASE</version> -->
-<!--     </dependency> -->
-
     <dependency>
       <groupId>org.apache.xbean</groupId>
       <artifactId>xbean-spring</artifactId>
@@ -167,22 +113,22 @@
       <artifactId>reflections</artifactId>
       <version>0.9.10</version>
     </dependency>
-    
-<!-- check version compatibility: http://tess4j.sourceforge.net/docs/index.html -->    
-<dependency>
-	<groupId>net.sourceforge.tess4j</groupId>
-	<artifactId>tess4j</artifactId>
-	<version>2.0.1</version>
-<!--	<version>1.5.0</version> -->
-</dependency>
-    
+
+    <!-- check version compatibility: http://tess4j.sourceforge.net/docs/index.html -->
+    <dependency>
+      <groupId>net.sourceforge.tess4j</groupId>
+      <artifactId>tess4j</artifactId>
+      <version>2.0.1</version>
+      <!-- <version>1.5.0</version> -->
+    </dependency>
+
 
   </dependencies>
-  
+
   <build>
     <finalName>glutton</finalName>
-  <plugins>
-  
+    <plugins>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -192,7 +138,7 @@
           <argline>-DTESSDATA_PREFIX=/usr/share/tesseract-ocr</argline>
           <systemPropertyVariables>
             <!-- <basePath>http://localhost:${test.server.port}/api</basePath> -->
-            <basePath>http://localhost:18080/</basePath>
+            <basePath>http://localhost:38080/</basePath>
             <TESSDATA_PREFIX>/usr/share/tesseract-ocr</TESSDATA_PREFIX>
           </systemPropertyVariables>
           <showSuccess>true</showSuccess>
@@ -201,44 +147,7 @@
           </environmentVariables>
         </configuration>
       </plugin>
-  
-    
-<!--             <plugin> -->
-<!--                 <groupId>org.apache.maven.plugins</groupId> -->
-<!--                 <artifactId>maven-dependency-plugin</artifactId> -->
-<!--                 <version>2.8</version> -->
-<!--                 <executions> -->
-<!--                     <execution> -->
-<!--                         <id>copy</id> -->
-<!--                         <phase>install</phase> -->
-<!--                         <goals> -->
-<!--                             <goal>copy</goal> -->
-<!--                         </goals> -->
-<!--                         <configuration> -->
-<!--                             <artifactItems> -->
-<!--                                 <artifactItem>       -->
-<!--                                  <groupId>net.sourceforge.tess4j</groupId> -->
-<!--                                     <artifactId>libtesseract</artifactId> -->
-<!--                                     <version>3.0.2</version> -->
-<!--                                     <type>so</type> -->
-<!--                                     <overWrite>false</overWrite> -->
-<!--                                     <outputDirectory>${basedir}</outputDirectory> -->
-<!--                                     <destFileName>libtesseract.so.3.0.2</destFileName> -->
-<!--                                 </artifactItem> -->
-<!--                                 <artifactItem> -->
-<!--                                     <groupId>net.sourceforge.tess4j</groupId> -->
-<!--                                     <artifactId>liblept</artifactId> -->
-<!--                                     <version>3.0.0</version> -->
-<!--                                     <type>so</type> -->
-<!--                                     <overWrite>false</overWrite> -->
-<!--                                     <outputDirectory>${basedir}</outputDirectory> -->
-<!--                                     <destFileName>liblept.so.3.0.0</destFileName> -->
-<!--                                 </artifactItem> -->
-<!--                             </artifactItems> -->
-<!--                         </configuration> -->
-<!--                     </execution> -->
-<!--                 </executions> -->
-<!--             </plugin> -->
-        </plugins>
-   </build>
+
+    </plugins>
+  </build>
 </project>

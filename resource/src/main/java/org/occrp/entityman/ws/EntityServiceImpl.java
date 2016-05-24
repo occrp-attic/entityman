@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -13,12 +12,12 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.jws.WebService;
-import javax.measure.quantity.AmountOfSubstance;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -27,7 +26,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
-import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
@@ -35,34 +33,29 @@ import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.apache.cxf.jaxrs.model.wadl.Description;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.occrp.entityman.AExpander;
 import org.occrp.entityman.dao.FactRepository;
+import org.occrp.entityman.dao.IngestedFileRepository;
 import org.occrp.entityman.dao.WorkspaceRepository;
-import org.occrp.entityman.glutton.EntityUtils;
-import org.occrp.entityman.glutton.expanders.AExpander;
 import org.occrp.entityman.ingester.Worker;
-import org.occrp.entityman.model.AMongoObject;
 import org.occrp.entityman.model.IngestedFile;
 import org.occrp.entityman.model.ServiceResult;
 import org.occrp.entityman.model.Workspace;
 import org.occrp.entityman.model.annotation.Entity;
 import org.occrp.entityman.model.entities.AEntity;
-import org.occrp.entityman.model.entities.Email;
 import org.occrp.entityman.model.entities.Fact;
-import org.occrp.entityman.model.entities.Person;
-import org.occrp.entityman.model.entities.PhoneNumber;
 import org.occrp.entityman.service.EntityManager;
 import org.reflections.Reflections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.protobuf.DescriptorProtos.SourceCodeInfo.Location;
-import com.sun.jndi.toolkit.url.Uri;
+import org.springframework.data.domain.Sort;
 
 @WebService
 @Path("/entities/")
 public class EntityServiceImpl implements EntityService {
 
+	
+	
 	protected Logger log = LogManager.getLogger(getClass().getName());
 
 	@Autowired
@@ -98,23 +91,90 @@ public class EntityServiceImpl implements EntityService {
 		return entitySet;
 	}
 
+	Sort sortDescDom = new Sort(new Sort.Order(Sort.Direction.DESC,"dom"));
+	Sort sortDescDob = new Sort(new Sort.Order(Sort.Direction.DESC,"dob"));
+	
 	@Override
 	@GET
 	@Path("/workspaces/")
 	@Produces("application/json; charset=UTF-8")
 	@Consumes("application/json; charset=UTF-8")
 	@Description("Returns currently available workspaces")
-	public Set<String> getWorkspaces() {
-		Set<String> res = new HashSet<String>();
+	public Set<Workspace> getWorkspaces() {
+		Set<Workspace> res = new LinkedHashSet<>();
 		
-		List<Workspace> ws = workspaceRepository.findAll();
+		//TODO user
+		String user= "";
 		
-		for (Workspace w : ws) {
-			res.add(w.getName());
-		}
+		List<Workspace> ws = workspaceRepository.findAll(sortDescDom);
+		
+		res.addAll(ws);
 
+		if (res.size()==0) {
+			res.add(makeWorkspace(WORKSPACE_DEFAULT));
+		}
+		
 		return res;
 	}
+
+	
+	@Override
+	public Workspace makeWorkspace(String name) {
+		// TODO user
+		String user = "";
+		Workspace w = workspaceRepository.findBy(name); 
+
+		if (w == null ) {
+			w = new Workspace();
+			w.setName(name);
+			w.setUser(user);
+			w.setPath(createWorkspacePath(name));
+			workspaceRepository.save(w);
+		}
+		
+		return w;
+	}
+
+	
+	
+	@Override
+	public Workspace removeWorkspace(String name) {
+		// TODO user
+		String user = "";
+		
+		Workspace w = workspaceRepository.findBy(name);
+		
+		if (w!=null) {
+			log.info("Removing workspace : {}",w);
+
+			Set<Class> entityClasses = new HashSet<Class>();
+			entityClasses.addAll(entityManager.getEntityMap().values());
+			entityClasses.add(Fact.class);
+			entityClasses.add(IngestedFile.class);
+			
+			Long countEntities = 0L; 
+			for (Class c : entityClasses) {
+				log.info("removing entities from workspaces by type : {}",c.getSimpleName());
+				countEntities += entityManager.removeAllEntities(c,name);
+			}
+			
+			log.info("Removing folder for workspace {} {}",name,w.getPath());
+			if (w.getPath()!=null) {
+				try {
+					FileUtils.deleteDirectory(new File(w.getPath()));
+				} catch (IOException e) {
+					log.error("Failed to remove files from workspace path : {}", w.getPath(),e);
+				}
+			}
+			
+			w.setEntitiesCount(countEntities);
+			
+			workspaceRepository.delete(w.getId());
+		}
+		
+		return w;
+	}
+
 
 	@Override
 	public ServiceResult<List<List<Object>>> getAllEntities(
@@ -166,18 +226,26 @@ public class EntityServiceImpl implements EntityService {
 		return null;
 	}
 	
-	@Value("${folder.input:/opt/entityman/input}")
-	private String folder_input;
-	@Value("${folder.complete:/opt/entityman/complete}")
-	private String folder_complete;
-	@Value("${folder.error:/opt/entityman/error}")
-	private String folder_error;
-	@Value("${folder.tmp:/opt/entityman/tmp}")
-	private String folder_tmp;
+//	@Value("${folder.input:/opt/entityman/input}")
+//	private String folder_input;
+//	@Value("${folder.complete:/opt/entityman/complete}")
+//	private String folder_complete;
+//	@Value("${folder.error:/opt/entityman/error}")
+//	private String folder_error;
+//	@Value("${folder.tmp:/opt/entityman/tmp}")
+//	private String folder_tmp;
+
+	@Value("${folder.data:/opt/entityman/data}")
+	private String folder_data;
+
+	public String createWorkspacePath(String workspaceName) {
+		String path = folder_data + 
+				(folder_data.endsWith("/") ? "":"/") + workspaceName;
+		return path;
+	}
 
 	public File createFilePath(String workspaceName,String filename) throws IOException {
-		String path = folder_tmp + 
-				(folder_tmp.endsWith("/") ? "":"/") + workspaceName;
+		String path = createWorkspacePath(workspaceName);
 		FileUtils.forceMkdir(new File(path));
 		for (int i = -1; i < 1000000; i++) {
 			File file = new File(path+"/"+(i<0?"":"a"+i+"_")+filename);
@@ -192,13 +260,15 @@ public class EntityServiceImpl implements EntityService {
 
 		ServiceResult<List<AEntity>> sr = new ServiceResult<>();
 		
+		String user="";
 		Workspace w = workspaceRepository.findBy(workspace);
 		if (w==null) {
 			w = new Workspace();
 			w.setName(workspace);
+			w.setUser(user);
+			w.setPath(createWorkspacePath(workspace));
 		}
 
-		w.setIngestCount(w.getIngestCount()+1);
 		workspaceRepository.save(w);
 
 		List<IngestedFile> files = new ArrayList<IngestedFile>();
@@ -233,7 +303,10 @@ public class EntityServiceImpl implements EntityService {
 				
 				aes.addAll(worker.call(file));
 				aes.add(file);
+				w.setIngestCount(w.getIngestCount()+1);
 			}
+
+			workspaceRepository.save(w);
 
 			sr.setO(aes);
 			sr.setC(ServiceResult.CODE_OK);
@@ -254,6 +327,20 @@ public class EntityServiceImpl implements EntityService {
 
 	@Autowired
 	EntityManager entityManager;
+
+	private Map<String,List<AEntity>> getAllEntities(String workspaceName){
+		Map<String,List<AEntity>> map = new HashMap<>();
+		Set<Class> entityClasses = new HashSet<Class>();
+		entityClasses.addAll(entityManager.getEntityMap().values());
+		entityClasses.add(Fact.class);
+		entityClasses.add(IngestedFile.class);
+		
+		for (Class c : entityClasses) {
+			List<AEntity> aes = entityManager.findAllEntities(c,workspaceName);
+			map.put(c.getSimpleName(), aes);
+		}
+		return map;
+	}
 	
 	@Override
 	public ServiceResult<Map<String, Object>> getWorkspace(String name) {
@@ -265,16 +352,22 @@ public class EntityServiceImpl implements EntityService {
 		
 		Workspace w = workspaceRepository.findBy(name);
 		
-		if (w!=null) map.put("workspace", w);
-
-		Set<Class> entityClasses = new HashSet<Class>();
-		entityClasses.addAll(entityManager.getEntityMap().values());
-		entityClasses.add(Fact.class);
-		entityClasses.add(IngestedFile.class);
-		
-		for (Class c : entityClasses) {
-			List<AEntity> aes = entityManager.findAllEntities(c,name);
-			map.put(c.getSimpleName(), aes);
+		if (w!=null) {
+			Long entitiesCount = 0L;
+			
+			map.put("workspace", w);
+			Set<Class> entityClasses = new HashSet<Class>();
+			entityClasses.addAll(entityManager.getEntityMap().values());
+			entityClasses.add(Fact.class);
+			entityClasses.add(IngestedFile.class);
+			
+			for (Class c : entityClasses) {
+				List<AEntity> aes = entityManager.findAllEntities(c,name);
+				map.put(c.getSimpleName(), aes);
+				entitiesCount+=aes.size();
+			}
+			
+			w.setEntitiesCount(entitiesCount);
 		}
 		
 		sr.setO(map);
@@ -392,5 +485,48 @@ public class EntityServiceImpl implements EntityService {
 		sr.setO(res);
 		return sr;
 	}
+
+	@Autowired
+	IngestedFileRepository ingestedFileRepository;
+	
+	@Override
+	public ServiceResult<String> removeFile(String fileId) {
+		// TODO user
+		String user = "";
+
+		String res = "File not found"; 
+		ServiceResult<String> sr = new ServiceResult<>();
+		sr.setC(ServiceResult.CODE_ERROR);
+		
+		IngestedFile ifile = ingestedFileRepository.findOne(new BigInteger(fileId));
+		
+		if (ifile!=null) {
+			log.info("Removing File : {}",ifile);
+			
+			Workspace w = workspaceRepository.findBy(ifile.getWorkspace());
+
+			if (w!=null) {
+				try {
+					FileUtils.forceDelete(new File(ifile.getFileUri()));
+				} catch (IOException e) {
+					log.error("Failed to delete file : {}",ifile,e);
+				}
+				
+				ingestedFileRepository.delete(ifile);
+				
+				w.setIngestCount(w.getIngestCount()-1);
+				
+				workspaceRepository.save(w);
+				sr.setC(ServiceResult.CODE_OK);
+				res = "File was removed :"+fileId;
+			} else {
+				res = "Workspace not found";
+			}
+		}
+		
+		sr.setO(res);
+		return sr;
+	}
+
 	
 }

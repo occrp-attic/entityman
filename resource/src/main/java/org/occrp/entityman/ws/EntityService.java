@@ -22,6 +22,7 @@ import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.apache.cxf.jaxrs.model.wadl.Description;
 import org.occrp.entityman.model.AMongoObject;
 import org.occrp.entityman.model.ServiceResult;
+import org.occrp.entityman.model.Workspace;
 import org.occrp.entityman.model.entities.AEntity;
 import org.occrp.entityman.model.entities.Fact;
 
@@ -29,6 +30,8 @@ import org.occrp.entityman.model.entities.Fact;
 @Description("Entity accessing services")
 public interface EntityService extends ARestService{
 
+	public static String WORKSPACE_DEFAULT="default";
+	
 	@GET
 	@Path("/entityTypes/")
 	@Produces(defaultMimeType)
@@ -41,7 +44,34 @@ public interface EntityService extends ARestService{
 	@Produces(defaultMimeType)
 	@Consumes(defaultMimeType)
 	@Description("Returns currently available workspaces")
-	public Set<String> getWorkspaces();	
+	public Set<Workspace> getWorkspaces();	
+
+	@GET
+	@Path("/mkworkspace/{name}")
+	@Produces(defaultMimeType)
+	@Consumes(defaultMimeType)
+	@Description("Make new workspace")
+	public Workspace makeWorkspace(
+			@Description("Workspace name") @PathParam("name")
+			@DefaultValue(WORKSPACE_DEFAULT) String name);	
+
+	@GET
+	@Path("/rmworkspace/{name}")
+	@Produces(defaultMimeType)
+	@Consumes(defaultMimeType)
+	@Description("Make new workspace")
+	public Workspace removeWorkspace(
+			@Description("Workspace name") @PathParam("name")
+			@DefaultValue(WORKSPACE_DEFAULT) String name);	
+
+	@GET
+	@Path("/deletefile/{fileId}")
+	@Produces(defaultMimeType)
+	@Consumes(defaultMimeType)
+	@Description("Delete file")
+	public ServiceResult<String> removeFile(
+			@Description("File id") @PathParam("fileId")
+			String fileId);	
 
 	@GET
 	@Path("/workspace/{name}")
@@ -50,7 +80,7 @@ public interface EntityService extends ARestService{
 	@Description("Returns all entities in the workspace")
 	public ServiceResult<Map<String,Object>> getWorkspace(
 			@Description("Workspace name to retrieve") @PathParam("name")
-			@DefaultValue("default") String name);	
+			@DefaultValue(WORKSPACE_DEFAULT) String name);	
 
 	@GET
 	@Path("/factstats/{name}")
@@ -59,7 +89,7 @@ public interface EntityService extends ARestService{
 	@Description("Returns all entities in the workspace")
 	public ServiceResult<Map<String, Map<String,Integer>>> getFactStats(
 			@Description("Workspace name to retrieve") @PathParam("name")
-			@DefaultValue("default") String name);	
+			@DefaultValue(WORKSPACE_DEFAULT) String name);	
 
 	@GET
 	@Path("/all/{entityName}/{workspace}")
@@ -70,7 +100,7 @@ public interface EntityService extends ARestService{
 			@Description("Entity type to retrieve") @PathParam("entityName")
 			@DefaultValue("IngestedFile") String entityName,
 			@Description("Workspace to retrieve") @PathParam("workspace")
-			@DefaultValue("default") String workspace);	
+			@DefaultValue(WORKSPACE_DEFAULT) String workspace);	
 
 	@GET
 	@Path("/byId/{entityName}/{id}")
@@ -110,7 +140,7 @@ public interface EntityService extends ARestService{
 	@Description("Ingest Files")
 	public ServiceResult<String> ingestAsync( 
 			@Description("Workspace to ingest into ") @PathParam("workspace")
-			@DefaultValue("default") String workspace);	
+			@DefaultValue(WORKSPACE_DEFAULT) String workspace);	
 
 	@POST
 	@Path("/ingestSync/{workspace}")
@@ -121,7 +151,7 @@ public interface EntityService extends ARestService{
 			MultipartBody body,
 		    @Context HttpServletRequest request,			
 			@Description("Workspace to ingest into ") @PathParam("workspace") 
-			@DefaultValue("default") String workspace);	
+			@DefaultValue(WORKSPACE_DEFAULT) String workspace);	
 	
 	@GET
 	@Path("/getFile/{id}")

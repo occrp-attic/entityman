@@ -1,19 +1,46 @@
 nerwrapper:
   build: nerwrapper/.
   ports:
-    - "28080:8080"
+    - "38180:8080"
   volumes: 
+    - /opt/entityman/config:/etc/entityman
     - ~/.m2:/root/.m2
+    - /opt/entityman/docked/nerwrapper/logs:/opt/tomcat/logs
   links: []
 gluttonwar:
   build: gluttonwar/.
   ports:
-    - "18080:8080"
+    - "38080:8080"
   volumes:
-    - /etc/entityman:/etc/entityman
+    - /opt/entityman/config:/etc/entityman
     - ~/.m2:/root/.m2
+    - /opt/entityman/docked/gluttonwar/data:/opt/entityman
+    - /opt/entityman/docked/gluttonwar/logs:/opt/tomcat/logs
   links: 
     - nerwrapper
+resource-data:
+  build: resource/.
+  dockerfile: Dockerfile_data
+  ports:
+    - "37017:27017"
+  volumes:
+    - /opt/entityman/config:/etc/entityman
+    - /opt/entityman/docked/resource/mongodb/data:/var/lib/mongodb
+    - /opt/entityman/docked/resource/mongodb/logs:/var/log/mongodb
+  links: 
+    - gluttonwar
+resource:
+  build: resource/.
+  ports:
+    - "38280:8080"
+  volumes:
+    - /opt/entityman/config:/etc/entityman
+    - ~/.m2:/root/.m2
+    - /opt/entityman/resource/data:/opt/entityman/data
+    - /opt/entityman/docked/resource/logs:/opt/tomcat/logs
+  links: 
+    - gluttonwar
+    - resource-data
 #buildmachine:
 #  build: ./Dockerfile_build
 #  ports: []

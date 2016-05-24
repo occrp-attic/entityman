@@ -19,7 +19,7 @@
   <import resource="classpath:META-INF/cxf/cxf.xml" />
 
   <context:property-placeholder
-    location="file:///etc/entityman/entityman.properties" />
+    location="file:///etc/entityman/resource.properties" />
   <context:annotation-config />
 
   <bean class="org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer" />
@@ -27,7 +27,7 @@
 
   <context:component-scan base-package="org.occrp.entityman" />
 
-  <bean id="securityConfiguration" class="org.occrp.entityman.SecurityConfiguration" />
+<!--   <bean id="securityConfiguration" class="org.occrp.entityman.SecurityConfiguration" /> -->
 
   <bean id="entityServiceImpl" class="org.occrp.entityman.ws.EntityServiceImpl" />
 
@@ -65,7 +65,7 @@
     </jaxrs:outInterceptors>
   </jaxrs:server>
 
-  <jaxrs-client:client id="apiClient" address="http://127.0.0.1:18080/entities"
+  <jaxrs-client:client id="apiClient" address="http://127.0.0.1:38080/entities"
     serviceClass="org.occrp.entityman.ws.EntityService"
     inheritHeaders="true">
     <jaxrs-client:providers>
@@ -149,7 +149,9 @@
 <!--     <ref bean="extractorStanford"/> -->
 <!--   </util:list> -->
 
-  <bean id="gluttony" class="org.occrp.entityman.glutton.Gluttony" ></bean>
+<!--   <bean id="gluttony" class="org.occrp.entityman.glutton.Gluttony" ></bean> -->
+
+  <bean id="gluttonyRest" class="org.occrp.entityman.ingester.GluttonyRest" ></bean>
 
   <bean id="worker" class="org.occrp.entityman.ingester.Worker" >
 <!--     <property name="expanders" ref="expanders" /> -->

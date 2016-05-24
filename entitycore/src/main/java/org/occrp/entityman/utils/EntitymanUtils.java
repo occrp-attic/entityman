@@ -6,8 +6,15 @@ public class EntitymanUtils {
 		start = start - radius;
 		end = end + radius;
 		
-		return s.substring(start < 0 ? 0 : start, 
+		String text = s.substring(start < 0 ? 0 : start, 
 				end > s.length() ? s.length() : end);
+		
+		text = text.replace("\n", " ").replace("\r", " ")
+				.replace("\t", " ");
+		
+		while (text.indexOf("  ")>=0) text = text.replace("  ", " ");
+		
+		return text;
 	}
 
 }

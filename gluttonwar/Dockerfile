@@ -1,7 +1,7 @@
 FROM airdock/oracle-jdk:latest
 MAINTAINER Ciubara Ion <builtofire@gmail.com>
 
-ENV CATALINA_HOME /usr/local/tomcat
+ENV CATALINA_HOME /opt/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
 RUN mkdir -p "$CATALINA_HOME"
 WORKDIR $CATALINA_HOME
@@ -21,8 +21,8 @@ RUN gpg --keyserver pool.sks-keyservers.net --recv-keys \
 	F3A04C595DB5B6A5F1ECA43E3B7BBB100D811BBE \
 	F7DA48BB64BCB84ECBA7EE6935CD23C10D498E23
 
-ENV TOMCAT_MAJOR 7
-ENV TOMCAT_VERSION 7.0.67
+ENV TOMCAT_MAJOR 8
+ENV TOMCAT_VERSION 8.0.35
 ENV TOMCAT_TGZ_URL https://www.apache.org/dist/tomcat/tomcat-$TOMCAT_MAJOR/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz
 
 RUN set -x \
@@ -50,11 +50,9 @@ RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/bina
 
 ENV MAVEN_HOME /usr/share/maven
 
-VOLUME /root/.m2
-
 # build all
-RUN cd /root/entityman
-RUN mvn clean install -Dmaven.test.skip=true
+#RUN cd /root/entityman
+#RUN mvn clean install -Dmaven.test.skip=true
 
 # deploy
 COPY ./target/gluttonwar.war $CATALINA_HOME/webapps/
@@ -63,7 +61,9 @@ ENV JAVA_OPTS "$JAVA_OPTS -Xmx4G -XX:MaxPermSize=1024m -Djava.security.egd=file:
 
 EXPOSE 8080
 
-VOLUME /etc/entityman
+#VOLUME /etc/entityman
+#VOLUME /opt
+#VOLUME /root/.m2
 
 RUN mkdir /opt/entityman/
 

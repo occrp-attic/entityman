@@ -11,6 +11,7 @@ import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.ParserDecorator;
 import org.apache.tika.parser.pdf.PDFParser;
 import org.apache.tika.parser.pdf.PDFParserConfig;
+import org.occrp.entityman.AExpander;
 import org.occrp.entityman.model.IngestedFile;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.helpers.DefaultHandler;

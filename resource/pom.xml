@@ -19,38 +19,27 @@
   </organization>
 
   <properties>
-    <!-- <mvn.project.build.sourceEncoding>UTF-8</mvn.project.build.sourceEncoding> -->
-
-    <!-- <mvn.spring.version>4.1.7.RELEASE</mvn.spring.version> -->
-    <!-- <mvn.spring-security.version>4.0.2.RELEASE</mvn.spring-security.version> -->
-    <!-- <mvn.spring.data.version>1.7.1.RELEASE</mvn.spring.data.version> -->
-    <!-- <mvn.spring.boot.version/> -->
-
-    <!-- <mvn.cxf.version>3.1.1</mvn.cxf.version> -->
-
-    <!-- <mvn.jackson.version>1.9.13</mvn.jackson.version> -->
-
-    <!-- logging -->
-    <!-- <mvn.log4j2.version>2.0-rc1</mvn.log4j2.version> -->
-
-    <!-- test related -->
-    <!-- <mvn.junit.version>4.11</mvn.junit.version> -->
-
   </properties>
 
   <dependencies>
 
     <dependency>
       <groupId>org.occrp.entityman</groupId>
-      <artifactId>glutton</artifactId>
+      <artifactId>entitycore</artifactId>
       <version>${mvn.entityman.version}</version>
     </dependency>
 
-    <!-- <dependency> -->
-    <!-- <groupId>commons-beanutils</groupId> -->
-    <!-- <artifactId>commons-beanutils</artifactId> -->
-    <!-- <version>1.9.2</version> -->
-    <!-- </dependency> -->
+  <dependency>
+    <groupId>commons-beanutils</groupId>
+    <artifactId>commons-beanutils</artifactId>
+    <version>1.9.2</version>
+    <exclusions>
+      <exclusion>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+      </exclusion>
+    </exclusions>
+  </dependency>
 
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -101,6 +90,20 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-security</artifactId>
       <version>1.0.3.RELEASE</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.tomcat.embed</groupId>
+          <artifactId>tomcat-embed-logging-juli</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     
     <dependency>
@@ -130,6 +133,12 @@
       <groupId>org.apache.xbean</groupId>
       <artifactId>xbean-spring</artifactId>
       <version>3.7</version>
+    <exclusions>
+      <exclusion>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+      </exclusion>
+    </exclusions>
     </dependency>
 
     <!-- CXF -->
@@ -193,56 +202,6 @@
       <version>2.4</version>
     </dependency>
 
-    <!-- Logging -->
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>${mvn.log4j2.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>${mvn.log4j2.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>${mvn.log4j2.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-jcl</artifactId>
-      <version>${mvn.log4j2.version}</version>
-    </dependency>
-
-    <!-- commons -->
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>3.0</version>
-    </dependency>
-
-    <!-- Test -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${mvn.junit.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-
-    <!-- <dependency> -->
-    <!-- <groupId>org.springframework.boot</groupId> -->
-    <!-- <artifactId>spring-boot-starter</artifactId> -->
-    <!-- <version>1.0.2.RELEASE</version> -->
-    <!-- </dependency> -->
-    <!-- <dependency> -->
-    <!-- <groupId>org.springframework.boot</groupId> -->
-    <!-- <artifactId>spring-boot-starter-test</artifactId> -->
-    <!-- <version>1.0.2.RELEASE</version> -->
-    <!-- <scope>test</scope> -->
-    <!-- </dependency> -->
-
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-mongodb</artifactId>
@@ -254,12 +213,10 @@
       <artifactId>reflections</artifactId>
       <version>0.9.10</version>
     </dependency>
-
-
   </dependencies>
 
   <build>
-    <finalName>entityman</finalName>
+    <finalName>emres</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -273,8 +230,17 @@
       </plugin>
 
       <plugin>
-        <groupId>org.mortbay.jetty</groupId>
+        <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
+        <version>9.3.7.v20160115</version>
+        <configuration>
+          <httpConnector>
+            <port>18280</port>
+          </httpConnector>
+<!--           <webApp> -->
+<!--             <contextPath>/emres</contextPath> -->
+<!--           </webApp> -->
+        </configuration>
       </plugin>
 
       <plugin>
@@ -286,7 +252,7 @@
           <argline>-DTESSDATA_PREFIX=/usr/share/tesseract-ocr</argline>
           <systemPropertyVariables>
             <!-- <basePath>http://localhost:${test.server.port}/api</basePath> -->
-            <basePath>http://localhost:18080/</basePath>
+            <basePath>http://localhost:38080/</basePath>
             <TESSDATA_PREFIX>/usr/share/tesseract-ocr</TESSDATA_PREFIX>
           </systemPropertyVariables>
           <showSuccess>true</showSuccess>

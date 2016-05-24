@@ -21,8 +21,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-import org.occrp.entityman.glutton.EntityUtils;
-import org.occrp.entityman.model.AMongoObject;
 import org.occrp.entityman.model.IngestedFile;
 import org.occrp.entityman.model.ServiceResult;
 import org.occrp.entityman.model.Workspace;
@@ -48,7 +46,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class WorkerTest {
 
 	// This variable is populated from surfire and reserve port maven plugin
-    @Value("#{systemProperties['basePath'] ?: \"http://localhost:18080/\"}")
+    @Value("#{systemProperties['basePath'] ?: \"http://localhost:38080/\"}")
     private String basePath;
 
     // I assume that you have in your spring context the rest server

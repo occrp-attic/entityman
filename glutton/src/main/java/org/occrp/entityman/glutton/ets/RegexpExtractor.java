@@ -7,8 +7,9 @@ import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.occrp.entityman.AExpander;
+import org.occrp.entityman.AExtractor;
 import org.occrp.entityman.glutton.EntityUtils;
-import org.occrp.entityman.glutton.expanders.AExpander;
 import org.occrp.entityman.model.IngestedFile;
 import org.occrp.entityman.model.entities.AEntity;
 import org.occrp.entityman.model.entities.Fact;

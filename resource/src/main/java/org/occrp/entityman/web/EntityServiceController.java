@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -17,8 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.jws.WebService;
-import javax.measure.quantity.AmountOfSubstance;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -27,7 +24,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
-import javax.ws.rs.core.UriBuilder;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
@@ -35,34 +31,24 @@ import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.apache.cxf.jaxrs.model.wadl.Description;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.occrp.entityman.AExpander;
 import org.occrp.entityman.dao.FactRepository;
 import org.occrp.entityman.dao.WorkspaceRepository;
-import org.occrp.entityman.glutton.EntityUtils;
-import org.occrp.entityman.glutton.expanders.AExpander;
 import org.occrp.entityman.ingester.Worker;
-import org.occrp.entityman.model.AMongoObject;
 import org.occrp.entityman.model.IngestedFile;
 import org.occrp.entityman.model.ServiceResult;
 import org.occrp.entityman.model.Workspace;
 import org.occrp.entityman.model.annotation.Entity;
 import org.occrp.entityman.model.entities.AEntity;
-import org.occrp.entityman.model.entities.Email;
 import org.occrp.entityman.model.entities.Fact;
-import org.occrp.entityman.model.entities.Person;
-import org.occrp.entityman.model.entities.PhoneNumber;
 import org.occrp.entityman.service.EntityManager;
 import org.occrp.entityman.ws.EntityService;
 import org.reflections.Reflections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.security.oauth2.resource.EnableOAuth2Resource;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.protobuf.DescriptorProtos.SourceCodeInfo.Location;
-import com.sun.jndi.toolkit.url.Uri;
 
 @RequestMapping("/")
 @RestController
@@ -110,15 +96,13 @@ public class EntityServiceController implements EntityService {
 	@Produces("application/json; charset=UTF-8")
 	@Consumes("application/json; charset=UTF-8")
 	@Description("Returns currently available workspaces")
-	public Set<String> getWorkspaces() {
-		Set<String> res = new HashSet<String>();
+	public Set<Workspace> getWorkspaces() {
+		Set<Workspace> res = new HashSet<Workspace>();
 		
 		List<Workspace> ws = workspaceRepository.findAll();
 		
-		for (Workspace w : ws) {
-			res.add(w.getName());
-		}
-
+		res.addAll(ws);
+		
 		return res;
 	}
 
@@ -398,5 +382,24 @@ public class EntityServiceController implements EntityService {
 		sr.setO(res);
 		return sr;
 	}
+
+	@Override
+	public Workspace makeWorkspace(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Workspace removeWorkspace(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ServiceResult<String> removeFile(String fileId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }

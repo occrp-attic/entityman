@@ -1,0 +1,15 @@
+default.language=en
+
+# for storing notifications history
+mongo.host=127.0.0.1
+mongo.port=27017
+mongo.dbname=entityman
+
+#folder.input=/opt/entityman/input
+#folder.complete=/opt/entityman/complete
+#folder.error=/opt/entityman/error
+#folder.tmp=/opt/entityman/tmp
+
+folder.data=/opt/entityman/data
+
+gluttonwar.url=http://127.0.0.1:18080/gluttonwar/app/consume

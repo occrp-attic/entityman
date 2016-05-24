@@ -1,14 +1,10 @@
 package org.occrp.entityman.ingester;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.occrp.entityman.dao.IngestedFileRepository;
-import org.occrp.entityman.glutton.Gluttony;
-import org.occrp.entityman.glutton.ets.Extractor;
-import org.occrp.entityman.glutton.expanders.Expander;
 import org.occrp.entityman.model.IngestedFile;
 import org.occrp.entityman.model.entities.AEntity;
 import org.occrp.entityman.service.EntityManager;
@@ -25,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class Worker {
 	
 	@Autowired
-	Gluttony gluttony;
+	GluttonyRest gluttonRest;
 
 	protected Logger log = LogManager.getLogger(getClass().getName());
 
@@ -49,12 +45,17 @@ public class Worker {
 	}
 
 	public List<AEntity> call(IngestedFile file) throws Exception {
+		file.setStatus(IngestedFile.STATUS_INPROGRESS);
 		ingestedFileRepository.save(file);
 		
-		List<AEntity> res = gluttony.call(file);
+		List<AEntity> res = gluttonRest.call(file);
+
+		log.info("Entity resolved : {}",res);
 		
 		res = entityManager.merge(res);
 		
+		file.setStatus(IngestedFile.STATUS_COMPLETE);
+		file.getFileIds().add(file.getId());
 		ingestedFileRepository.save(file);
 
 		// TODO and after completing the worker will move the file to complete/error folder

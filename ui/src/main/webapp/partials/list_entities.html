@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="../3rd/bootstrap-3.3.6-dist/css/bootstrap.css">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-md-6"><span class="panel-title">Entities</span></div>
+      <div class="col-md-6"><span class="pull-right"><input type="search" ng-model="entityFilter.label" placeholder="filter"> </span></div>
+    </div>
+  </div>
+  <div class="panel-body"></div>
+  <table class="table table-striped">
+    <tr>
+      <th>Type</th>
+      <th>Name</th>
+      <th>Files</th>
+      <th>Count</th>
+    </tr>
+    <tr ng-repeat="entity in shownEntities | filter : entityFilter">
+      <td>{{entity.type}}</td>
+      <td><a href="#/entity/{{entity.type}}/{{entity.id}}">{{entity.label}}</a></td>
+      <td><a href="#/entity/{{entity.type}}/{{entity.id}}">
+          <div class="badge">{{entity.fileIds.length}}</div>
+      </a></td>
+      <td><a href="#/entity/{{entity.type}}/{{entity.id}}">
+          <div class="badge">{{factstats[entity.type.toLowerCase()][entity.id]}}</div>
+      </a></td>
+    </tr>
+  </table>
+</div>
+

@@ -17,10 +17,10 @@ public abstract class AMongoObject extends AObject {
 	@Id
 	private BigInteger id;
 	
-	@JsonIgnore
+//	@JsonIgnore
 	private Date dob;
 	
-	@JsonIgnore
+//	@JsonIgnore
 	private Date dom;
 
 	/**

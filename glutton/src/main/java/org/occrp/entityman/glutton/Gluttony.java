@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.occrp.entityman.glutton.ets.Extractor;
-import org.occrp.entityman.glutton.expanders.Expander;
+import org.occrp.entityman.Expander;
+import org.occrp.entityman.Extractor;
 import org.occrp.entityman.glutton.filters.Filter;
 import org.occrp.entityman.model.IngestedFile;
 import org.occrp.entityman.model.entities.AEntity;

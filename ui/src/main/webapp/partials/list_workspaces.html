@@ -1,0 +1,39 @@
+  Active workspace : {{activeWorkspace.name}} <br>
+  New workspace : <input type="text" ng-model="workspaceNewName">
+  <input type="button" value="Create Workspace" ng-click="makeWorkspace()">
+    <table class="table table-striped">
+      <tr>
+        <th>Workspace</th>
+        <th>Files</th>
+        <th></th>
+      </tr>
+      <tr ng-repeat="workspace in shownWorkspaces">
+        <td><a ng-click="selectWorkspace(workspace)">{{workspace.name}}</a></td>
+        <td>{{workspace.count}}</td>
+        <td class="text-right">
+          <a ng-click="confirmDeleteWorkspace(workspace)">
+            <i class="fa fa-cloud-download"></i> Delete
+          </a>
+        </td>
+      </tr>
+    </table>
+
+  <div id="containerWorkspaces" class="container">
+  <div class="input-group input-group-lg">
+    <span class="input-group-addon">Active workspace</span>
+    <input type="text" class="form-control" value="{{activeWorkspace.name}}" readonly="readonly">
+  </div>
+  <div class="input-group input-group-lg">
+    <span class="input-group-addon">New workspace</span>
+    <input type="text" class="form-control" placeholder="New workspace" ng-model="workspaceNewName">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="button" ng-click="makeWorkspace()">Create workspace</button>
+    </span>
+  </div>
+  <ul class="list-group">
+    <li class="list-group-item" ng-repeat="workspace in shownWorkspaces">
+      {{workspace.name}}<span class="badge">{{workspace.count}}</span>
+      <a ng-click="confirmDeleteWorkspace(workspace)"><span class="glyphicon glyphicon-remove text-right"></span>
+    </li>
+  </ul>
+  </div>

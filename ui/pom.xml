@@ -1,24 +1,50 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.occrp.entityman</groupId>
-    <artifactId>entityman</artifactId>
-    <version>0.0.1</version>
-  </parent>
+<!--   <parent> -->
+<!--   <groupId>org.occrp.entityman</groupId> -->
+<!--   <artifactId>entityman</artifactId> -->
+<!--   <version>0.0.1</version> -->
+<!--   </parent> -->
+  <groupId>org.occrp.entityman</groupId>
   <artifactId>ui</artifactId>
+  <version>0.0.1</version>
   <name>ui</name>
+  <packaging>war</packaging>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
+      <groupId>org.apache.geronimo.specs</groupId>
+      <artifactId>geronimo-servlet_3.0_spec</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <finalName>emui</finalName>
+
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>9.3.7.v20160115</version>
+        <configuration>
+          <httpConnector>
+            <port>18180</port>
+          </httpConnector>
+          <webApp>
+            <contextPath>/emui</contextPath>
+          </webApp>
+        </configuration>
+      </plugin>
+    </plugins>
+
+  </build>
 </project>

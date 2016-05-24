@@ -136,8 +136,8 @@ entityman.directive('entityListing', function () {
     },
     templateUrl: 'entity_listing.html',
     link: function (scope, element, attrs, model) {
-      console.log("entities ax : %o",scope.entities);
-      console.log("scope.factstats ax : %o",scope.factstats);
+//      console.log("entities ax : %o",scope.entities);
+//      console.log("scope.factstats ax : %o",scope.factstats);
       scope.shownEntities = [];
 
       scope.$watch('entities', function(entities) {

@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -78,7 +79,9 @@ public class GluttonyController {
 	@RequestMapping(value = "/consume", method = RequestMethod.POST)
 	public @ResponseBody ServiceResult<EntityList> consume(
 			@RequestParam(value = "lang", defaultValue = "en") String lang,
-			@RequestParam(value="workspace", defaultValue="default") String workspace,
+			@RequestParam(value = "doOcr", defaultValue = "true") boolean doOcr,
+			@RequestParam(value="workspace", required=false) String workspace,
+			@RequestParam(value="fileId", required=false) String fileId,
 			@RequestParam("file") MultipartFile file) {
 
 		ServiceResult<EntityList> res = new ServiceResult<>();
@@ -91,6 +94,9 @@ public class GluttonyController {
 			} else {
 				IngestedFile ingestedFile = new IngestedFile();
 				ingestedFile.setFile(tmpFile);
+				if (fileId!=null && fileId.length()>0) ingestedFile.setId(new BigInteger(fileId));
+				ingestedFile.setWorkspace(workspace);
+				ingestedFile.getEntities().put("doOcr", doOcr);
 				log.info("Eating file : {}, {}", file.getOriginalFilename(), ingestedFile);
 				List<AEntity> entities = gluttony.call(ingestedFile);
 
@@ -112,7 +118,10 @@ public class GluttonyController {
 	@RequestMapping(value = "/consumeMultiple", method = RequestMethod.POST)
 	public @ResponseBody ServiceResult<EntityList> consumeMultiple(
 			@RequestParam(value="lang", defaultValue="en") String lang,
-			@RequestParam(value="workspace", defaultValue="default") String workspace,
+			@RequestParam(value = "doOcr", defaultValue = "true") boolean doOcr,
+			@RequestParam(value="workspace", required=false) String workspace,
+			@RequestParam(value="fileId", required=false) String fileId,
+			
 			@RequestParam("file") MultipartFile[] files) {
 
 		ServiceResult<EntityList> res = new ServiceResult<>();
@@ -131,6 +140,8 @@ public class GluttonyController {
 					ingestedFile.setWorkspace(workspace);
 					ingestedFile.setFile(tmpFile);
 					ingestedFile.setOriginalFilename(file.getOriginalFilename());
+					if (fileId!=null && fileId.length()>0) ingestedFile.setId(new BigInteger(fileId));
+					ingestedFile.setWorkspace(workspace);
 					
 					log.info("Eating file : {}, {}", file.getOriginalFilename(), ingestedFile);
 					List<AEntity> entities = gluttony.call(ingestedFile);

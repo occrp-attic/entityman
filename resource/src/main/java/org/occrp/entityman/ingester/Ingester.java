@@ -81,10 +81,8 @@ public class Ingester implements Runnable {
 			
 			if (files.size()>0) {
 				for (File f : files) {
-					
 					// TODO send files into the blocking queue to be processed by workers
 					// the file will be moved from worker thread
-					
 					try {
 						FileUtils.moveFile(f, 
 							new File(folderComplete, 
@@ -92,9 +90,7 @@ public class Ingester implements Runnable {
 					} catch (IOException e) {
 						log.error(e);
 					}
-					
 				}
-				
 			} else {
 				// TODO sleep
 			}

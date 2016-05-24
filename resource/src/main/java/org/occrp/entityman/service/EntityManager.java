@@ -28,6 +28,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.ReflectionUtils.FieldCallback;
 
+import com.mongodb.WriteResult;
+
 @Component
 public class EntityManager {
 
@@ -154,7 +156,8 @@ public class EntityManager {
 		
 		// 1. lookup the database for existing Entity with this key
 		List<? extends AEntity> relatedEntites = mongoOperations.find(
-				Query.query(Criteria.where("key").is(ae.getKey())), ae.getClass());
+				Query.query(Criteria.where("key").is(ae.getKey()).and("workspace").is(ae.getWorkspace()))
+				, ae.getClass());
 
 		// 2. merge new fields/data into the old entity
 		if (relatedEntites!=null && relatedEntites.size()>0) {
@@ -215,17 +218,21 @@ public class EntityManager {
 //		return mongoOperations.findAll(clazz);
 		return mongoOperations.find(
 				Query.query(Criteria.where("workspace").is(workspace)),clazz);
-
 	}
 
 	public <T> List<T> findAllEntitiesByFileId(Class<T> clazz, BigInteger fileId) {
 		return mongoOperations.find(
 				Query.query(Criteria.where("fileIds").is(fileId)),clazz);
-
 	}
 
 	public <T> List<T> findAll(Class<T> clazz) {
 		return mongoOperations.findAll(clazz);
+	}
+
+	public <T> Integer removeAllEntities(Class<T> clazz, String workspace) {
+		WriteResult res = mongoOperations.remove(
+				Query.query(Criteria.where("workspace").is(workspace)),clazz);
+		return res.getN();
 	}
 
 }

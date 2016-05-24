@@ -3,11 +3,11 @@ package org.occrp.entityman.glutton;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.occrp.entityman.glutton.ets.Extractor;
+import org.occrp.entityman.Expander;
+import org.occrp.entityman.Extractor;
 import org.occrp.entityman.glutton.ets.RegexpExtractor;
 import org.occrp.entityman.glutton.ets.RestStanfordExtractor;
 import org.occrp.entityman.glutton.ets.StanfordExtractor;
-import org.occrp.entityman.glutton.expanders.Expander;
 import org.occrp.entityman.glutton.expanders.OpenocrExpander;
 import org.occrp.entityman.glutton.expanders.TikaExpander;
 import org.occrp.entityman.glutton.filters.DictionaryFilter;

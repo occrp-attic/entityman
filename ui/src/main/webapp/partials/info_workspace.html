@@ -1,0 +1,78 @@
+<link rel="stylesheet" href="../3rd/bootstrap-3.3.6-dist/css/bootstrap.css">
+
+<style type="text/css">
+   .input-group-addon { 
+       min-width:200px; 
+       text-align: left; 
+   } 
+  .dropdown-menu-btn-item:hover{
+    background-color: #ACC; !important;
+    cursor: pointer;
+  }
+</style>
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="headingWorkspaceInfo">
+    <h3 class="panel-title">
+      <a href="" data-toggle="collapse" data-parent="#accordion" data-target="#collapseWorkspaceInfo">
+        Workspace : {{activeWorkspace.name}} ({{activeWorkspace.ingestCount}})
+      </a>
+    </h3>
+  </div>
+  <div id="collapseWorkspaceInfo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingWorkspaceInfo">
+    <div class="panel-body">
+      <div class="input-group">
+        <div class="input-group-addon">Name</div>
+        <input type="text" class="form-control" id="name" value="{{activeWorkspace.name}}" readonly="readonly">
+      </div>
+      <div class="input-group">
+        <div class="input-group-addon">Id</div>
+        <input type="text" class="form-control" id="name" value="{{activeWorkspace.id}}" readonly="readonly">
+      </div>
+      <div class="input-group">
+        <div class="input-group-addon">File count</div>
+        <input type="text" class="form-control" id="name" value="{{activeWorkspaceInfo.ingestCount}}" readonly="readonly">
+      </div>
+      <div class="input-group">
+        <div class="input-group-addon">Entity count</div>
+        <input type="text" class="form-control" id="name" value="{{activeWorkspaceInfo.entitiesCount}}" readonly="readonly">
+      </div>
+      <div class="input-group">
+        <div class="input-group-addon">Created on</div>
+        <input type="text" class="form-control" id="name" value="{{activeWorkspaceInfo.dob | date:'yyyy-MM-dd HH:mm:ss'}}" readonly="readonly">
+      </div>
+      <div class="input-group">
+        <div class="input-group-addon">Last Modified on</div>
+        <input type="text" class="form-control" id="name" value="{{activeWorkspaceInfo.dom | date:'yyyy-MM-dd HH:mm:ss'}}" readonly="readonly">
+      </div>
+      <div class="input-group">
+        <div class="input-group-addon">Description</div>
+        <textarea class="form-control" id="description">{{activeWorkspaceInfo.description}}</textarea>
+      </div>
+      <div class="input-group">
+        <div class="input-group-btn text-right">
+        
+        <!-- Split button -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" ng-click="refreshWorkspace()">Refresh</button>
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+<!--             <span class="sr-only">Toggle Dropdown</span> -->
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-menu-btn-item" ng-click="updateWorkspace()">Update</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a class="dropdown-menu-btn-item" ng-click="deleteWorkspace()">Delete</a></li>
+          </ul>
+        </div>
+        
+<!--           <button class="btn btn-danger" type="button" ng-click="removeWorkspace()">Delete</button> -->
+<!--           <button class="btn btn-warning" type="button" ng-click="updateWorkspace()">Update</button> -->
+<!--           <button class="btn btn-default" type="button" ng-click="resetWorkspace()">Reset</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html ng-app="entityman">
+<head>
+  <meta charset="utf-8">
+  <title>entityman</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.css"> -->
+  <link rel="stylesheet" href="3rd/bootstrap-3.3.6-dist/css/bootstrap.min.css">
+  <link href="3rd/angular-growl-v2/angular-growl.min.css" rel="stylesheet" media="screen"/>  
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700|Bitter:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="http://assets.pudo.org/img/favicon.ico">
+</head>
+<body ng-controller="BaseController">
+  <div class="container" ng-show="isLoading">
+    <div class="spinner">
+      <i class="fa fa-spinner fa-pulse"></i>
+    </div>
+  </div>
+  <div class="container" ng-hide="isLoading">
+  
+<!--     <h1 class="page-header"> -->
+<!--       <div class="pull-right"> -->
+          
+<!--       </div> -->
+<!--       <a href='#/'> -->
+<!--         EntityMan -->
+<!--       </a> -->
+<!--     </h1> -->
+    <navbar></navbar>
+    <div growl limit-messages="5"></div>
+    <div id='page' ng-view></div>
+    <hr/>
+<!--   <div class="pull-right">
+<!--       <a href="http://occrp.org"> -->
+<!--         <img src="http://scoop.mk/wp-content/uploads/2015/05/logo_occrp-300x87.png" height="30"> -->
+<!--       </a> 
+    </div> -->
+  </div>
+
+
+
+
+  <script type="text/ng-template" id="index.html">
+
+    <info-workspace></info-workspace>
+
+    <div class="row">
+      <div class="col-md-6">
+        <entity-listing entities="entities" factstats="factstats"></entity-listing>
+      </div>
+      <div class="col-md-6">
+        <file-listing facts="facts" files="files"></file-listing>
+      </div>
+    </div>
+  </script>
+
+<!--   <script type="text/ng-template" id="file.html">
+
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Entities in {{file.originalFilename}}</h3>
+
+          <a ng-href="{{getDownloadUrl(fileId)}}" target="_self">
+            <i class="fa fa-cloud-download"></i> Download
+          </a>
+
+        <entity-listing entities="entities"></entity-listing>
+      </div>
+	  <div>
+		Simple Text : 
+		<div>
+			<pre>
+			{{file.entities.simpleText}}
+			</pre>
+		</div>
+      </div>
+    </div>
+  </script> -->
+
+  <script type="text/ng-template" id="entity.html">
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Files mentioning {{entityType}}: {{entity.label}}</h3>
+        <file-listing facts="facts" files="files"></file-listing>
+      </div>
+    </div>
+  </script>
+
+  <script type="text/ng-template" id="upload.html">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="close()" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">Upload a file</h4>
+    </div>
+
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <span ng-hide="uploadMessage">
+            <div class="input-group" ngf-select ngf-multiple="true" ngf-change="setFiles($files, $event)">
+              <input type="text" class="form-control" ng-model="filenames" readonly>
+              <span class="input-group-btn">
+                <span class="btn btn-default">
+                  Browse
+                </span>
+              </span>
+            </div>
+            <p class="help-block">
+              Upload a file from your computer.
+            </p>
+          </span>
+          <div ng-show="uploadMessage">
+            <i class="fa fa-spinner fa-pulse"></i>
+            {{uploadMessage}}
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-occrp" ng-click="upload()" ng-disabled="!files.length">Upload</button>
+    </div>
+  </script>
+
+  <script type="text/ng-template" id="login.html">
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Login:</h3>
+        User : <input type="text" />
+        Pass : <input type="password" />
+   	   <button type="button" class="btn btn-occrp" ng-click="login()">Login</button>
+      </div>
+    </div>
+  </script>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular-route.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/5.0.9/ng-file-upload-all.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.0/ui-bootstrap-tpls.min.js'></script>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="3rd/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+  <script src="3rd/angular-growl-v2/angular-growl.min.js"></script>
+    
+  <script src="./app.js"></script>
+  <script src="./services.js"></script>
+  <script src="./directives.js"></script>
+  <script src="./controllers.js"></script>
+  
+  <script type="text/javascript">
+//   $(document).ready(function() {
+// 		$('a[data-confirm]').click(function(ev) {
+// 			var href = $(this).attr('href');
+// 			if (!$('#dataConfirmModal').length) {
+// 				$('body').append('<div id="dataConfirmModal" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button><h3 id="dataConfirmLabel">Please Confirm</h3></div><div class="modal-body"></div><div class="modal-footer"><button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button><a class="btn btn-primary" id="dataConfirmOK">OK</a></div></div>');
+// 			} 
+// 			$('#dataConfirmModal').find('.modal-body').text($(this).attr('data-confirm'));
+// 			$('#dataConfirmOK').attr('href', href);
+// 			$('#dataConfirmModal').modal({show:true});
+// 			return false;
+// 		});
+// 	});  
+  </script>
+</body>
+</html>

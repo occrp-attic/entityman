@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="../3rd/bootstrap-3.3.6-dist/css/bootstrap.css">
+
+<style type="text/css">
+          .list-group-item:hover{
+            background-color: #CCC; !important;
+            cursor: pointer;
+          }
+/*           .navbar-nav > li > a { */
+/*              line-height: 50px; */
+/*           } */
+</style>
+
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav">
+      <li class="navbar-btn" style="width: 20px">&nbsp;</li>
+      <li class="navbar-btn"><a class="navbar-brand" href="#"> OCCRP </a></li>
+      <li class="navbar-btn" style="width: 20px">&nbsp;</li>
+      <li class="navbar-btn"><a class="btn btn-default" href="#/">EntityMan</a></li>
+      <li class="navbar-btn" style="width: 20px">&nbsp;</li>
+      <li class="navbar-btn dropdown">
+          <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Select Workspace <span class="caret"></span></a>
+          <ul class="dropdown-menu list-group">
+            <li class="list-group-item" ng-repeat="workspace in workspaces" style="border: none;" ng-click="selectWorkspace(workspace)">
+              <span class="badge">{{workspace.ingestCount}}</span> {{workspace.name}}
+            
+<!--             <a ng-click="selectWorkspace(workspace)">{{workspace.name}} ({{workspace.count}})</a>  -->
+            </li>
+            <li role="separator" class="divider"></li>
+            <li>
+              <div class="input-group input-group-sm" style="padding-left: 5px; padding-right: 5px">
+                <input type="text" class="form-control" placeholder="New workspace" ng-model="workspaceNewName">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button" ng-click="makeWorkspace()"><span class="glyphicon glyphicon-plus"></span></button>
+                </span>
+              </div> 
+            </li>
+          </ul>
+        </li>
+      </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="navbar-btn"><a href="#/">Log In / Log out</a></li>
+        <li class="navbar-btn" style="width: 20px">&nbsp;</li>
+        <li class="navbar-btn"><a class="btn btn-default" ng-click="uploadFile()">Upload files</a></li>
+        <li class="navbar-btn" style="width: 20px">&nbsp;</li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<br>

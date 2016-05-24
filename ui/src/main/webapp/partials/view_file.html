@@ -1,0 +1,95 @@
+<link rel="stylesheet" href="../3rd/bootstrap-3.3.6-dist/css/bootstrap.css">
+<style type="text/css">
+   .input-group-addon { 
+       min-width:200px; 
+       text-align: left; 
+   } 
+  .dropdown-menu-btn-item:hover{
+    background-color: #ACC; !important;
+    cursor: pointer;
+  }
+</style>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-md-6"><span class="panel-title">File details [{{file.originalFilename}}]</span></div>
+      <div class="col-md-6">
+        <span class="pull-right">
+          <a ng-href="{{getDownloadUrl(fileId)}}" target="_self">
+            <i class="fa fa-cloud-download"></i> Download
+          </a>
+        </span> 
+      </div>
+    </div>
+  </div>
+  <div class="panel-body">
+      <entity-listing entities="entities"></entity-listing>
+        
+      <div class="input-group">
+        <div class="input-group-addon">Name</div>
+        <input type="text" class="form-control" id="name" value="{{file.originalFilename}}" readonly="readonly">
+      </div>
+      <div class="input-group">
+        <div class="input-group-addon">Id</div>
+        <input type="text" class="form-control" id="name" value="{{file.id}}" readonly="readonly">
+      </div>
+      <div class="input-group">
+        <div class="input-group-addon">Workspace</div>
+        <input type="text" class="form-control" id="name" value="{{file.workspace}}" readonly="readonly">
+      </div>
+      <div class="input-group">
+        <div class="input-group-addon">Location</div>
+        <input type="text" class="form-control" id="name" value="{{file.fileUri}}" readonly="readonly">
+      </div>
+      <div class="input-group">
+        <div class="input-group-addon">Status</div>
+        <input type="text" class="form-control" id="name" value="{{getStatus(file.status)}}" readonly="readonly">
+      </div>
+      <div class="input-group">
+        <div class="input-group-addon">Expanders</div>
+        <input type="text" class="form-control" id="name" value="{{file.appliedExpanders}}" readonly="readonly">
+      </div>
+      <div class="input-group">
+        <div class="input-group-addon">Extractors</div>
+        <input type="text" class="form-control" id="name" value="{{file.appliedExtractors}}" readonly="readonly">
+      </div>
+      <div class="input-group">
+        <div class="input-group-addon">Created on</div>
+        <input type="text" class="form-control" id="name" value="{{file.dob | date:'yyyy-MM-dd HH:mm:ss'}}" readonly="readonly">
+      </div>
+      <div class="input-group">
+        <div class="input-group-addon">Last Modified on</div>
+        <input type="text" class="form-control" id="name" value="{{file.dom | date:'yyyy-MM-dd HH:mm:ss'}}" readonly="readonly">
+      </div>
+      <div class="input-group">
+        <div class="input-group-btn text-right">
+        <div class="btn-group">
+<!--           <button type="button" class="btn btn-default"> -->
+            <a class="btn" ng-href="{{getDownloadUrl(fileId)}}" target="_self">
+              <i class="fa fa-cloud-download"></i> Download
+            </a>
+<!--           </button> -->
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li role="separator" class="divider"></li>
+            <li><a class="dropdown-menu-btn-item" ng-click="deleteFile()">Delete</a></li>
+          </ul>
+        </div>
+        </div>
+        </div>
+
+        <br>
+        
+        <div class="well well-sm">
+          <h3>Simple text</h3>
+          <pre>
+          {{file.entities.simpleText}}
+          </pre>
+        </div>
+  </div>
+</div>
+
+

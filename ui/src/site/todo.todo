@@ -1,0 +1,31 @@
+UI interface :
+
+  Workspace Features:
+    - workspace create @done
+    - workspace switching @done
+    - workspace remove @done
+    - workspace update 
+    - Fix entity count @done
+    - Implement file delete @done
+    - Fix download in file info @done
+    - after file upload reload workspace @done
+    
+  User Features:
+    - Implement users
+
+  General:
+    - Tweak : when routing go to top of the page
+    - Clean up Main Menu from unused items @done
+    - Main Menu vertical align of items @done
+    - Reduce Logging @done
+    - implement Upload files with async processing ???
+    - implement filter on object to json conversion, so only the right fields are serialized
+    - resource has to use the gluttonwar (via rest calls) !!! @done
+    - gluttonwar add doOcr=[true|false] parameter, default true @done
+    - fix emres landing page
+
+Docker Images:
+  - Resource !!! (need mongodb) @done
+  - UI !!!
+  - glutton war @done
+  - ner wrapper @done

@@ -59,6 +59,7 @@ import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.parser.pdf.PDFParser;
 import org.apache.tika.sax.BodyContentHandler;
+import org.occrp.entityman.AExpander;
 import org.occrp.entityman.model.IngestedFile;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
@@ -78,6 +79,11 @@ public class OpenocrExpander extends AExpander {
 	public void expandSuper(IngestedFile file) {
 		Tika tika = new Tika();
 		FileInputStream fis = null;
+		
+		// skip OCR if doOcr param is false
+		if (file.getEntities().containsKey("doOcr") && 
+				Boolean.FALSE.equals(file.getEntities().get("doOcr"))) return;
+		
 		try {
 			fis = new FileInputStream(file.getFile());
 			String contentType = tika.detect(fis);
