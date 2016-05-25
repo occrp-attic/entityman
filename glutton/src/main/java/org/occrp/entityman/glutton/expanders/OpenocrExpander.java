@@ -333,6 +333,7 @@ public class OpenocrExpander extends AExpander {
 		String result = null;
 		long resultRating = 0;
 		try {
+			log.info("OCR Start");
 			Tesseract instance = Tesseract.getInstance(); // JNA
 			// Interface Mapping
 			// Tesseract1 instance = new Tesseract1(); // JNA Direct Mapping
@@ -351,7 +352,8 @@ public class OpenocrExpander extends AExpander {
 						toGrayScale(bi, midpoint)));
 		
 				long trating = rateOcr(tres);
-				
+				log.info("OCR Result rating for midpoint {} : {}",midpoint,trating);
+		
 				if (trating>resultRating) {
 					result = tres;
 					resultRating = trating;
@@ -359,7 +361,7 @@ public class OpenocrExpander extends AExpander {
 				
 			}
 
-			log.info("OCR Result : {}", result);
+			log.info("OCR Result : \n {}", result);
 
 		} catch (Exception e) {
 			log.error(e);

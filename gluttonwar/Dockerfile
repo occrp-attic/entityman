@@ -33,6 +33,9 @@ RUN set -x \
 	&& rm bin/*.bat \
 	&& rm tomcat.tar.gz*
 
+#add tomcat-users.xml
+ADD src/scripts/tomcat-users.xml $CATALINA_HOME/conf
+
 RUN apt-get -qy update
 
 # install tesseract libs
@@ -41,21 +44,8 @@ RUN apt-get -qy install libtesseract3=3.03* libtesseract-dev tesseract-ocr tesse
 RUN ln -s /usr/share/tesseract-ocr/tessdata /usr/local/share/tessdata
 RUN ldconfig
 
-# install maven
-ENV MAVEN_VERSION 3.3.9
-
-RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
-  && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
-  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
-
-ENV MAVEN_HOME /usr/share/maven
-
-# build all
-#RUN cd /root/entityman
-#RUN mvn clean install -Dmaven.test.skip=true
-
 # deploy
-COPY ./target/gluttonwar.war $CATALINA_HOME/webapps/
+#COPY ./target/gluttonwar.war $CATALINA_HOME/webapps/
 
 ENV JAVA_OPTS "$JAVA_OPTS -Xmx4G -XX:MaxPermSize=1024m -Djava.security.egd=file:/dev/./urandom -DTESSDATA_PREFIX=/usr/share/tesseract-ocr"
 
@@ -69,5 +59,4 @@ RUN mkdir /opt/entityman/
 
 WORKDIR $CATALINA_HOME/bin
 
-CMD ["catalina.sh", "run"]
-#CMD ["/bin/bash"]
+CMD ./catalina.sh start && tail -f ../logs/catalina.out

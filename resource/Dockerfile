@@ -34,21 +34,13 @@ RUN set -x \
 	&& rm tomcat.tar.gz*
 
 
-# install maven
-ENV MAVEN_VERSION 3.3.9
+#add tomcat-users.xml
+ADD src/scripts/tomcat-users.xml $CATALINA_HOME/conf
 
-RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
-  && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
-  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
-
-ENV MAVEN_HOME /usr/share/maven
-
-# build all
-#RUN cd /root/entityman
-#RUN mvn clean install -Dmaven.test.skip=true
 
 # deploy
-COPY ./target/emres.war $CATALINA_HOME/webapps/
+#COPY ./target/resource.war $CATALINA_HOME/webapps/
+
 ENV JAVA_OPTS "$JAVA_OPTS -Xmx4G -XX:MaxPermSize=1G -Djava.security.egd=file:/dev/./urandom"
 
 EXPOSE 8080
@@ -63,20 +55,4 @@ RUN mkdir /opt/entityman/data
 #RUNNING
 WORKDIR $CATALINA_HOME/bin
 
-CMD ["catalina.sh", "run"]
-#CMD ["/bin/bash"]
-
-################################################3
-#FROM jetty:latest
-#MAINTAINER Smári McCarthy <smari@occrp.org>
-#
-#RUN apt-get update
-#RUN apt-get install -y maven mongodb
-#
-#RUN mkdir -p /srv/projects/entityman
-#COPY . /srv/projects/entityman
-#
-#WORKDIR /srv/projects/entityman
-#RUN mvn clean install
-#
-#CMD ["mvn", "jetty:run"]
+CMD ./catalina.sh start && tail -f ../logs/catalina.out

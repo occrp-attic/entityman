@@ -41,10 +41,15 @@ resource:
   links: 
     - gluttonwar
     - resource-data
-#buildmachine:
-#  build: ./Dockerfile_build
-#  ports: []
-#  volumnes:
-#    - ./:/root/entityman
-#  links: []
+buildmachine:
+  build: ./
+  dockerfile: Dockerfile_deployer
+  ports: []
+  volumes:
+    - ~/.m2:/root/.m2
+    - /opt/entityman/docked/buildmachine/:/root/store
+  links: 
+    - gluttonwar
+    - nerwrapper
+    - resource
 

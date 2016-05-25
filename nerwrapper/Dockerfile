@@ -33,14 +33,18 @@ RUN set -x \
 	&& rm bin/*.bat \
 	&& rm tomcat.tar.gz*
 
-# deploy
-COPY ./target/nerwrapper.war $CATALINA_HOME/webapps/
 
-ENV JAVA_OPTS "$JAVA_OPTS -Xmx4G -XX:MaxPermSize=1024m -Djava.security.egd=file:/dev/./urandom"
+#add tomcat-users.xml
+ADD src/scripts/tomcat-users.xml $CATALINA_HOME/conf/
+
+# deploy
+#COPY ./target/nerwrapper.war $CATALINA_HOME/webapps/
+
+ENV JAVA_OPTS "$JAVA_OPTS -Xmx4G -XX:MaxPermSize=1G -Djava.security.egd=file:/dev/./urandom"
 
 EXPOSE 8080
-#VOLUME /opt
 
+#RUNNING
 WORKDIR $CATALINA_HOME/bin
 
-CMD ["catalina.sh", "run"]
+CMD ./catalina.sh start && tail -f ../logs/catalina.out

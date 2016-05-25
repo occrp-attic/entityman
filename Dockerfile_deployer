@@ -1,0 +1,23 @@
+FROM airdock/oracle-jdk:latest
+MAINTAINER Ciubara Ion <builtofire@gmail.com>
+
+# install maven
+ENV MAVEN_VERSION 3.3.9
+
+RUN curl -fsSL https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xzf - -C /usr/share \
+  && mv /usr/share/apache-maven-$MAVEN_VERSION /usr/share/maven \
+  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+
+ENV MAVEN_HOME /usr/share/maven
+
+ADD ./ /root/entityman
+
+# build all
+WORKDIR /root/entityman
+RUN mvn clean
+
+VOLUME /root/store
+
+RUN chmod +x src/scripts/dodeploy.sh
+
+CMD ["src/scripts/dodeploy.sh"]

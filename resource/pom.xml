@@ -216,7 +216,7 @@
   </dependencies>
 
   <build>
-    <finalName>emres</finalName>
+    <finalName>resource</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
