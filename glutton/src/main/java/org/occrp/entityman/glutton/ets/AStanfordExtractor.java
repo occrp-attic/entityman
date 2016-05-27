@@ -14,6 +14,7 @@ import org.occrp.entityman.model.entities.AEntity;
 import org.occrp.entityman.model.entities.Company;
 import org.occrp.entityman.model.entities.Fact;
 import org.occrp.entityman.model.entities.Location;
+import org.occrp.entityman.model.entities.Other;
 import org.occrp.entityman.model.entities.Person;
 
 import edu.stanford.nlp.ie.AbstractSequenceClassifier;
@@ -36,6 +37,7 @@ public abstract class AStanfordExtractor extends AExtractor {
 				return p;
 			}
 		});
+		put("PERS",get("PERSON"));
 		put("ORGANIZATION",new EntityCreator() {
 			@Override
 			public AEntity createEntity(String name) {
@@ -44,12 +46,21 @@ public abstract class AStanfordExtractor extends AExtractor {
 				return c;
 			}
 		});
+		put("ORG",get("ORGANIZATION"));
 		put("LOCATION",new EntityCreator() {
 			@Override
 			public AEntity createEntity(String name) {
 				Location l = new Location();
 				l.setName(name);
 				return l;
+			}
+		});
+		put("OTROS",new EntityCreator() {
+			@Override
+			public AEntity createEntity(String name) {
+				Other o = new Other();
+				o.setName(name);
+				return o;
 			}
 		});
 	}};
