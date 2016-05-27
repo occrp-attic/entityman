@@ -104,11 +104,22 @@ public class GluttonyConfig {
 	@Value("${nerwrapper.url}")
 	String urlNerwrapper;
 
+	@Value("${nerwrapper-es.url}")
+	String urlNerwrapperSpanish;
+
 	@Bean
 	public RestStanfordExtractor extractorStanford() {
 		RestStanfordExtractor stanfordExtractor = new RestStanfordExtractor();
 		stanfordExtractor.setName("Stanford extractor");
 		stanfordExtractor.setNerWrapperUrl(urlNerwrapper);
+		return stanfordExtractor;
+	}
+
+	@Bean
+	public RestStanfordExtractor extractorStanfordSpanish() {
+		RestStanfordExtractor stanfordExtractor = new RestStanfordExtractor();
+		stanfordExtractor.setName("Stanford extractor Spanish");
+		stanfordExtractor.setNerWrapperUrl(urlNerwrapperSpanish);
 		return stanfordExtractor;
 	}
 
@@ -120,6 +131,7 @@ public class GluttonyConfig {
 		extractors.add(extractorPlotnumber());
 		extractors.add(extractorPersonIdno());
 		extractors.add(extractorStanford());
+		extractors.add(extractorStanfordSpanish());
 		
 		return extractors;
 	}

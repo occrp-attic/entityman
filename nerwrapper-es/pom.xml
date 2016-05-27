@@ -6,10 +6,10 @@
     <artifactId>entityman</artifactId>
     <version>0.0.1</version>
   </parent>
-  <artifactId>nerwrapper</artifactId>
+  <artifactId>nerwrapper-es</artifactId>
   <packaging>war</packaging>
-  <name>abstract Stanford NER wrapper</name>
-  <description>abstract project for wrapping stanford ner functionality into an webservice</description>
+  <name>Stanford NER wrapper Spanish</name>
+  <description>project for wrapping stanford ner functionality into an webservice with Spanish grammar</description>
 
   <dependencies>
     <dependency>
@@ -28,7 +28,7 @@
       <groupId>edu.stanford.nlp</groupId>
       <artifactId>stanford-corenlp</artifactId>
       <version>${mvn.stanford.ner.version}</version>
-      <classifier>models-english</classifier>
+      <classifier>models-spanish</classifier>
     </dependency>
 
     <!-- Spring related -->
@@ -58,7 +58,7 @@
   </dependencies>
 
   <build>
-    <finalName>nerwrapper</finalName>
+    <finalName>nerwrapper-es</finalName>
 
     <plugins>
       <plugin>

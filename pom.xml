@@ -18,6 +18,7 @@
     <properties>
     <mvn.entityman.version>0.0.1</mvn.entityman.version>
     <mvn.project.build.sourceEncoding>UTF-8</mvn.project.build.sourceEncoding>
+    <mvn.stanford.ner.version>3.6.0</mvn.stanford.ner.version>
     <mvn.spring.version>4.1.7.RELEASE</mvn.spring.version>
     <mvn.spring-security.version>4.0.2.RELEASE</mvn.spring-security.version>
     <mvn.spring.data.version>1.7.1.RELEASE</mvn.spring.data.version>
@@ -107,6 +108,7 @@
     <module>glutton</module>
     <module>gluttonwar</module>
     <module>nerwrapper</module>
+    <module>nerwrapper-es</module>
     <module>entitycore</module>
   </modules>
 </project>

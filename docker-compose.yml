@@ -7,6 +7,15 @@ nerwrapper:
     - ~/.m2:/root/.m2
     - /opt/entityman/docked/nerwrapper/logs:/opt/tomcat/logs
   links: []
+nerwrapper-es:
+  build: nerwrapper-es/.
+  ports:
+    - "38180:8080"
+  volumes: 
+    - /opt/entityman/config:/etc/entityman
+    - ~/.m2:/root/.m2
+    - /opt/entityman/docked/nerwrapper-es/logs:/opt/tomcat/logs
+  links: []
 gluttonwar:
   build: gluttonwar/.
   ports:
