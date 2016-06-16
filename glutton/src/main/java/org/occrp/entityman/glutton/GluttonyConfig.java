@@ -10,6 +10,7 @@ import org.occrp.entityman.glutton.ets.RestStanfordExtractor;
 import org.occrp.entityman.glutton.ets.StanfordExtractor;
 import org.occrp.entityman.glutton.expanders.OpenocrExpander;
 import org.occrp.entityman.glutton.expanders.TikaExpander;
+import org.occrp.entityman.glutton.filters.DictionaryBstFilter;
 import org.occrp.entityman.glutton.filters.DictionaryFilter;
 import org.occrp.entityman.glutton.filters.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,15 +143,23 @@ public class GluttonyConfig {
 	String resourceBlacklist;
 	
 	@Bean
-	public DictionaryFilter filterPersonName() {
-		DictionaryFilter filter = new DictionaryFilter();
-		filter.setFilterName("Person Entity Name Filter");
+	public DictionaryBstFilter filterPersonNameWhiteList() {
+		DictionaryBstFilter filter = new DictionaryBstFilter();
+		filter.setFilterName("Person Entity Name Whitelist Filter");
 		filter.setEntityType("person");
 		filter.setFieldName("name");
-//		filter.setWhitelistResource("dic_firstnames_ro_small.txt");
-//		filter.setWhitelistResource("dic_firstnames_ro.txt");
-//		filter.setBlacklistResource("blacklist_person_name.txt");
 		filter.setWhitelistResource(resourceWhitelist);
+//		filter.setBlacklistResource(resourceBlacklist);
+		return filter;
+	}
+
+	@Bean
+	public DictionaryFilter filterPersonNameBlackList() {
+		DictionaryFilter filter = new DictionaryFilter();
+		filter.setFilterName("Person Entity Name Blacklist Filter");
+		filter.setEntityType("person");
+		filter.setFieldName("name");
+//		filter.setWhitelistResource(resourceWhitelist);
 		filter.setBlacklistResource(resourceBlacklist);
 		return filter;
 	}
@@ -158,7 +167,8 @@ public class GluttonyConfig {
 	@Bean
 	public List<Filter> filters() {
 		List<Filter> filters = new ArrayList<>();
-		filters.add(filterPersonName());
+		filters.add(filterPersonNameBlackList());
+		filters.add(filterPersonNameWhiteList());
 		
 		return filters;
 	}

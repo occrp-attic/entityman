@@ -1,26 +1,14 @@
 package org.occrp.entityman.glutton.ets;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.occrp.entityman.AExpander;
 import org.occrp.entityman.AExtractor;
-import org.occrp.entityman.model.IngestedFile;
 import org.occrp.entityman.model.entities.AEntity;
 import org.occrp.entityman.model.entities.Company;
-import org.occrp.entityman.model.entities.Fact;
 import org.occrp.entityman.model.entities.Location;
 import org.occrp.entityman.model.entities.Other;
 import org.occrp.entityman.model.entities.Person;
-
-import edu.stanford.nlp.ie.AbstractSequenceClassifier;
-import edu.stanford.nlp.ie.crf.CRFClassifier;
-import edu.stanford.nlp.util.CoreMap;
-import edu.stanford.nlp.util.Triple;
 
 public abstract class AStanfordExtractor extends AExtractor {
 

@@ -11,6 +11,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.occrp.entityman.glutton.filters.DictionaryBstFilter;
 import org.occrp.entityman.glutton.filters.DictionaryFilter;
 import org.occrp.entityman.glutton.filters.Filter;
 import org.occrp.entityman.model.entities.AEntity;
@@ -35,9 +36,10 @@ public class FilterTest {
 	private List<Filter> filters;
 	
 	@Autowired
-	private DictionaryFilter filterPersonName;
+	private DictionaryFilter filterPersonNameBlackList;
 
 	@Autowired
+	private DictionaryBstFilter filterPersonNameWhiteList;
 	
 	
 	@Test
@@ -54,7 +56,7 @@ public class FilterTest {
 		
 		entities.addAll(Arrays.asList(person1,person2,person3,person4,person5,company));
 		
-		List<AEntity> filtered = filterPersonName.filter(entities);
+		List<AEntity> filtered = filterPersonNameBlackList.filter(entities);
 		log.info("Filtered entitites : {}", filtered);
 		
 		Assert.assertEquals("Entity count", 5, filtered.size());
@@ -77,7 +79,7 @@ public class FilterTest {
 		
 		entities.addAll(Arrays.asList(person1,person2,person3,person4,person5,company));
 		
-		List<AEntity> filtered = filterPersonName.filter(entities);
+		List<AEntity> filtered = filterPersonNameBlackList.filter(entities);
 		log.info("Filtered entitites : {}", filtered);
 		
 		Assert.assertEquals("Entity count", 5, filtered.size());
@@ -85,5 +87,56 @@ public class FilterTest {
 				Arrays.asList(person1,person2,person3,person4,company), filtered);
 		
 	}
-	
+
+	@Test
+	public void test003() {
+		List<AEntity> entities = new ArrayList<>();
+		Person person1 = new Person("Ion Vasile");
+		Person person2 = new Person("ion popov");
+		Person person3 = new Person("vasile rusu");
+		Person person4 = new Person("rusu vasile");
+		Person person5 = new Person("SRL Ion Popov");
+		
+		Company company = new Company();
+		company.setName("SRL Codrita");
+		
+		entities.addAll(Arrays.asList(person1,person2,person3,person4,person5,company));
+		
+		List<AEntity> filtered = filterPersonNameWhiteList.filter(entities);
+		log.info("Filtered entitites : {}", filtered);
+		
+		Assert.assertEquals("Entity count", 6, filtered.size());
+		Assert.assertEquals("Entity list", 
+				Arrays.asList(person1,person2,person3,person4,person5,company), filtered);
+		
+	}
+
+	@Test
+	public void test004() {
+		List<AEntity> entities = new ArrayList<>();
+		Person person1 = new Person("Ion Vasile");
+		Person person2 = new Person("ion popov");
+		Person person3 = new Person("vasile rusu");
+		Person person4 = new Person("rusu vasile");
+		Person person5 = new Person("SRL Ion Popov");
+		Person person6 = new Person("i0n p0pov");
+		
+		Company company = new Company();
+		company.setName("SRL Codrita");
+		
+		entities.addAll(Arrays.asList(person1,person2,person3,person4,person5,person6,company));
+		
+		List<AEntity> filtered = entities;
+		for (Filter f : filters) {
+			filtered = f.filter(filtered);
+			log.info("------------------------------ Filtered entitites {} : {}", f.getFilterName(), filtered);
+		}
+		log.info("Filtered entitites : {}", filtered);
+		
+		Assert.assertEquals("Entity count", 5, filtered.size());
+		Assert.assertEquals("Entity list", 
+				Arrays.asList(person1,person2,person3,person4,company), filtered);
+		
+	}
+
 }
