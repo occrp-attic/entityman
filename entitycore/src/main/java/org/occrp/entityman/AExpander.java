@@ -10,7 +10,7 @@ public abstract class AExpander implements Expander {
 	static public final String EXPKEY_OCREDTEXT="ocredText";
 	
 	@Override
-	public void expand(IngestedFile file) {
+	final public void expand(IngestedFile file) {
 		file.getAppliedExpanders().add(name);
 		file.setCntExpanders(file.getCntExpanders()+1);
 		expandSuper(file);

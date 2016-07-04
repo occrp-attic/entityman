@@ -1,4 +1,4 @@
-package org.occrp.entityman.glutton.filters;
+package org.occrp.entityman;
 
 public abstract class AFilter implements Filter {
 

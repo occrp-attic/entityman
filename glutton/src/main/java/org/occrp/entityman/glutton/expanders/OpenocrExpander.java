@@ -358,7 +358,6 @@ public class OpenocrExpander extends AExpander {
 					result = tres;
 					resultRating = trating;
 				}
-				
 			}
 
 			log.info("OCR Result : \n {}", result);

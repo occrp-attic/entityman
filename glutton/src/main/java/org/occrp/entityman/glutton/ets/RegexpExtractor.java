@@ -34,7 +34,7 @@ public class RegexpExtractor extends AExtractor {
 	protected Logger log = LogManager.getLogger(getClass().getName());
 
 	@Override
-	public List<AEntity> extract(IngestedFile file) {
+	public List<AEntity> extractSuper(IngestedFile file) {
 		
 		Object o = file.getExpandedData().get(AExpander.EXPKEY_SIMPLETEXT);
 		
@@ -73,6 +73,7 @@ public class RegexpExtractor extends AExtractor {
 //				fact.setFileId(file.getId());
 				fact.getFileIds().add(file.getId());
 				fact.setPosition(m.start());
+				fact.setPositionEnd(m.end());
 				fact.setWorkspace(file.getWorkspace());
 				fact.getData().put(Fact.KEY_EXCERPT, 
 						findExcerpt(s, m.start(), m.end()));

@@ -36,7 +36,7 @@ public class RestStanfordExtractor extends AStanfordExtractor {
 	private String nerWrapperUrl = "http://127.0.0.1:8080/nerwrapper/app/extractjson";
 	
 	@Override
-	public List<AEntity> extract(IngestedFile file) {
+	public List<AEntity> extractSuper(IngestedFile file) {
 		
 	    List<AEntity> res = new ArrayList<AEntity>();
 		

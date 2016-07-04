@@ -1,10 +1,6 @@
 package org.occrp.entityman.glutton;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.occrp.entityman.glutton.filters.DictionaryFilter;
-import org.occrp.entityman.glutton.filters.Filter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -28,8 +24,8 @@ public class TestConfig {
 		filter.setEntityType("person");
 		filter.setFieldName("name");
 //		filter.setWhitelistResource("dic_firstnames_ro_small.txt");
-		filter.setWhitelistResource("dic_firstnames_ro.txt");
-		filter.setBlacklistResource("blacklist_person_name.txt");
+		filter.setWhitelistResource("/etc/entityman/dic_firstnames_ro.txt");
+		filter.setBlacklistResource("/etc/entityman/blacklist_person_name.txt");
 		return filter;
 	}
 	

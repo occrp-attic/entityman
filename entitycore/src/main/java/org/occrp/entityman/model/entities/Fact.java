@@ -25,6 +25,8 @@ public class Fact extends AEntity {
 	
 	private long position = -1;
 	
+	private long positionEnd = -1;
+
 	private Map<String,Object> data = new HashMap<String, Object>();
 
 	public String getEntity() {
@@ -53,6 +55,14 @@ public class Fact extends AEntity {
 
 	public Map<String, Object> getData() {
 		return data;
+	}
+
+	public long getPositionEnd() {
+		return positionEnd;
+	}
+
+	public void setPositionEnd(long positionEnd) {
+		this.positionEnd = positionEnd;
 	}
 
 	public void setData(Map<String, Object> data) {

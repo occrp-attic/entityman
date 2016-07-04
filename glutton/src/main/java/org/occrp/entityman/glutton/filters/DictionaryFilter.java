@@ -18,6 +18,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.occrp.entityman.AFilter;
 import org.occrp.entityman.model.entities.AEntity;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StreamUtils;
@@ -150,7 +151,11 @@ public class DictionaryFilter extends AFilter{
 		if (whitelist!=null && whitelist.size()>0) {
 			for (AEntity ae : entities) {
 				if (entityType==null || ae.getClass().getSimpleName().equalsIgnoreCase(entityType)) {
-					if (isWhite(ae)) tmp.add(ae);
+					if (isWhite(ae)) {
+						tmp.add(ae);
+					} else {
+						log.debug("{} Removing entity {}",filterName, ae);
+					}
 				} else {
 					tmp.add(ae);
 				}
@@ -162,7 +167,11 @@ public class DictionaryFilter extends AFilter{
 		if (blacklist!=null && blacklist.size()>0) {
 			for (AEntity ae : entities) {
 				if (entityType==null || ae.getClass().getSimpleName().equalsIgnoreCase(entityType)) {
-					if (!isBlack(ae)) tmp.add(ae);
+					if (!isBlack(ae)) {
+						tmp.add(ae);
+					} else {
+						log.debug("{} Removing entity {}",filterName, ae);
+					}
 				} else {
 					tmp.add(ae);
 				}

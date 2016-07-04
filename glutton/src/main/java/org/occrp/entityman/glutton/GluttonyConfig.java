@@ -1,10 +1,15 @@
 package org.occrp.entityman.glutton;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.occrp.entityman.Expander;
 import org.occrp.entityman.Extractor;
+import org.occrp.entityman.Filter;
+import org.occrp.entityman.glutton.ets.AhoCorasickExtractor;
+import org.occrp.entityman.glutton.ets.PersonNameEnricher;
+import org.occrp.entityman.glutton.ets.PrefixPostfixListEnricher;
 import org.occrp.entityman.glutton.ets.RegexpExtractor;
 import org.occrp.entityman.glutton.ets.RestStanfordExtractor;
 import org.occrp.entityman.glutton.ets.StanfordExtractor;
@@ -12,7 +17,6 @@ import org.occrp.entityman.glutton.expanders.OpenocrExpander;
 import org.occrp.entityman.glutton.expanders.TikaExpander;
 import org.occrp.entityman.glutton.filters.DictionaryBstFilter;
 import org.occrp.entityman.glutton.filters.DictionaryFilter;
-import org.occrp.entityman.glutton.filters.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -124,6 +128,71 @@ public class GluttonyConfig {
 		return stanfordExtractor;
 	}
 
+	@Value("${ace.dictionary.company.md}")
+	String aceDictionaryCompaniesMd;
+
+	@Value("${ace.prefixes.company.md}")
+	String acePrefixesCompanyMd;
+
+	@Bean
+	public AhoCorasickExtractor aceCompaniesMd() {
+		AhoCorasickExtractor ace = new AhoCorasickExtractor();
+		
+		ace.setDictionary(aceDictionaryCompaniesMd);
+		ace.setName("aceCompaniesMd");
+		ace.setEntityName("Company");
+		ace.setEntityKey("name");
+		
+		PrefixPostfixListEnricher pple = new PrefixPostfixListEnricher();
+		pple.setFieldName("name");
+		pple.setFile(acePrefixesCompanyMd);
+		
+		ace.setEnrichers(Arrays.asList(pple));
+		
+		DictionaryFilter df = new DictionaryFilter();
+		df.setEntityType("Company");
+		df.setFieldName("name");
+		df.setFilterName("Company prefix filter");
+		df.setWhitelistResource(acePrefixesCompanyMd);
+
+		ace.setFilters(Arrays.asList(df));
+		
+		return ace;
+	}
+
+	@Value("${ace.dictionary.persons}")
+	String aceDictionaryPersons;
+
+	@Bean
+	public PersonNameEnricher pne() {
+		PersonNameEnricher pne = new PersonNameEnricher();
+		pne.setFieldName("name");
+
+		return pne;
+	}
+	
+	@Bean
+	public AhoCorasickExtractor acePerson() {
+		AhoCorasickExtractor ace = new AhoCorasickExtractor();
+		
+		ace.setDictionary(aceDictionaryPersons);
+		ace.setName("acePersons");
+		ace.setEntityName("Person");
+		ace.setEntityKey("name");
+		
+		ace.setEnrichers(Arrays.asList(pne()));
+		
+		DictionaryBstFilter dbf = new DictionaryBstFilter();
+		dbf.setEntityType("Person");
+		dbf.setFieldName("name");
+		dbf.setFilterName("Person name filter");
+		dbf.setWhitelistResource(aceDictionaryPersons);
+
+		ace.setFilters(Arrays.asList(dbf));
+		
+		return ace;
+	}
+
 	@Bean
 	public List<Extractor> extractors() {
 		List<Extractor> extractors = new ArrayList<>();
@@ -133,6 +202,8 @@ public class GluttonyConfig {
 		extractors.add(extractorPersonIdno());
 		extractors.add(extractorStanford());
 		extractors.add(extractorStanfordSpanish());
+		extractors.add(aceCompaniesMd());
+		extractors.add(acePerson());
 		
 		return extractors;
 	}

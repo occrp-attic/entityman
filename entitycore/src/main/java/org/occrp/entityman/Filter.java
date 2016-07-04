@@ -1,4 +1,4 @@
-package org.occrp.entityman.glutton.filters;
+package org.occrp.entityman;
 
 import java.util.List;
 
