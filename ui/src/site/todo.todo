@@ -14,15 +14,29 @@ UI interface :
     - Implement users
 
   General:
-    - Tweak : when routing go to top of the page
-    - Clean up Main Menu from unused items @done
-    - Main Menu vertical align of items @done
-    - Reduce Logging @done
-    - implement Upload files with async processing ???
-    - implement filter on object to json conversion, so only the right fields are serialized
-    - resource has to use the gluttonwar (via rest calls) !!! @done
-    - gluttonwar add doOcr=[true|false] parameter, default true @done
-    - fix emres landing page
+  - Tweak : when routing go to top of the page
+  - Clean up Main Menu from unused items @done
+  - Main Menu vertical align of items @done
+  - fix emres landing page
+  - add rescan functionality to a workspace
+  - limit maximum length of filename / entity label (improve UI)
+
+
+General Entityman:
+  - Reduce Logging @done
+  - implement Upload files with async processing ???
+  - implement filter on object to json conversion, so only the right fields are serialized
+  - resource has to use the gluttonwar (via rest calls) !!! @done
+  - gluttonwar add doOcr=[true|false] parameter, default true @done
+  - make the worker thread / pool to scan workspaces for new files and process them
+  - upload : only save files
+  - upload : support archives
+  - WOI extractor : word of interest extractor using the aho-corasick alg
+  - add filter list to the extractors @done
+  - find first name with ace dictionary then extend with PersonNameEnricher @done
+  - add rating to the facts/entities
+  - fix quotes handling : proprietarul Î.M "Niagara Club" S.R.L.,
+  - aho-corasick address extraction : enricher look at https://web.cs.dal.ca/~zyu/research/Thesis.pdf
 
 Docker Images:
   - Resource !!! (need mongodb) @done
