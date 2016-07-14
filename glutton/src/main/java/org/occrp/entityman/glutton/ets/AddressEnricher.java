@@ -33,21 +33,31 @@ public class AddressEnricher implements Enricher {
 
 	private int maxLenght = 100;
 
-	private List<String> list;
 
-	private String file;
-
-	public boolean isSeparator(char ch) {
-		return ch==' ' || ch==',' || ch=='.' || ch=='\t' || ch=='\n' || ch==';' || ch==':';
+	private String fileAddressParts;
+	private String fileAddressHelpers;
+	
+	private AddressClassifier ac;
+	
+	private AddressClassifier getAddressClassifier() {
+		if (ac == null) {
+			ac = new AddressClassifier(
+					EntityUtils.readFile(fileAddressHelpers), 
+					EntityUtils.readFile(fileAddressParts));
+		}
+		
+		return ac;
 	}
 	
 	@Override
 	public void tryEnrich(AEntity ae, String src) {
+		
+		
 		int start = (int)ae.getFact().getPosition();
 		int end = (int)ae.getFact().getPositionEnd();
 		
 		String prefix = src.substring(start - maxLenght < 0 ? 0 : start - maxLenght, start).trim();
-		String sufix = src
+		String suffix = src
 				.substring(end, end + maxLenght > src.length() ? src.length() : end + maxLenght)
 				.trim();
 
@@ -55,19 +65,16 @@ public class AddressEnricher implements Enricher {
 
 		String newValue = null;
 
-		for (String s : list) {
-			try {
-				if (prefix.toLowerCase().endsWith(s) && 
-					isSeparator(prefix.charAt(prefix.length() - s.length()))) {
-					newValue = s + " " + EntityUtils.entityGetField(ae, fieldName);
-				}
-				if (sufix.toLowerCase().startsWith(s) && 
-					isSeparator(sufix.charAt(s.length()))) {
-					newValue = EntityUtils.entityGetField(ae, fieldName) + " " + s;
-				}
-			} catch (IllegalArgumentException | IllegalAccessException e) {
-				log.error("Failed to get old value",e);
-			}
+		List<String> prefixSentence = AddressClassifier.getWords(prefix);
+		List<String> suffixSentence = AddressClassifier.getWords(suffix);
+		
+		List<Integer> prefixClasses = getAddressClassifier().classify(prefixSentence);
+		List<Integer> suffixClasses = getAddressClassifier().classify(suffixSentence);
+		
+		for (int i = prefixClasses.size() ; i > 0 ; i--) {
+			// search for start
+			
+			 // TODO search HOLES
 		}
 		
 		if (newValue!=null) {
@@ -77,21 +84,6 @@ public class AddressEnricher implements Enricher {
 				log.error("Failed to set new value",e);
 			}
 		}
-	}
-
-	public List<String> getList() {
-		return list;
-	}
-
-	public void setList(List<String> list) {
-		this.list = list;
-
-		Collections.sort(list, new Comparator<String>() {
-			@Override
-			public int compare(String o1, String o2) {
-				return Integer.compare(o1.length(), o2.length());
-			}
-		});
 	}
 
 	public String getFieldName() {
@@ -108,40 +100,6 @@ public class AddressEnricher implements Enricher {
 
 	public void setMaxLenght(int maxLenght) {
 		this.maxLenght = maxLenght;
-	}
-
-	public String getFile() {
-		return file;
-	}
-
-	public void setFile(String file) {
-		this.file = file;
-		
-		if (file==null || file.trim().length()==0) return;
-		log.info("Loading list {} ...",file);
-		try (InputStream is = new FileInputStream(file)) {
-			List<String> lines = new BufferedReader(new InputStreamReader(is,
-					StandardCharsets.UTF_8)).lines().collect(Collectors.toList());
-			
-			list = new LinkedList<>();
-			for (String line : lines) {
-				line = line.toLowerCase().trim();
-				if (line.length() > 0) {
-					list.add(line);
-				}
-			}
-			
-			Collections.sort(list, new Comparator<String>() {
-				@Override
-				public int compare(String o1, String o2) {
-					return Integer.compare(o1.length(), o2.length());
-				}
-			});
-			log.info("Dictionary loaded with success {} ({})",file,lines.size());
-		} catch (Exception e) {
-			log.error("Failed to read data from resource : {}", file, e);
-		}
-
 	}
 
 }

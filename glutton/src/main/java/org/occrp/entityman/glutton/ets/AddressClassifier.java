@@ -10,12 +10,13 @@ import java.util.TreeMap;
 import org.apache.commons.lang3.StringUtils;
 
 public class AddressClassifier {
-	public final int CLASS_UNKNOWN = 0;
-	public final int CLASS_SEPARATOR_HARD = 1;
-	public final int CLASS_SEPARATOR_SOFT = 2;
-	public final int CLASS_ADDRESS_PART = 3;
-	public final int CLASS_ADDRESS_HELPER = 4;
-	public final int CLASS_NUMBER = 5;
+	public static final int CLASS_UNKNOWN = 0;
+	public static final int CLASS_SEPARATOR_HARD = 1;
+	public static final int CLASS_SEPARATOR_SOFT = 2;
+	public static final int CLASS_ADDRESS_PART = 3;
+	public static final int CLASS_ADDRESS_HELPER = 4;
+	public static final int CLASS_NUMBER = 5;
+	public static final int CLASS_CAPITAL_FIRST = 6;
 	
 	
 	public static List<String> getWords(String text) {
@@ -26,7 +27,8 @@ public class AddressClassifier {
 	    while (BreakIterator.DONE != lastIndex) {
 	        int firstIndex = lastIndex;
 	        lastIndex = breakIterator.next();
-	        if (lastIndex != BreakIterator.DONE && Character.isLetterOrDigit(text.charAt(firstIndex))) {
+	        if (lastIndex != BreakIterator.DONE && !Character.isWhitespace(text.charAt(firstIndex))) {
+//	        if (lastIndex != BreakIterator.DONE && Character.isLetterOrDigit(text.charAt(firstIndex))) {
 	            words.add(text.substring(firstIndex, lastIndex));
 	        }
 	    }
@@ -36,10 +38,14 @@ public class AddressClassifier {
 
 	public AddressClassifier(List<String> addressHelpers, List<String> addressParts) {
 		for (String s : addressHelpers) {
-			this.addressHelpers.put(s, new Integer(0));
+			if (s.trim().length()>0 && s.charAt(0)!='#') {
+				this.addressHelpers.put(s.trim(), new Integer(0));
+			}
 		}
 		
 		for (String s : addressParts) {
+			if (s.trim().length()==0 || s.charAt(0)=='#') continue;
+
 			// TODO only 1st word
 			for (String w : getWords(s)) {
 				Set<String> set = this.addressParts.get(w);
@@ -60,12 +66,16 @@ public class AddressClassifier {
 		return StringUtils.isNumeric(s);
 	}
 	
+	public boolean isCapitalFirst(String s) {
+		return s.length()>0 && Character.isUpperCase(s.charAt(0));
+	}
+
 	public boolean isSeparatorHard(String s) {
-		return ".".equals(s) || ";".equals(s);
+		return ";".equals(s);
 	}
 	
 	public boolean isSeparatorSoft(String s) {
-		return ",".equalsIgnoreCase(s);
+		return ",".equals(s) || " ".equals(s) || ".".equals(s) || "/".equals(s);
 	}
 
 	public boolean isAddressHelper(String part) {
@@ -94,7 +104,7 @@ public class AddressClassifier {
 	public int isAddressPart(String part, List<String> parts, int pos) {
 		int res = 0;
 		if (addressParts.containsKey(part.toLowerCase())) {
-			Set<String> set = addressParts.get(part);
+			Set<String> set = addressParts.get(part.toLowerCase());
 			
 			for (String s : set) {
 				List<String> words = getWords(s);
@@ -122,6 +132,9 @@ public class AddressClassifier {
 			} 
 			if (isSeparatorSoft(part)) {
 				type = CLASS_SEPARATOR_SOFT;
+			} 
+			if (isCapitalFirst(part)) {
+				type = CLASS_CAPITAL_FIRST;
 			} 
 			if (isAddressHelper(part)) {
 				type = CLASS_ADDRESS_HELPER;

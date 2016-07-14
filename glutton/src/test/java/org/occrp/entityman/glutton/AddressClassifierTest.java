@@ -47,6 +47,11 @@ public class AddressClassifierTest {
 	@Test
 	public void test001() throws Exception{
 		
+		File f = new File(".");
+		for (String s : f.list()) {
+			System.out.println(s);
+		}
+		
 		AddressClassifier ac = new AddressClassifier(
 				EntityUtils.readFile(dicAddressHelpers), 
 				EntityUtils.readFile(dicAddressParts));
@@ -56,11 +61,40 @@ public class AddressClassifierTest {
 		List<String> sentence = AddressClassifier.getWords(test);
 		
 		List<Integer> res = ac.classify(sentence);
+
+		List<Integer> expected = Arrays.asList(
+				AddressClassifier.CLASS_ADDRESS_HELPER,
+				AddressClassifier.CLASS_SEPARATOR_SOFT,
+				AddressClassifier.CLASS_ADDRESS_PART,
+				AddressClassifier.CLASS_SEPARATOR_SOFT,
+				AddressClassifier.CLASS_ADDRESS_HELPER,
+				AddressClassifier.CLASS_SEPARATOR_SOFT,
+				AddressClassifier.CLASS_ADDRESS_PART,
+				AddressClassifier.CLASS_SEPARATOR_SOFT,
+				AddressClassifier.CLASS_ADDRESS_HELPER,
+				AddressClassifier.CLASS_SEPARATOR_SOFT,
+				AddressClassifier.CLASS_CAPITAL_FIRST,
+				AddressClassifier.CLASS_CAPITAL_FIRST,
+				AddressClassifier.CLASS_SEPARATOR_SOFT,
+				AddressClassifier.CLASS_NUMBER,
+				AddressClassifier.CLASS_SEPARATOR_SOFT,
+				AddressClassifier.CLASS_NUMBER,
+				AddressClassifier.CLASS_SEPARATOR_SOFT,
+				AddressClassifier.CLASS_ADDRESS_HELPER,
+				AddressClassifier.CLASS_SEPARATOR_SOFT,
+				AddressClassifier.CLASS_NUMBER
+				);
 		
 		System.out.println(res);
 
 		Assert.assertEquals("Total entities", sentence.size(), res.size());
+
+		for (int i =0 ; i < sentence.size(); i ++) {
+			System.out.println(sentence.get(i)+ " : "+res.get(i));
+		}
 		
+		Assert.assertEquals("Good entities", expected, res);
+
 	}
 
 }
